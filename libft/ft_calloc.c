@@ -1,32 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ofadhel <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/15 18:18:50 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/11/17 20:16:28 by ofadhel          ###   ########.fr       */
+/*   Created: 2023/01/23 09:15:14 by ofadhel           #+#    #+#             */
+/*   Updated: 2023/02/08 12:27:35 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	main(char **env)
+void	*ft_calloc(size_t nmemb, size_t size)
 {
-	char	*line;
-	t_mini	mini;
+	void	*p;
 
-	while (1)
+	if (nmemb == SIZE_MAX && size == SIZE_MAX)
+		return (NULL);
+	p = (void *)malloc(nmemb * size);
+	if (!p)
 	{
-		line = readline("minishell$ ");
-		if (!line)
-			break ;
-		add_history(line);
-		if (strcmp(line, "exit") == 0)
-			break ;
-		//lexer(line, &mini);
-		free(line);
+		return (NULL);
 	}
-	return (0);
+	ft_bzero(p, (nmemb * size));
+	return (p);
 }

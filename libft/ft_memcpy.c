@@ -1,32 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ofadhel <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/15 18:18:50 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/11/17 20:16:28 by ofadhel          ###   ########.fr       */
+/*   Created: 2023/01/18 14:18:13 by ofadhel           #+#    #+#             */
+/*   Updated: 2023/02/04 14:33:59 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	main(char **env)
+void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
-	char	*line;
-	t_mini	mini;
+	size_t	i;
+	char	*d;
+	char	*s;
 
-	while (1)
+	i = 0;
+	if (!dst && !src)
+		return (NULL);
+	d = (char *)dst;
+	s = (char *)src;
+	while (i < n)
 	{
-		line = readline("minishell$ ");
-		if (!line)
-			break ;
-		add_history(line);
-		if (strcmp(line, "exit") == 0)
-			break ;
-		//lexer(line, &mini);
-		free(line);
+		*d++ = *s++;
+		i++;
 	}
-	return (0);
+	return (dst);
 }

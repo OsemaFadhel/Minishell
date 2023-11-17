@@ -1,32 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_isalnum.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ofadhel <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/15 18:18:50 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/11/17 20:16:28 by ofadhel          ###   ########.fr       */
+/*   Created: 2023/01/17 11:47:04 by ofadhel           #+#    #+#             */
+/*   Updated: 2023/01/17 11:53:40 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	main(char **env)
+int	ft_isalnum(int c)
 {
-	char	*line;
-	t_mini	mini;
-
-	while (1)
+	if ((c >= 48 && c <= 57) || (c >= 65 && c <= 90) || (c >= 97 && c <= 122))
 	{
-		line = readline("minishell$ ");
-		if (!line)
-			break ;
-		add_history(line);
-		if (strcmp(line, "exit") == 0)
-			break ;
-		//lexer(line, &mini);
-		free(line);
+		return (c);
 	}
 	return (0);
 }

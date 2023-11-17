@@ -1,30 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_lstsize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/17 18:21:15 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/11/17 20:21:47 by ofadhel          ###   ########.fr       */
+/*   Created: 2023/02/28 15:34:26 by ofadhel           #+#    #+#             */
+/*   Updated: 2023/05/12 19:53:38 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <readline.h>
-#include <history.h>
-#include "libft/libft.h"
-
-typedef struct s_mini
+int	ft_lstsize(t_list *lst)
 {
-	char 	**history;
-	char	*key;
-	char	*value;
-}				t_mini;
+	int		i;
 
-#endif
+	i = 0;
+	while (lst)
+	{
+		lst = lst->next;
+		i++;
+	}
+	return (i);
+}

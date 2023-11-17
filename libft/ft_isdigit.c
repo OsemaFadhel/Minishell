@@ -1,30 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_isdigit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/17 18:21:15 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/11/17 20:21:47 by ofadhel          ###   ########.fr       */
+/*   Created: 2023/01/17 11:44:38 by ofadhel           #+#    #+#             */
+/*   Updated: 2023/05/10 23:25:13 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <readline.h>
-#include <history.h>
-#include "libft/libft.h"
-
-typedef struct s_mini
+int	ft_isdigit(char *c)
 {
-	char 	**history;
-	char	*key;
-	char	*value;
-}				t_mini;
+	int	i;
 
-#endif
+	i = 0;
+	while (c[i])
+	{
+		if (c[i] >= 48 && c[i] <= 57)
+		{
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}

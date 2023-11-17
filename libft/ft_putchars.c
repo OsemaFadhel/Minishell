@@ -1,30 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_putchars.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/17 18:21:15 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/11/17 20:21:47 by ofadhel          ###   ########.fr       */
+/*   Created: 2023/02/18 13:36:02 by ofadhel           #+#    #+#             */
+/*   Updated: 2023/11/17 20:25:19 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <readline.h>
-#include <history.h>
-#include "libft/libft.h"
-
-typedef struct s_mini
+int	ft_putchar(char c)
 {
-	char 	**history;
-	char	*key;
-	char	*value;
-}				t_mini;
+	write(1, &c, 1);
+	return (1);
+}
 
-#endif
+int	ft_putstr(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!str)
+	{
+		write(1, "(null)", 6);
+		return (6);
+	}
+	while (str[i])
+	{
+		ft_putchar(str[i]);
+		i++;
+	}
+	return (i);
+}
