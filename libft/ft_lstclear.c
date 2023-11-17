@@ -1,30 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_lstclear.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/17 18:21:15 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/11/17 20:21:47 by ofadhel          ###   ########.fr       */
+/*   Created: 2023/02/28 15:45:58 by ofadhel           #+#    #+#             */
+/*   Updated: 2023/05/10 01:16:20 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <readline.h>
-#include <history.h>
-#include "libft/libft.h"
-
-typedef struct s_mini
+void	ft_lstclear(t_list **lst, void (*del)(int *))
 {
-	char 	**history;
-	char	*key;
-	char	*value;
-}				t_mini;
+	t_list	*temp;
 
-#endif
+	if (lst && del)
+	{
+		while (*lst)
+		{
+			temp = (*lst)->next;
+			ft_lstdelone(*lst, del);
+			*lst = temp;
+		}
+	}
+}

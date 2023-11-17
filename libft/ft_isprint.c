@@ -1,32 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_isprint.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ofadhel <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/15 18:18:50 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/11/17 20:16:28 by ofadhel          ###   ########.fr       */
+/*   Created: 2023/01/17 12:02:44 by ofadhel           #+#    #+#             */
+/*   Updated: 2023/01/17 12:04:33 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	main(char **env)
+int	ft_isprint(int c)
 {
-	char	*line;
-	t_mini	mini;
-
-	while (1)
+	if (c >= 32 && c <= 126)
 	{
-		line = readline("minishell$ ");
-		if (!line)
-			break ;
-		add_history(line);
-		if (strcmp(line, "exit") == 0)
-			break ;
-		//lexer(line, &mini);
-		free(line);
+		return (c);
 	}
 	return (0);
 }

@@ -1,30 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_lstprint.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/17 18:21:15 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/11/17 20:21:47 by ofadhel          ###   ########.fr       */
+/*   Created: 2023/05/16 18:51:22 by ofadhel           #+#    #+#             */
+/*   Updated: 2023/11/17 20:26:39 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <readline.h>
-#include <history.h>
-#include "libft/libft.h"
-
-typedef struct s_mini
+int	ft_lstprint(t_list *lst)
 {
-	char 	**history;
-	char	*key;
-	char	*value;
-}				t_mini;
-
-#endif
+	while (lst)
+	{
+		ft_printf("%d\n", lst->content);
+		lst = lst->next;
+	}
+	return (0);
+}
