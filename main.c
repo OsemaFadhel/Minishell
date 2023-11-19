@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 18:18:50 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/11/19 18:30:24 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/11/19 22:47:29 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 int	main(int argc, char **argv, char **envp)
 {
-	char	*line;
+	char	**line;
+	char  	*input;
 	char 	*env;
 	t_mini	mini;
 	int		i;
@@ -22,14 +23,15 @@ int	main(int argc, char **argv, char **envp)
 	env = ft_strdup(envp[0]);
 	while (1)
 	{
-		line = readline("minishell$ ");
+		input = readline("minishell$ ");
+		line = ft_split(input, ' ');
 		if (!line)
 			break ;
-		add_history(line);
+		add_history(input);
 		//lexer(line, &mini);
-		if (strcmp(line, "exit") == 0)
+		if (strcmp(line[0], "exit") == 0)
 			break ;
-		if (strcmp(line, "env") == 0)
+		else if (strcmp(line[0], "env") == 0)
 		{
 			i = 0;
 			while (envp && envp[0] && envp[i])
@@ -39,6 +41,23 @@ int	main(int argc, char **argv, char **envp)
 				i++;
 			}
 			printf("\n");
+		}
+		else
+		{
+			char *bin = "/bin/";
+			char *path = malloc(sizeof(char) * (strlen(bin) + strlen(line[0]) + 1));
+
+			strcpy(path, bin);
+			strcat(path, line[0]);
+			if (execve(path, line, envp)) //execve will close the process.
+				perror("minishell$");
+		}
+		free(input);
+		i = 0;
+		while (line[i])
+		{
+			free(line[i]);
+			i++;
 		}
 		free(line);
 	}
