@@ -6,7 +6,7 @@
 #    By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/17 18:27:27 by ofadhel           #+#    #+#              #
-#    Updated: 2023/11/20 15:35:26 by ofadhel          ###   ########.fr        #
+#    Updated: 2023/11/21 15:54:37 by ofadhel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,8 +33,10 @@ OBJS 	= $(SRCS:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJS)
+		@echo "$(COLOUR_YELLOW)COMPILING...$(COLOUR_END)"
 		make -C $(LIBFT_PATH)
 		$(CC) $(OBJS) $(LIBFT)/libft.a -o $(NAME) $(CFLAGS)
+		@echo "$(COLOUR_GREEN)READY TO GO!$(COLOUR_END)"
 
 clean:
 		rm -f $(OBJS)

@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:21:15 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/11/20 15:37:28 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/11/21 15:46:44 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 # include <stdlib.h>
 # include <string.h>
 # include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
+# include <readline.h>
+# include <history.h>
 # include "libft/libft.h"
 
 /* structs */
@@ -29,7 +29,7 @@ typedef struct s_mini
 {
 	char	*history;
 	char	**envp;
-	char	**cmds;
+	char	**toks;
 	char	*key;
 	char	*value;
 }				t_mini;

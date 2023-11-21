@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 18:18:50 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/11/21 14:52:07 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/11/21 16:35:23 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@ void	free_cmds(t_mini *mini, char *input)
 
 	i = 0;
 	free(input);
-	while (mini->cmds[i])
+	while (mini->toks[i])
 	{
-		free(mini->cmds[i]);
+		free(mini->toks[i]);
 		i++;
 	}
-	free(mini->cmds);
+	free(mini->toks);
 }
 
 int	envdump(char **envp, t_mini *mini)
@@ -55,7 +55,7 @@ int	main(int argc, char **argv, char **envp)
 	envdump(envp, &mini);
 	while (1)
 	{
-		input = readline("minishell$ ");
+		input = readline("niggawhat$: ");
 
 		add_history(input);
 		if (lexersplit(input, &mini) == -1)
@@ -63,11 +63,11 @@ int	main(int argc, char **argv, char **envp)
 
 		/* exec try tests should start new process and do it*/
 
-		if (mini.cmds[0])
+		if (mini.toks[0])
 			executor(&mini);
 
 		/* free cmds line so loop starts back clean */
-		printf("ciao\n");
+
 		free_cmds(&mini, input);
 	}
 	return (0);

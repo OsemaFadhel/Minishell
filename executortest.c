@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 15:32:21 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/11/21 14:44:14 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/11/21 15:49:51 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ void	executor(t_mini	*mini)
 	char *path;
 
 	bin = "/bin/";
-	if (strcmp(mini->cmds[0], "exit") == 0)
+	if (strcmp(mini->toks[0], "exit") == 0)
 			exit(0);
-	if (strcmp(mini->cmds[0], "env") == 0)
+	if (strcmp(mini->toks[0], "env") == 0)
 	{
 		i = 0;
 		printf("test\n");
@@ -32,12 +32,12 @@ void	executor(t_mini	*mini)
 		}
 		printf("\n");
 	}
-	else //execute bash cmds after checking if the command is not built-in->
+	else //execute bash toks after checking if the command is not built-in->
 	{
-		path = malloc(sizeof(char) * (strlen(bin) + strlen(mini->cmds[0]) + 1));
+		path = malloc(sizeof(char) * (strlen(bin) + strlen(mini->toks[0]) + 1));
 		strcpy(path, bin);
-		strcat(path, mini->cmds[0]);
-		if (execve(path, mini->cmds, mini->envp)) //execve will close the process.
-			perror("minishell$");
+		strcat(path, mini->toks[0]);
+		if (execve(path, mini->toks, mini->envp)) //execve will close the process.
+			perror("niggawhat$");
 	}
 }
