@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 18:18:50 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/11/20 16:07:06 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/11/21 14:52:07 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,16 +56,18 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		input = readline("minishell$ ");
+
 		add_history(input);
 		if (lexersplit(input, &mini) == -1)
 			return (1);
 
 		/* exec try tests should start new process and do it*/
 
-		executor(&mini);
+		if (mini.cmds[0])
+			executor(&mini);
 
 		/* free cmds line so loop starts back clean */
-
+		printf("ciao\n");
 		free_cmds(&mini, input);
 	}
 	return (0);

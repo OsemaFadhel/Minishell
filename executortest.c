@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 15:32:21 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/11/20 16:06:23 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/11/21 14:44:14 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	executor(t_mini	*mini)
 	bin = "/bin/";
 	if (strcmp(mini->cmds[0], "exit") == 0)
 			exit(0);
-	else if (strcmp(mini->cmds[0], "env") == 0)
+	if (strcmp(mini->cmds[0], "env") == 0)
 	{
 		i = 0;
 		printf("test\n");
