@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexertest.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: dabi-rac <dabi-rac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:44:53 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/11/21 18:58:22 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/11/21 23:14:27 by dabi-rac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,3 +28,6 @@ int	lexersplit(char *cmd, t_mini *mini)
 	}
 	return (0);
 }
+
+// split per virgolette. includere tutto quello dentro in un unico token, incluso virgolette
+//
