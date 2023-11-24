@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:21:15 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/11/21 15:46:44 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/11/24 15:44:31 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,14 @@ typedef struct s_mini
 
 int		lexersplit(char *cmd, t_mini *mini);	//split the input into tokens
 int		envdump(char **envp, t_mini *mini); //store envp in a struct
+
 void	executor(t_mini	*mini); //execute the command
+
+int		is_builtin(t_mini *mini, int i);
+int		builtin(t_mini *mini, int i);
+int		builtin_2(t_mini *mini, int i);
+int		builtin_3(t_mini *mini, int i);
+
 
 void	free_cmds(t_mini *mini, char *input); //free the cmds array and input given by readline
 
