@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 15:32:21 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/11/24 16:00:06 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/11/24 16:08:14 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 //if the command is not built-in, execute it with execve
 //execve will close the process
 
-v oid	executor(t_mini	*mini)
+void	executor(t_mini	*mini)
 {
 	int	i;
 	char *bin;
