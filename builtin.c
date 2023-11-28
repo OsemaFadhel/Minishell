@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 14:51:47 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/11/24 21:45:12 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/11/28 16:35:10 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,23 @@ int	builtin_2(t_mini *mini, int i)
 		}
 		printf("\n");
 	}
-	/*else if (strcmp(mini->toks[0], "export") == 0);
-	else if (strcmp(mini->toks[0], "unset") == 0)*/
+	/*else if (strcmp(mini->toks[0], "export") == 0);*/
+	else if (strcmp(mini->toks[0], "unset") == 0)
+	{
+		//funzione che cerca la variabile d'ambiente e la elimina
+		if (mini->toks[1] == NULL)
+			return (0);
+		while (mini->toks[i])
+		{
+			if (ft_isdigitalpha(mini->toks[i]) == 0)
+			{
+				write(1, "unset: not a valid identifier\n", 31);
+				return (0);
+			}
+			i++;
+		}
+		mini->envp = unset_cmd(mini->envp, mini->toks[1]);
+	}
 	else
 		return (1);
 	return (0);

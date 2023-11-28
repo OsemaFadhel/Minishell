@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 15:32:21 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/11/24 16:08:14 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/11/28 15:57:50 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,20 @@ void	executor(t_mini	*mini)
 	bin = "/bin/";
 	if (!is_builtin(mini, i))
 		return ;
-	else //execute bash toks after checking if the command is not built-in->
+	else
 	{
-		path = malloc(sizeof(char) * (strlen(bin) + strlen(mini->toks[0]) + 1));
-		strcpy(path, bin);
-		strcat(path, mini->toks[0]);
+		//check if there is a path in the command
+		//if there is, execute it with execve
+		//else, execute it with /bin/ + command
+		if(strchr(mini->toks[0], '/'))
+			path = mini->toks[0];
+		else
+		{
+			//malloc the path and copy the bin + command into it (strcat
+			path = malloc(sizeof(char) * (ft_strlen(bin) + ft_strlen(mini->toks[0]) + 1));
+			strcpy(path, bin);
+			strcat(path, mini->toks[0]);
+		}
 		if (execve(path, mini->toks, mini->envp)) //execve will close the process.
 			perror("niggawhat$");
 	}

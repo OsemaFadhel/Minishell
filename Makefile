@@ -6,13 +6,13 @@
 #    By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/17 18:27:27 by ofadhel           #+#    #+#              #
-#    Updated: 2023/11/24 14:59:07 by ofadhel          ###   ########.fr        #
+#    Updated: 2023/11/28 15:52:13 by ofadhel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME 	= minishell
 
-SRCS 	= main.c lexertest.c executortest.c builtin.c
+SRCS 	= main.c lexertest.c executortest.c builtin.c utils1.c
 
 #libft
 

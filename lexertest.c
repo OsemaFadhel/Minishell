@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:44:53 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/11/27 15:00:21 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/11/28 15:58:26 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,25 @@
 	tenere conto delle redirect, pensare a una soluzione
 */
 
+/*char	**lexersplit_1(char *cmd, t_mini *mini)
+{
+
+}*/
+
 int	lexersplit(char *cmd, t_mini *mini)
 {
 	int	i;
 
 	i = 0;
+
 	mini->toks = ft_split(cmd, ' ');
 	if (!mini->toks)
 		return (1);
-	while (mini->toks[i])
+	/*while (mini->toks[i])
 	{
 		printf("%s\n", mini->toks[i]);
 		i++;
-	}
+	}*/
 	return (0);
 }
 
