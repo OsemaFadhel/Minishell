@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:44:53 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/11/28 15:58:26 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/11/29 16:40:40 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,107 @@
 	tenere conto delle redirect, pensare a una soluzione
 */
 
-/*char	**lexersplit_1(char *cmd, t_mini *mini)
+int	count_words(char *cmd)
 {
+	int	i;
+	int	words;
 
-}*/
+	i = 0;
+	words = 0;
+	while (cmd[i])
+	{
+		if (cmd[i] == ' ')
+			i++;
+		else if (cmd[i] == '\"')
+		{
+			i++;
+			while (cmd[i] != '\"')
+				i++;
+			words++;
+			i++;
+		}
+		else if (cmd[i] == '\'')
+		{
+			i++;
+			while (cmd[i] != '\'')
+				i++;
+			words++;
+			i++;
+		}
+		else
+		{
+			while (cmd[i] != ' ' && cmd[i] != '\0' && cmd[i] != '\"' && cmd[i] != '\'')
+				i++;
+			words++;
+		}
+	}
+	return (words);
+}
+
+char	**lexersplit_1(char *cmd) //split cmd into tokens taking care of spaces and quotes. anything inside quotes count as one word
+{
+	int		i;
+	int		j;
+	int		k;
+	char	**toks;
+	int		words;
+
+	i = 0;
+	j = 0;
+	k = 0;
+	words = count_words(cmd);
+	toks = malloc(sizeof(char *) * (words + 1));
+	if (!toks)
+		return (NULL);
+	while (cmd[i])
+	{
+		toks[j] = malloc(sizeof(char) * (ft_strlen(cmd) + 1));
+		if (cmd[i] == ' ')
+			i++;
+		else if (cmd[i] == '\"')
+		{
+			i++;
+			while (cmd[i] != '\"')
+			{
+				toks[j][k] = cmd[i];
+				i++;
+				k++;
+			}
+			toks[j][k] = '\0';
+			j++;
+			k = 0;
+			i++;
+		}
+		else if (cmd[i] == '\'')
+		{
+			i++;
+			while (cmd[i] != '\'')
+			{
+				toks[j][k] = cmd[i];
+				i++;
+				k++;
+			}
+			toks[j][k] = '\0';
+			j++;
+			k = 0;
+			i++;
+		}
+		else
+		{
+			while (cmd[i] != ' ' && cmd[i] != '\0' && cmd[i] != '\"' && cmd[i] != '\'')
+			{
+				toks[j][k] = cmd[i];
+				i++;
+				k++;
+			}
+			toks[j][k] = '\0';
+			j++;
+			k = 0;
+		}
+	}
+	toks[j] = NULL;
+	return (toks);
+}
 
 int	lexersplit(char *cmd, t_mini *mini)
 {
@@ -31,14 +128,14 @@ int	lexersplit(char *cmd, t_mini *mini)
 
 	i = 0;
 
-	mini->toks = ft_split(cmd, ' ');
+	mini->toks = lexersplit_1(cmd);
 	if (!mini->toks)
 		return (1);
-	/*while (mini->toks[i])
+	while (mini->toks[i])
 	{
 		printf("%s\n", mini->toks[i]);
 		i++;
-	}*/
+	}
 	return (0);
 }
 

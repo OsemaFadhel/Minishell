@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 14:51:47 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/11/28 16:39:07 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/11/29 16:44:57 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,13 @@ int	builtin(t_mini *mini, int i)
 	else if (strcmp(mini->toks[0], "echo") == 0 && mini->toks[1]) // fare che la prima parola dell'arg sia -n e se si allora non mettere \n
 	{
 		i = 1;
-		if (strncmp(mini->toks[1], "-n", 2) == 0) //funzione che trova la prima parola e fa strcmp con -n
+		if (strncmp(mini->toks[i], "-n", 2) == 0) //funzione che trova la prima parola e fa strcmp con -n
 		{
+			i++;
 			while (mini->toks[i])
 			{
-				printf("%s ", mini->toks[i]); // ricordarsi nel parser di cambiare il $ con il valore della variabile d'ambiente
+				ft_putstr_fd(mini->toks[i], 1); // ricordarsi nel parser di cambiare il $ con il valore della variabile d'ambiente
+				write(1, " ", 1);
 				i++;
 			}
 		}
@@ -38,7 +40,8 @@ int	builtin(t_mini *mini, int i)
 		{
 			while (mini->toks[i])
 			{
-				printf("%s ", mini->toks[i]);
+				ft_putstr_fd(mini->toks[i], 1);
+				write(1, " ", 1);
 				i++;
 			}
 			printf("\n");

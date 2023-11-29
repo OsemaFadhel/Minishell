@@ -6,11 +6,13 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 13:53:30 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/11/29 14:40:59 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/11/29 14:42:58 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+//missing ctrl + d
 
 void	sig_handler(int signo) // handle signals from keyboard
 {
