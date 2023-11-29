@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:21:15 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/11/28 16:34:11 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/11/29 13:57:52 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,20 +44,34 @@ typedef struct s_mini
 }				t_mini;
 
 /* functions */
+/* main.c */
+
+int		envdump(char **envp, t_mini *mini); //store envp in a struct
+void	free_cmds(t_mini *mini, char *input); //free the cmds array and input given by readline
+
+/* lexer.c */
 
 int		lexersplit(char *cmd, t_mini *mini);	//split the input into tokens
-int		envdump(char **envp, t_mini *mini); //store envp in a struct
-int		ft_isdigitalpha(char *c);
+
+/* executortest.c */
 
 void	executor(t_mini	*mini); //execute the command
 
-int			is_builtin(t_mini *mini, int i);
+/* utils.c */
+
+int		ft_isdigitalpha(char *c);
+char		**unset_cmd(char **matrix, char *str); //unset the command
+char		**expand_matrix(char **matrix, char *str); //expand the matrix
+
+/* builtin.c */
+
+int			is_builtin(t_mini *mini, int i); //check if the command is a builtin
 int			builtin(t_mini *mini, int i);
 int			builtin_2(t_mini *mini, int i);
 int			builtin_3(t_mini *mini, int i);
-char		**unset_cmd(char **matrix, char *str);
-char		**expand_matrix(char **matrix, char *str);
 
-void	free_cmds(t_mini *mini, char *input); //free the cmds array and input given by readline
+/* signals.c */
+
+void	sig_ignore(void); //ignore signals from keyboard
 
 #endif
