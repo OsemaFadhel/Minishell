@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 14:51:47 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/11/29 16:44:57 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/11/29 16:52:32 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,9 @@ int	builtin(t_mini *mini, int i)
 			while (mini->toks[i])
 			{
 				ft_putstr_fd(mini->toks[i], 1); // ricordarsi nel parser di cambiare il $ con il valore della variabile d'ambiente
-				write(1, " ", 1);
 				i++;
+				if (mini->toks[i])
+					write(1, " ", 1);
 			}
 		}
 		else
