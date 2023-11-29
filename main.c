@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 18:18:50 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/11/29 13:53:55 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/11/29 14:20:06 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,10 @@ int	main(int argc, char **argv, char **envp)
 	int		i;
 
 	envdump(envp, &mini);
-	sig_ignore();
+
 	while (1)
 	{
+		sig_ignore();
 		input = readline("niggawhat$: ");
 
 		add_history(input);

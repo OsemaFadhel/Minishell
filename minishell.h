@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:21:15 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/11/29 13:57:52 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/11/29 14:25:15 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,6 @@ int			builtin_3(t_mini *mini, int i);
 /* signals.c */
 
 void	sig_ignore(void); //ignore signals from keyboard
+void	sig_handler(int signo); //handle signals from keyboard
 
 #endif
