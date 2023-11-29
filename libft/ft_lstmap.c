@@ -1,23 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstprint.c                                      :+:      :+:    :+:   */
+/*   ft_lstmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ofadhel <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/16 18:51:22 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/11/17 20:26:39 by ofadhel          ###   ########.fr       */
+/*   Created: 2023/02/28 15:59:14 by ofadhel           #+#    #+#             */
+/*   Updated: 2023/02/28 15:59:19 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_lstprint(t_list *lst)
+t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 {
+	t_list	*new;
+	t_list	*node;
+
+	if (!f || !lst)
+		return (NULL);
+	new = NULL;
 	while (lst)
 	{
-		ft_printf("%d\n", lst->content);
+		node = ft_lstnew(f(lst->content));
+		if (!node)
+		{
+			ft_lstclear(&node, (*del));
+			return (NULL);
+		}
+		ft_lstadd_back(&new, node);
 		lst = lst->next;
 	}
-	return (0);
+	return (new);
 }

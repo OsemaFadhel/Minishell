@@ -6,13 +6,13 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 18:18:50 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/11/21 16:35:23 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/11/29 16:03:30 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_cmds(t_mini *mini, char *input)
+void	free_cmds(t_mini *mini, char *input) // free cmds line
 {
 	int	i;
 
@@ -26,7 +26,7 @@ void	free_cmds(t_mini *mini, char *input)
 	free(mini->toks);
 }
 
-int	envdump(char **envp, t_mini *mini)
+int	envdump(char **envp, t_mini *mini) // get envp and put it in mini->envp
 {
 	int		i;
 
@@ -53,8 +53,10 @@ int	main(int argc, char **argv, char **envp)
 	int		i;
 
 	envdump(envp, &mini);
+
 	while (1)
 	{
+		sig_ignore();
 		input = readline("niggawhat$: ");
 
 		add_history(input);

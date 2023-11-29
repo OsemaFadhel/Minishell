@@ -6,11 +6,15 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 15:32:21 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/11/21 15:49:51 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/11/29 15:48:47 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+//create first other process to execute the command
+//if the command is not built-in, execute it with execve
+//execve will close the process
 
 void	executor(t_mini	*mini)
 {
@@ -18,25 +22,24 @@ void	executor(t_mini	*mini)
 	char *bin;
 	char *path;
 
+	i = 0;
 	bin = "/bin/";
-	if (strcmp(mini->toks[0], "exit") == 0)
-			exit(0);
-	if (strcmp(mini->toks[0], "env") == 0)
+	if (!is_builtin(mini, i))
+		return ;
+	else
 	{
-		i = 0;
-		printf("test\n");
-		while (mini->envp[i])
+		//check if there is a path in the command
+		//if there is, execute it with execve
+		//else, execute it with /bin/ + command
+		if(strchr(mini->toks[0], '/'))
+			path = mini->toks[0];
+		else
 		{
-			printf("%s\n", mini->envp[i]);
-			i++;
+			//malloc the path and copy the bin + command into it (strcat
+			path = malloc(sizeof(char) * (ft_strlen(bin) + ft_strlen(mini->toks[0]) + 1));
+			strcpy(path, bin);
+			strcat(path, mini->toks[0]);
 		}
-		printf("\n");
-	}
-	else //execute bash toks after checking if the command is not built-in->
-	{
-		path = malloc(sizeof(char) * (strlen(bin) + strlen(mini->toks[0]) + 1));
-		strcpy(path, bin);
-		strcat(path, mini->toks[0]);
 		if (execve(path, mini->toks, mini->envp)) //execve will close the process.
 			perror("niggawhat$");
 	}
