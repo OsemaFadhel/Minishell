@@ -29,6 +29,8 @@ typedef struct s_cmds
 {
 	char	*cmd; //init to NULL
 	char	**args;	//init to NULL
+	char	*infile; 
+	char	*outfile;
 }				t_cmds;
 
 typedef struct s_mini
