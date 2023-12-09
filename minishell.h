@@ -28,6 +28,7 @@
 typedef struct s_cmds
 {
 	char	*cmd; //init to NULL
+	//char	*flag; //init to null maybe
 	char	**args;	//init to NULL
 }				t_cmds;
 
