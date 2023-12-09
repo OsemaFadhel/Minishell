@@ -31,6 +31,7 @@ typedef struct s_cmds
 	char	**args;	//init to NULL
 	char	*infile; 
 	char	*outfile;
+	int	redirect_type;
 }				t_cmds;
 
 typedef struct s_mini
