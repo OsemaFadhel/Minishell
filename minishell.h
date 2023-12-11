@@ -25,19 +25,20 @@
 
 /* structs */
 
-typedef struct s_cmds
+ typedef struct s_cmds
 {
 	char	*cmd; //init to NULL
 	char	**args;	//init to NULL
 	char	*infile; 
 	char	*outfile;
-	int	redirect_type;
+	char	*err_file;
+	int	redirect_type; //>, >>, <, <<
 }				t_cmds;
 
 typedef struct s_mini
 {
 	t_list	*cmds;
-	int		cmds_count;
+	int	cmds_count;
 	char	*input; //init to NULL
 	char	*output; //init to NULL
 	char	*history;
