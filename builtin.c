@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 14:51:47 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/13 14:57:37 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/12/13 16:13:12 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	is_builtin(t_mini *mini, int i) //check if the command is a builtin
 
 int	builtin(t_mini *mini, int i)
 {
-	if (strcmp(mini->toks[0], "exit") == 0)
+	if (strcmp(mini->toks[0], "exit") == 0) //free everything and exit
 			exit(0);
 	else if (strcmp(mini->toks[0], "echo") == 0 && mini->toks[1])
 	{

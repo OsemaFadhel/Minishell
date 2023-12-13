@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:44:53 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/13 15:15:36 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/12/13 16:17:13 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,12 +96,12 @@ int	count_words(char *cmd)
 		}
 		else
 		{
-			while (cmd[i] != ' ' && cmd[i] != '\0' && cmd[i] != '\"' && cmd[i] != '\'')
+			while (cmd[i] != ' ' && cmd[i] != '\0' && (check_closed_dquotes(cmd, i) == 1 || check_closed_quotes(cmd, i) == 1))
 				i++;
 			words++;
 		}
 	}
-	printf("words = %d\n", words);
+	printf("words = %i\n", words);
 	return (words);
 }
 
