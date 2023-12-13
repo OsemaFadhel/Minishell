@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:21:15 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/11/29 14:25:15 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/12/13 09:25:57 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,13 @@
 
 # include <unistd.h>
 # include <stdlib.h>
-# include <string.h>
+# include <errno.h>
+# include <signal.h>
+# include <fcntl.h>
+# include <dirent.h>
 # include <stdio.h>
+# include <termios.h>
+# include <sys/ioctl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "libft/libft.h"
@@ -29,7 +34,7 @@
 {
 	char	*cmd; //init to NULL
 	char	**args;	//init to NULL
-	char	*infile; 
+	char	*infile;
 	char	*outfile;
 	char	*err_file;
 	int	redirect_type; //>, >>, <, <<
@@ -38,7 +43,7 @@
 typedef struct s_mini
 {
 	t_list	*cmds;
-	int	cmds_count;
+	int		cmds_count;
 	char	*input; //init to NULL
 	char	*output; //init to NULL
 	char	*history;

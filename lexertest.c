@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:44:53 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/11/29 16:40:40 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/12/13 15:15:36 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,37 @@
 	oppure tok[0] = comando, tok[1] = argomento, tok[2] = pipe, tok[3] = comando, tok[4] = argomento
 	tenere conto delle redirect, pensare a una soluzione
 */
+int	check_closed_dquotes(char *cmd, int i)
+{
+	int	quotes;
+
+	quotes = 0;
+	while (cmd[i] && quotes != 2)
+	{
+		if (cmd[i] == '\"')
+			quotes++;
+		i++;
+	}
+	if (quotes != 2)
+		return (1);
+	return (0);
+}
+
+int	check_closed_quotes(char *cmd, int i)
+{
+	int	quotes;
+
+	quotes = 0;
+	while (cmd[i] && quotes != 2)
+	{
+		if (cmd[i] == '\'')
+			quotes++;
+		i++;
+	}
+	if (quotes != 2)
+		return (1);
+	return (0);
+}
 
 int	count_words(char *cmd)
 {
@@ -33,19 +64,35 @@ int	count_words(char *cmd)
 			i++;
 		else if (cmd[i] == '\"')
 		{
-			i++;
-			while (cmd[i] != '\"')
+			if (check_closed_dquotes(cmd, i) == 0)
+			{
 				i++;
-			words++;
-			i++;
+				while (cmd[i] != '\"')
+					i++;
+				words++;
+				i++;
+			}
+			else
+			{
+				i++;
+				words++;
+			}
 		}
 		else if (cmd[i] == '\'')
 		{
-			i++;
-			while (cmd[i] != '\'')
+			if (check_closed_quotes(cmd, i) == 0)
+			{
 				i++;
-			words++;
-			i++;
+				while (cmd[i] != '\'')
+					i++;
+				words++;
+				i++;
+			}
+			else
+			{
+				i++;
+				words++;
+			}
 		}
 		else
 		{
@@ -54,6 +101,7 @@ int	count_words(char *cmd)
 			words++;
 		}
 	}
+	printf("words = %d\n", words);
 	return (words);
 }
 
@@ -79,13 +127,25 @@ char	**lexersplit_1(char *cmd) //split cmd into tokens taking care of spaces and
 			i++;
 		else if (cmd[i] == '\"')
 		{
-			i++;
-			while (cmd[i] != '\"')
+			if (check_closed_dquotes(cmd, i) == 0)
 			{
-				toks[j][k] = cmd[i];
-				i++;
+				toks[j][k] = '\"';
+				//printf("toks[%i][%i] = %c\n", j, k, toks[j][k]);
 				k++;
+				i++;
+				while (cmd[i] != '\"')
+				{
+					toks[j][k] = cmd[i];
+					//printf("toks[%i][%i] = %c\n", j, k, toks[j][k]);
+					i++;
+					k++;
+				}
+				toks[j][k] = '\"';
+				k++;
+				//printf("toks[%i][%i] = %c\n", j, k, toks[j][k]);
 			}
+			else
+				toks[j][k] = '\"';
 			toks[j][k] = '\0';
 			j++;
 			k = 0;
@@ -93,13 +153,25 @@ char	**lexersplit_1(char *cmd) //split cmd into tokens taking care of spaces and
 		}
 		else if (cmd[i] == '\'')
 		{
-			i++;
-			while (cmd[i] != '\'')
+			if (check_closed_quotes(cmd, i) == 0)
 			{
-				toks[j][k] = cmd[i];
-				i++;
+				toks[j][k] = '\'';
+				//printf("toks[%i][%i] = %c\n", j, k, toks[j][k]);
 				k++;
+				i++;
+				while (cmd[i] != '\'')
+				{
+					toks[j][k] = cmd[i];
+					//printf("toks[%i][%i] = %c\n", j, k, toks[j][k]);
+					i++;
+					k++;
+				}
+				toks[j][k] = '\'';
+				k++;
+				//printf("toks[%i][%i] = %c\n", j, k, toks[j][k]);
 			}
+			else
+				toks[j][k] = '\'';
 			toks[j][k] = '\0';
 			j++;
 			k = 0;
@@ -107,8 +179,15 @@ char	**lexersplit_1(char *cmd) //split cmd into tokens taking care of spaces and
 		}
 		else
 		{
-			while (cmd[i] != ' ' && cmd[i] != '\0' && cmd[i] != '\"' && cmd[i] != '\'')
+			while (cmd[i] != ' ' && cmd[i] != '\0')
 			{
+				if (cmd[i] == '\"' || cmd[i] == '\'')
+				{
+					if(cmd[i] == '\"' && check_closed_dquotes(cmd, i) == 0)
+						break;
+					else if (cmd[i] == '\'' && check_closed_quotes(cmd, i) == 0)
+						break;
+				}
 				toks[j][k] = cmd[i];
 				i++;
 				k++;
@@ -117,6 +196,7 @@ char	**lexersplit_1(char *cmd) //split cmd into tokens taking care of spaces and
 			j++;
 			k = 0;
 		}
+		//printf("toks[%i] = %s\n", j - 1, toks[j - 1]);
 	}
 	toks[j] = NULL;
 	return (toks);
@@ -133,7 +213,7 @@ int	lexersplit(char *cmd, t_mini *mini)
 		return (1);
 	while (mini->toks[i])
 	{
-		printf("%s\n", mini->toks[i]);
+		printf("lexer tok = %s\n", mini->toks[i]);
 		i++;
 	}
 	return (0);

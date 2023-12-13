@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 14:51:47 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/11/29 16:52:32 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/12/13 14:57:37 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	builtin(t_mini *mini, int i)
 {
 	if (strcmp(mini->toks[0], "exit") == 0)
 			exit(0);
-	else if (strcmp(mini->toks[0], "echo") == 0 && mini->toks[1]) // fare che la prima parola dell'arg sia -n e se si allora non mettere \n
+	else if (strcmp(mini->toks[0], "echo") == 0 && mini->toks[1])
 	{
 		i = 1;
 		if (strncmp(mini->toks[i], "-n", 2) == 0) //funzione che trova la prima parola e fa strcmp con -n
@@ -33,8 +33,8 @@ int	builtin(t_mini *mini, int i)
 			{
 				ft_putstr_fd(mini->toks[i], 1); // ricordarsi nel parser di cambiare il $ con il valore della variabile d'ambiente
 				i++;
-				if (mini->toks[i])
-					write(1, " ", 1);
+				/*if (mini->toks[i])
+					write(1, " ", 1);*/
 			}
 		}
 		else
@@ -42,7 +42,7 @@ int	builtin(t_mini *mini, int i)
 			while (mini->toks[i])
 			{
 				ft_putstr_fd(mini->toks[i], 1);
-				write(1, " ", 1);
+				//write(1, " ", 1);
 				i++;
 			}
 			printf("\n");
