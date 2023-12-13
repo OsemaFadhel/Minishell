@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:44:53 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/13 16:17:13 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/12/13 21:51:55 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,25 +127,30 @@ char	**lexersplit_1(char *cmd) //split cmd into tokens taking care of spaces and
 			i++;
 		else if (cmd[i] == '\"')
 		{
-			if (check_closed_dquotes(cmd, i) == 0)
+			if (check_closed_dquotes(cmd, i) == 0) //expander change env var $
 			{
+				if (cmd[i - 1] != ' ' && cmd[i - 1] != '\0') //maybe implent in the expander so firtst we can check the quotes for the env $ thenk remove the spaces
+				{
+					toks[j][k] = '\b';
+					k++;
+				}
 				toks[j][k] = '\"';
-				//printf("toks[%i][%i] = %c\n", j, k, toks[j][k]);
 				k++;
 				i++;
 				while (cmd[i] != '\"')
 				{
 					toks[j][k] = cmd[i];
-					//printf("toks[%i][%i] = %c\n", j, k, toks[j][k]);
 					i++;
 					k++;
 				}
 				toks[j][k] = '\"';
 				k++;
-				//printf("toks[%i][%i] = %c\n", j, k, toks[j][k]);
 			}
 			else
+			{
 				toks[j][k] = '\"';
+				k++;
+			}
 			toks[j][k] = '\0';
 			j++;
 			k = 0;
@@ -155,23 +160,28 @@ char	**lexersplit_1(char *cmd) //split cmd into tokens taking care of spaces and
 		{
 			if (check_closed_quotes(cmd, i) == 0)
 			{
-				toks[j][k] = '\'';
-				//printf("toks[%i][%i] = %c\n", j, k, toks[j][k]);
+				if (cmd[i - 1] != ' ' && cmd[i - 1] != '\0') //maybe implent in the expander so firtst we can check the quotes for the env $ thenk remove the spaces
+				{
+					toks[j][k] = '\b';
+					k++;
+				}
+				toks[j][k] = '\''; //maybe in the expander after check if the quotes are closed, check env, then remove the quotes leaving the \b if are any
 				k++;
 				i++;
 				while (cmd[i] != '\'')
 				{
 					toks[j][k] = cmd[i];
-					//printf("toks[%i][%i] = %c\n", j, k, toks[j][k]);
 					i++;
 					k++;
 				}
 				toks[j][k] = '\'';
 				k++;
-				//printf("toks[%i][%i] = %c\n", j, k, toks[j][k]);
 			}
 			else
+			{
 				toks[j][k] = '\'';
+				k++;
+			}
 			toks[j][k] = '\0';
 			j++;
 			k = 0;
@@ -181,6 +191,11 @@ char	**lexersplit_1(char *cmd) //split cmd into tokens taking care of spaces and
 		{
 			while (cmd[i] != ' ' && cmd[i] != '\0')
 			{
+				if (cmd[i - 1] == '\"' || cmd[i - 1] == '\'') //add in the expander, maybe this not; only the quotes
+				{
+					toks[j][k] = '\b';
+					k++;
+				}
 				if (cmd[i] == '\"' || cmd[i] == '\'')
 				{
 					if(cmd[i] == '\"' && check_closed_dquotes(cmd, i) == 0)
@@ -196,7 +211,6 @@ char	**lexersplit_1(char *cmd) //split cmd into tokens taking care of spaces and
 			j++;
 			k = 0;
 		}
-		//printf("toks[%i] = %s\n", j - 1, toks[j - 1]);
 	}
 	toks[j] = NULL;
 	return (toks);
@@ -213,7 +227,7 @@ int	lexersplit(char *cmd, t_mini *mini)
 		return (1);
 	while (mini->toks[i])
 	{
-		printf("lexer tok = %s\n", mini->toks[i]);
+		printf("lexer tok[%i] = %s\n", i, mini->toks[i]);
 		i++;
 	}
 	return (0);
