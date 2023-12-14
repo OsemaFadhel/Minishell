@@ -6,14 +6,20 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 12:40:16 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/14 12:52:55 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/12/14 13:38:33 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
+int	add_env_var(char *cmd, char **toks, int i, int j, char **envp)
+{
+	//to do: check if the env var is valid
+}
+
+
 //add str found inside double quotes
-int	add_str_dquot(char *cmd, char **toks, int i, int j)
+int	add_str_dquot(char *cmd, char **toks, int i, int j, char **envp)
 {
 	int	k;
 
@@ -25,17 +31,22 @@ int	add_str_dquot(char *cmd, char **toks, int i, int j)
 			toks[j][k] = '\b';
 			k++;
 		}
-		toks[j][k] = '\"';
-		k++;
+		//toks[j][k] = '\"';
+		//k++;
 		i++;
 		while (cmd[i] != '\"')
 		{
+			if (cmd[i] == '$')
+			{
+				i = add_env_var(cmd, toks, i, j, envp); // to check if the env var is valid
+				k = ft_strlen(toks[j]);
+			}
 			toks[j][k] = cmd[i];
 			i++;
 			k++;
 		}
-		toks[j][k] = '\"';
-		k++;
+		//toks[j][k] = '\"';
+		//k++;
 	}
 	else
 	{
@@ -55,13 +66,13 @@ int add_str_quot(char *cmd, char **toks, int i, int j)
 	k = 0;
 	if (check_closed_quotes(cmd, i) == 0)
 	{
-		if (cmd[i - 1] != ' ' && cmd[i - 1] != '\0') //maybe implent in the expander so firtst we can check the quotes for the env $ thenk remove the spaces
+		if (cmd[i - 1] != ' ' && cmd[i - 1] != '\0')
 		{
 			toks[j][k] = '\b';
 			k++;
 		}
-		toks[j][k] = '\''; //maybe in the expander after check if the quotes are closed, check env, then remove the quotes leaving the \b if are any
-		k++;
+		//toks[j][k] = '\'';
+		//k++;
 		i++;
 		while (cmd[i] != '\'')
 		{
@@ -69,8 +80,8 @@ int add_str_quot(char *cmd, char **toks, int i, int j)
 			i++;
 			k++;
 		}
-		toks[j][k] = '\'';
-		k++;
+		//toks[j][k] = '\'';
+		//k++;
 	}
 	else
 	{
@@ -83,7 +94,7 @@ int add_str_quot(char *cmd, char **toks, int i, int j)
 }
 
 //add str  found outside quotes
-int	add_str(char *cmd, char **toks, int i, int j)
+int	add_str(char *cmd, char **toks, int i, int j, char **envp)
 {
 	int	k;
 

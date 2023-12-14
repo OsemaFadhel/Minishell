@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:44:53 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/14 12:52:47 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/12/14 13:27:21 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	check_closed_quotes(char *cmd, int i)
 }
 
 //split cmd into tokens taking care of spaces and quotes. anything inside quotes count as one word
-char	**lexersplit_1(char *cmd)
+char	**lexersplit_1(char *cmd, char **envp)
 {
 	int		i;
 	int		j;
@@ -72,7 +72,7 @@ char	**lexersplit_1(char *cmd)
 			i++;
 		else if (cmd[i] == '\"')
 		{
-			i = add_str_dquot(cmd, toks, i, j);
+			i = add_str_dquot(cmd, toks, i, j, envp);
 			j++;
 		}
 		else if (cmd[i] == '\'')
@@ -82,7 +82,7 @@ char	**lexersplit_1(char *cmd)
 		}
 		else
 		{
-			i = add_str(cmd, toks, i, j);
+			i = add_str(cmd, toks, i, j, envp);
 			j++;
 		}
 	}
@@ -96,7 +96,7 @@ int	lexersplit(char *cmd, t_mini *mini)
 
 	i = 0;
 
-	mini->toks = lexersplit_1(cmd);
+	mini->toks = lexersplit_1(cmd, mini->envp);
 	if (!mini->toks)
 		return (1);
 	while (mini->toks[i])
