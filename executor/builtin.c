@@ -6,11 +6,11 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 14:51:47 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/13 21:09:27 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/12/14 12:53:36 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell.h"
+# include "../include/minishell.h"
 
 int	is_builtin(t_mini *mini, int i) //check if the command is a builtin
 {
