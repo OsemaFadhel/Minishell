@@ -6,15 +6,38 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 12:40:16 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/14 13:38:33 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/12/15 17:02:06 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	add_env_var(char *cmd, char **toks, int i, int j, char **envp)
+char	*get_env_var(char *var, char **envp)
 {
-	//to do: check if the env var is valid
+	int	i;
+	int	j;
+	char	*env_var;
+
+	i = 0;
+	j = 0;
+	while (envp[i] != NULL)
+	{
+		while (envp[i][j] != '=')
+			j++;
+		if (ft_strncmp(envp[i], var, j) == 0)
+		{
+			if (envp[i][j + 1] != '=')
+			{
+				env_var = ft_strdup("");
+				return (env_var);
+			}
+			env_var = ft_strdup(envp[i] + j + 1);
+			return (env_var);
+		}
+		i++;
+		j = 0;
+	}
+	return (NULL);
 }
 
 
@@ -22,6 +45,7 @@ int	add_env_var(char *cmd, char **toks, int i, int j, char **envp)
 int	add_str_dquot(char *cmd, char **toks, int i, int j, char **envp)
 {
 	int	k;
+	char *tmp;
 
 	k = 0;
 	if (check_closed_dquotes(cmd, i) == 0) //expander change env var $
@@ -38,8 +62,24 @@ int	add_str_dquot(char *cmd, char **toks, int i, int j, char **envp)
 		{
 			if (cmd[i] == '$')
 			{
-				i = add_env_var(cmd, toks, i, j, envp); // to check if the env var is valid
-				k = ft_strlen(toks[j]);
+				i++;
+				tmp = malloc(sizeof(char) * 100);
+				int l = 0;
+				while (cmd[i] != ' ')
+				{
+					tmp[l] = cmd[i];
+					i++;
+				}
+				tmp[l] = '\0';
+				char *env_var = get_env_var(tmp, envp);
+				int m = 0;
+				while (env_var[m] != '\0')
+				{
+					toks[j][k] = env_var[m];
+					m++;
+					k++;
+				}
+				free(env_var);
 			}
 			toks[j][k] = cmd[i];
 			i++;
