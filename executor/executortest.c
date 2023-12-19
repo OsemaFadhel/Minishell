@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 15:32:21 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/14 12:53:07 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/12/19 14:06:16 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	executor(t_mini	*mini)
 			strcpy(path, bin);
 			strcat(path, mini->toks[0]);
 		}
-		if (execve(path, mini->toks, mini->envp)) //execve will close the process.
+		if (execve(path, mini->toks, mini->env)) //execve will close the process.
 			perror("niggawhat$");
 	}
 }

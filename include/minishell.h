@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:21:15 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/14 13:27:47 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/12/19 13:52:08 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@
 	char	*infile;
 	char	*outfile;
 	char	*err_file;
-	int	redirect_type; //>, >>, <, <<
+	int		redirect_type; //>, >>, <, <<
 }				t_cmds;
 
 typedef struct s_mini
@@ -47,7 +47,7 @@ typedef struct s_mini
 	char	*input; //init to NULL
 	char	*output; //init to NULL
 	char	*history;
-	char	**envp;
+	char	**env;
 	char	**toks;
 
 }				t_mini;
@@ -61,15 +61,15 @@ void		free_cmds(t_mini *mini, char *input); //free the cmds array and input give
 /* lexer.c */
 
 int			lexersplit(char *cmd, t_mini *mini);	//split the input into tokens
-char		**lexersplit_1(char *cmd, char **envp); //split cmd into tokens taking care of spaces and quotes. anything inside quotes count as one word
+char		**lexersplit_1(char *cmd, char **env); //split cmd into tokens taking care of spaces and quotes. anything inside quotes count as one word
 int			check_closed_dquotes(char *cmd, int i);
 int			check_closed_quotes(char *cmd, int i);
 int			count_words_2(char *cmd, int i, int words);
 int			count_words_3(char *cmd, int i, int words);
 int			count_words(char *cmd);
-int			add_str_dquot(char *cmd, char **toks, int i, int j, char **envp);
+int			add_str_dquot(char *cmd, char **toks, int i, int j, char **env);
 int 		add_str_quot(char *cmd, char **toks, int i, int j);
-int			add_str(char *cmd, char **toks, int i, int j, char **envp);
+int			add_str(char *cmd, char **toks, int i, int j, char **env);
 
 
 /* executortest.c */

@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 18:18:50 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/14 12:52:37 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/12/19 13:51:49 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,16 @@ int	envdump(char **envp, t_mini *mini) // get envp and put it in mini->envp
 	i = 0;
 	while (envp && envp[i])
 		i++;
-	mini->envp = malloc(sizeof(char *) * (i + 1));
-	if (!mini->envp)
+	mini->env = malloc(sizeof(char *) * (i + 1));
+	if (!mini->env)
 		return (1);
 	i = 0;
 	while (envp && envp[0] && envp[i])
 	{
-		mini->envp[i] = ft_strdup(envp[i]);
+		mini->env[i] = ft_strdup(envp[i]);
 		i++;
 	}
-	mini->envp[i] = NULL;
+	mini->env[i] = NULL;
 	return (0);
 }
 

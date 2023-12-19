@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 14:51:47 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/14 12:53:36 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/12/19 14:06:32 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,9 @@ int	builtin_2(t_mini *mini, int i)
 {
 	if (strcmp(mini->toks[0], "env") == 0)
 	{
-		while (mini->envp[i])
+		while (mini->env[i])
 		{
-			printf("%s\n", mini->envp[i]);
+			printf("%s\n", mini->env[i]);
 			i++;
 		}
 		printf("\n");
@@ -78,7 +78,7 @@ int	builtin_2(t_mini *mini, int i)
 			}
 			i++;
 		}
-		mini->envp = unset_cmd(mini->envp, mini->toks[1]);
+		mini->env = unset_cmd(mini->env, mini->toks[1]);
 	}
 	else
 		return (1);
@@ -94,7 +94,7 @@ int	builtin_3(t_mini *mini, int i)
 		else
 			chdir(getenv("HOME"));
 		//change_pwd(mini);
-		//cambiare la variabile d'ambiente PWD nell'envp
+		//cambiare la variabile d'ambiente PWD nell'env
 	}
 	else if	(strcmp(mini->toks[0], "pwd") == 0)
 		printf("%s\n", getcwd(NULL, 0)); // questo oppure cerca nell'envp la variabile PWD e la printa
