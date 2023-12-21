@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 12:40:16 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/19 17:37:27 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/12/21 15:49:30 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,13 +206,20 @@ int	add_str(char *cmd, char **toks, int i, int j, char **env)
 			free(var);
 			i += post;
 		}
+		if ((cmd[i] == '>' && cmd[i + 1] == '>') | (cmd[i] == '<' && cmd[i + 1] == '<'))
+			break;
+		if (cmd[i] == '>' | cmd[i] == '<')
+			break;
 		else
 		{
 			toks[j][k] = cmd[i];
 			i++;
 			k++;
 		}
+		printf("cmds: %s\n", toks[j]);
 	}
+	printf("cmds after while: %s\n", toks[j]);
 	toks[j][k] = '\0';
+	printf("cmds final: %s\n", toks[j]);
 	return (i);
 }

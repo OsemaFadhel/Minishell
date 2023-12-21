@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 18:18:50 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/19 13:51:49 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/12/21 15:35:41 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,16 @@ int	envdump(char **envp, t_mini *mini) // get envp and put it in mini->envp
 	return (0);
 }
 
+void	init(t_mini *mini)
+{
+	mini->cmds = NULL;
+	mini->cmds_count = 0;
+	mini->input = NULL;
+	mini->output = NULL;
+	mini->history = NULL;
+	mini->toks = NULL;
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	char	*input;
@@ -53,23 +63,23 @@ int	main(int argc, char **argv, char **envp)
 	int		i;
 
 	envdump(envp, &mini);
-
 	while (1)
 	{
-		sig_ignore();
+		init(&mini);
+		//sig_ignore();
 		input = readline("niggawhat$: ");
 
 		add_history(input);
-		if (lexersplit(input, &mini) == -1)
+		if (lexersplit(input, &mini) == -1) //creates matrix with all the words splitted and env changed
 			return (1);
 
-		/* exec try tests should start new process and do it*/
+		/*if (parser(&mini, &mini.cmds) == -1) //creates linked list with all the commands and its info
+			return (1);*/
 
-		if (mini.toks[0])
+		if (mini.toks[0]) /* exec try tests should start new process and do it*/
 			executor(&mini);
 
 		/* free cmds line so loop starts back clean */
-
 		free_cmds(&mini, input);
 	}
 	return (0);

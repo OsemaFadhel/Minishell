@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:44:53 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/19 16:31:28 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/12/21 15:38:39 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,21 @@ char	**lexersplit_1(char *cmd, char **env)
 		else if (cmd[i] == '\'')
 		{
 			i = add_str_quot(cmd, toks, i, j);
+			j++;
+		}
+		else if ((cmd[i] == '>' && cmd[i + 1] == '>') | (cmd[i] == '<' && cmd[i + 1] == '<'))
+		{
+			toks[j][0] = cmd[i];
+			toks[j][1] = cmd[i + 1];
+			toks[j][2] = '\0';
+			i += 2;
+			j++;
+		}
+		else if (cmd[i] == '>' | cmd[i] == '<')
+		{
+			toks[j][0] = cmd[i];
+			toks[j][1] = '\0';
+			i++;
 			j++;
 		}
 		else

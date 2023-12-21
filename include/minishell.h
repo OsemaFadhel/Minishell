@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:21:15 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/19 13:52:08 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/12/20 15:34:29 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,24 +32,24 @@
 
  typedef struct s_cmds
 {
-	char	*cmd; //init to NULL
-	char	**args;	//init to NULL
-	char	*infile;
-	char	*outfile;
-	char	*err_file;
-	int		redirect_type; //>, >>, <, <<
+	char			*cmd; //init to NULL
+	char			**args;	//init to NULL
+	char			*infile;
+	char			*outfile;
+	//char			*err_file; //no need i think
+	int				redirect_type; //>, >>, <, <<
+	struct s_cmds	*next;
 }				t_cmds;
 
 typedef struct s_mini
 {
-	t_list	*cmds;
+	t_cmds	*cmds;
 	int		cmds_count;
 	char	*input; //init to NULL
 	char	*output; //init to NULL
 	char	*history;
 	char	**env;
 	char	**toks;
-
 }				t_mini;
 
 /* functions */
@@ -71,6 +71,9 @@ int			add_str_dquot(char *cmd, char **toks, int i, int j, char **env);
 int 		add_str_quot(char *cmd, char **toks, int i, int j);
 int			add_str(char *cmd, char **toks, int i, int j, char **env);
 
+/* Parser */
+
+int			parser(t_mini *mini, t_cmds *cmds);
 
 /* executortest.c */
 

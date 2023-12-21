@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 12:36:53 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/14 12:53:15 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/12/21 15:54:25 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,26 @@ int	count_words(char *cmd)
 			i = count_words_3(cmd, i, words);
 			words++;
 		}
+		else if ((cmd[i] == '>' && cmd[i + 1] == '>') | (cmd[i] == '<' && cmd[i + 1] == '<'))
+		{
+			words += 2;
+			i++;
+		}
+		else if (cmd[i] == '>' | cmd[i] == '<')
+		{
+			words++;
+			i++;
+		}
 		else
 		{
 			while (cmd[i] != ' ' && cmd[i] != '\0' && (check_closed_dquotes(cmd, i) == 1 || check_closed_quotes(cmd, i) == 1))
+			{
+				if ((cmd[i] == '>' && cmd[i + 1] == '>') | (cmd[i] == '<' && cmd[i + 1] == '<'))
+					break;
+				if (cmd[i] == '>' | cmd[i] == '<')
+					break;
 				i++;
+			}
 			words++;
 		}
 	}
