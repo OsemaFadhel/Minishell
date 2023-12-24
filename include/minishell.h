@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:21:15 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/24 22:51:15 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/12/24 23:03:49 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ typedef struct s_redirect
 {
 	char	*infile; // <
 	char	*outfile; // >, >>
-	char	*appendfile; // << , should be given a delimiter, then read the
+	char	*delimiter; // << , should be given a delimiter, then read the
 						//input until a line containing the delimiter is seen.
 	int		redirect_type;
 }				t_redirect;
@@ -81,7 +81,7 @@ int			add_str(char *cmd, char **toks, int i, int j, char **env);
 
 /* Parser */
 
-int			parser(t_mini *mini, t_cmds *cmds);
+int			parser(t_mini *mini);
 
 /* executortest.c */
 
