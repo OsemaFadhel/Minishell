@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 18:18:50 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/21 15:35:41 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/12/24 22:47:56 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		init(&mini);
 		//sig_ignore();
-		input = readline("niggawhat$: ");
+		input = readline("BASH$: ");
 
 		add_history(input);
 		if (lexersplit(input, &mini) == -1) //creates matrix with all the words splitted and env changed

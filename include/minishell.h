@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:21:15 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/20 15:34:29 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/12/24 22:51:15 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,22 @@
 
 /* structs */
 
- typedef struct s_cmds
+typedef struct s_redirect
+{
+	char	*infile; // <
+	char	*outfile; // >, >>
+	char	*appendfile; // << , should be given a delimiter, then read the
+						//input until a line containing the delimiter is seen.
+	int		redirect_type;
+}				t_redirect;
+
+typedef struct s_cmds
 {
 	char			*cmd; //init to NULL
 	char			**args;	//init to NULL
-	char			*infile;
-	char			*outfile;
-	//char			*err_file; //no need i think
-	int				redirect_type; //>, >>, <, <<
+	t_redirect		*redirect;
+	int		fdi;
+	int		fdo;
 	struct s_cmds	*next;
 }				t_cmds;
 

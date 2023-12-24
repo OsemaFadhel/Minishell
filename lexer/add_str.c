@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 12:40:16 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/21 15:49:30 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/12/24 22:52:48 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,7 +190,7 @@ int	add_str(char *cmd, char **toks, int i, int j, char **env)
 		{
 			i++;
 			l = 0;
-			env_var = get_env_name(cmd, i);
+			env_var = get_env_name(cmd, i);  // add check for exit status $?
 			post =  ft_strlen(env_var) - 1;
 			var = get_env_var(env_var, env);
 			if (var != NULL)
@@ -216,10 +216,7 @@ int	add_str(char *cmd, char **toks, int i, int j, char **env)
 			i++;
 			k++;
 		}
-		printf("cmds: %s\n", toks[j]);
 	}
-	printf("cmds after while: %s\n", toks[j]);
 	toks[j][k] = '\0';
-	printf("cmds final: %s\n", toks[j]);
 	return (i);
 }
