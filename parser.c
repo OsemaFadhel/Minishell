@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:55:37 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/28 11:30:30 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/12/28 13:28:15 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,15 +84,16 @@ int    parser(t_mini *mini)
     int j;
     int red_count;
     t_cmds	*cmds;
+    t_cmds  *head;
 
     i = 0;
     j = 0;
     red_count = 0;
-    cmds = malloc(sizeof(t_cmds));
+    head = cmds = malloc(sizeof(t_cmds));
     init_cmds(cmds);
     while (mini->toks[i])
     {
-        if (mini->toks[i] == "|")
+        if (ft_strncmp(mini->toks[i], "|", 1) == 0)
         {
             mini->cmds_count++;
             cmds->next = malloc(sizeof(t_cmds));
@@ -100,7 +101,20 @@ int    parser(t_mini *mini)
             init_cmds(cmds);
             i++;
         }
-        else if (mini->toks[i] == ">")
+		else if (!ft_strncmp(mini->toks[i], ">>", 2))
+        {
+            init_redirect(&cmds->redirect[red_count]);
+            if (!mini->toks[i + 1] || mini->toks[i + 1] == "|")
+            {
+                printf("minishell: syntax error near unexpected token\n");
+                return (0);
+            }
+            cmds->redirect[red_count].outfile = mini->toks[i + 1];
+            cmds->redirect[red_count].redirect_type = 2;
+            red_count++;
+            i += 2;
+        }
+        else if (!ft_strncmp(mini->toks[i], ">", 1))
         {
             init_redirect(&cmds->redirect[red_count]);
             if (!mini->toks[i + 1] || mini->toks[i + 1] == "|")
@@ -113,20 +127,7 @@ int    parser(t_mini *mini)
             red_count++;
             i += 2;
         }
-        else if (mini->toks[i] == ">" && mini->toks[i + 1] == ">")
-        {
-            init_redirect(&cmds->redirect[red_count]);
-            if (!mini->toks[i + 2] || mini->toks[i + 2] == "|")
-            {
-                printf("minishell: syntax error near unexpected token\n");
-                return (0);
-            }
-            cmds->redirect[red_count].outfile = mini->toks[i + 2];
-            cmds->redirect[red_count].redirect_type = 2;
-            red_count++;
-            i += 3;
-        }
-        else if (mini->toks[i] == "<")
+        else if (!ft_strncmp(mini->toks[i], "<", 1))
         {
             init_redirect(&cmds->redirect[red_count]);
             if (!mini->toks[i + 1] || mini->toks[i + 1][0] == '|')
@@ -148,17 +149,19 @@ int    parser(t_mini *mini)
             }
             else
             {
-                while (mini->toks[i] && ft_strncmp(mini->toks[i], ">", 1) && ft_strncmp(mini->toks[i], "<", 1) && ft_strncmp(mini->toks[i], "|", 1))
+                while (mini->toks[i] && ft_strncmp(mini->toks[i], "|", 1) && !is_redirect(mini->toks[i]))
                 {
-                    printf("toks: %s\n", mini->toks[i]);
                     cmds->args[j] = mini->toks[i];
                     j++;
                     i++;
                 }
-                cmds->args[j] = NULL;
-            }
-        }
-    }
-    mini->cmds = cmds;
-    return (1);
+				cmds->args[j] = NULL;
+			}
+		}
+	}
+	printf("cmds redir type: %s\n", cmds->redirect[0].infile);
+	printf("cmds redir type: %s\n", cmds->redirect[0].outfile);
+	printf("cmds redir %d\n", cmds->redirect[0].redirect_type);
+	mini->cmds = head;
+	return (1);
 }

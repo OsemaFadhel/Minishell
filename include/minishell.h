@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:21:15 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/28 10:39:36 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/12/28 13:25:45 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ typedef struct s_redirect
 {
 	char	*infile; // <
 	char	*outfile; // >, >>
-	int		redirect_type;
+	int		redirect_type; // 1 >, 2 >>, 3 <
 }				t_redirect;
 
 typedef struct s_cmds
