@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 18:18:50 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/24 23:03:29 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/12/28 09:47:41 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,15 +70,14 @@ int	main(int argc, char **argv, char **envp)
 		input = readline("BASH$: ");
 
 		add_history(input);
-		if (lexersplit(input, &mini) == -1) //creates matrix with all the words splitted and env changed
-			return (1);
-
-		/*if (parser(&mini) == -1) //creates linked list with all the commands and its info
-			return (1);*/
-
-		if (mini.toks[0]) /* exec try tests should start new process and do it*/
-			executor(&mini);
-
+		if (lexersplit(input, &mini)) //creates matrix with all the words splitted and env changed
+		{
+			if (parser(&mini))
+			{
+				if (mini.toks[0]) /* exec try tests should start new process and do it*/
+					executor(&mini);
+			}
+		}
 		/* free cmds line so loop starts back clean */
 		free_cmds(&mini, input);
 	}

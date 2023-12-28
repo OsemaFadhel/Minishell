@@ -6,79 +6,137 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:55:37 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/24 23:13:05 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/12/28 09:44:41 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "include/minishell.h"
 
-void	init_cmds(t_cmds *cmds)
+/*void    parseRedirection(char **toks, t_cmds *cmd)
 {
-	cmds->cmd = NULL;
-	cmds->args = NULL;
-	cmds->mredirect = malloc(sizeof(t_redirect));
-    if (!cmds->redirect)
-        return ;
-    cmds->redirect->infile = NULL;
-    cmds->redirect->outfile = NULL;
-    cmds->redirect->delimiter = NULL;
-    cmds->redirect->redirect_type = 0;
+    int i;
+
+    cmd->redirect_count = 0; // Initialize the count to 0
+    i = 0;
+    while (toks[i] != NULL && toks[i] != '|')
+    {
+        if (toks[i][0] == '>')
+        {
+            cmd->redirect[cmd->redirect_count] = (t_redirect *)malloc(sizeof(t_redirect));
+            cmd->redirect[cmd->redirect_count]->redirect_type = 1;
+            cmd->redirect[cmd->redirect_count]->outfile = ft_strdup(toks[i + 1]);
+            cmd->redirect[cmd->redirect_count]->infile = NULL;
+            cmd->redirect[cmd->redirect_count]->appendfile = NULL;
+            ++cmd->redirect_count;
+            i++;
+        }
+        else if (toks[i][0] == '>' && toks[i + 1][0] == '>')
+        {
+            cmd->redirect[cmd->redirect_count] = (t_redirect *)malloc(sizeof(t_redirect));
+            cmd->redirect[cmd->redirect_count]->redirect_type = 2;
+            cmd->redirect[cmd->redirect_count]->outfile = ft_trdup(toks[i + 2]);
+            cmd->redirect[cmd->redirect_count]->infile = NULL;
+            cmd->redirect[cmd->redirect_count]->appendfile = NULL;
+            ++cmd->redirect_count;
+            i++;
+        }
+        else if (toks[i][0] == '<')
+        {
+            cmd->redirect[cmd->redirect_count] = (t_redirect *)malloc(sizeof(t_redirect));
+            cmd->redirect[cmd->redirect_count]->redirect_type = 3;
+            cmd->redirect[cmd->redirect_count]->infile = ft_strdup(toks[i + 1]);
+            cmd->redirect[cmd->redirect_count]->outfile = NULL;
+            cmd->redirect[cmd->redirect_count]->appendfile = NULL;
+            ++cmd->redirect_count;
+            i++;
+        }
+        i++;
+    }
+} */
+
+void    init_cmds(t_cmds *cmds)
+{
+    cmds->cmd = NULL;
+    cmds->args = NULL;
+    cmds->redirect = malloc(sizeof(t_redirect) * 20);
     cmds->fdi = 0;
     cmds->fdo = 1;
-	cmds->next = NULL;
+    cmds->next = NULL;
 }
 
-int	parser(t_mini *mini)
+void    init_redirect(t_redirect *redirect)
 {
-    int		i;
-    int		j;
-    int		k;
-    int     red;
+    redirect->infile = NULL;
+    redirect->outfile = NULL;
+    redirect->redirect_type = 0;
+}
+
+int is_redirect(char *str)
+{
+    if (str[0] == '>' || str[0] == '<'
+            || str[0] == '>>')
+        return (1);
+    return (0);
+}
+
+int    parser(t_mini *mini)
+{
+    int i;
+    int j;
+    int red_count;
     t_cmds	*cmds;
 
     i = 0;
     j = 0;
-    k = 0;
-    red = 0;
+    red_count = 0;
     cmds = malloc(sizeof(t_cmds));
-    if (!cmds)
-        return (-1);
     init_cmds(cmds);
-    while (mini->toks[i] != NULL)
+    while (toks[i] != NULL)
     {
-        if (strcmp(mini->toks[i], "|") == 0)
+        if (mini->toks[i][0] == "|")
         {
             mini->cmds_count++;
             cmds->next = malloc(sizeof(t_cmds));
-            if (!cmds->next)
-                return (-1);
             cmds = cmds->next;
             init_cmds(cmds);
-            j = 0;
-            k = 0;
         }
-        else if (strcmp(mini->toks[i], ">") == 0)
+        else if (mini->toks[i][0] == ">")
         {
-            cmds->redirect->outfile = mini->toks[i + 1];
-            cmds->redirect->redirect_type = 1;
+            init_redirect(cmds->redirect[red_count]);
+            if (!mini->toks[i + 1] || mini->toks[i + 1][0] == "|")
+            {
+                printf("minishell: syntax error near unexpected token\n");
+                return (1);
+            }
+            cmds->redirect[red_count]->outfile = mini->toks[i + 1];
+            cmds->redirect[red_count]->redirect_type = 1;
+            red_count++;
             i += 2;
         }
-        else if (strcmp(mini->toks[i], ">>") == 0)
+        else if (mini->toks[i][0] == ">" && mini->toks[i + 1][0] == ">")
         {
-            cmds->redirect->outfile = mini->toks[i + 1];
-            cmds->redirect->redirect_type = 2;
-            i += 2;
+            init_redirect(cmds->redirect[red_count]);
+            if (!mini->toks[i + 2] || mini->toks[i + 2] == "|")
+            {
+                printf("minishell: syntax error near unexpected token\n");
+                return (1);
+            }
+            cmds->redirect[red_count]->outfile = mini->toks[i + 2];
+            cmds->redirect[red_count]->redirect_type = 2;
+            red_count++;
+            i += 3;
         }
-        else if (strcmp(mini->toks[i], "<") == 0)
+        else if (mini->toks[i][0] == "<")
         {
-            cmds->redirect->infile = mini->toks[i + 1];
-            cmds->redirect->redirect_type = 3;
-            i += 2;
-        }
-        else if (strcmp(mini->toks[i], "<<") == 0)
-        {
-            cmds->redirect->delimiter = mini->toks[i + 1];
-            cmds->redirect->redirect_type = 4;
+            init_redirect(cmds->redirect[red_count]);
+            if (!mini->toks[i + 1] || mini->toks[i + 1][0] == '|')
+            {
+                printf("minishell: syntax error near unexpected token\n");
+                return (1);
+            }
+            cmds->redirect[red_count]->infile = mini->toks[i + 1];
+            cmds->redirect[red_count]->redirect_type = 3;
+            red_count++;
             i += 2;
         }
         else
@@ -88,9 +146,8 @@ int	parser(t_mini *mini)
             else
             {
                 cmds->args = malloc(sizeof(char *) * 1000);
-                if (!cmds->args)
-                    return (-1);
-                while (mini->toks[i] != NULL && strcmp(mini->toks[i], "|") != 0 && strcmp(mini->toks[i], ">") != 0 && strcmp(mini->toks[i], ">>") != 0 && strcmp(mini->toks[i], "<") != 0 && strcmp(mini->toks[i], "<<") != 0)
+                while (mini->toks[i] != NULL && mini->toks[i] == "|"
+                        && !is_redirect(mini->toks[i]))
                 {
                     cmds->args[j] = mini->toks[i];
                     j++;
