@@ -6,11 +6,11 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:51:23 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/11/28 16:33:19 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/12/14 12:52:22 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell.h"
+# include "include/minishell.h"
 
 int	ft_isdigitalpha(char *c)
 {

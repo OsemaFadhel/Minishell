@@ -6,11 +6,11 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 14:51:47 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/11/29 16:52:32 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/12/19 14:06:32 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell.h"
+# include "../include/minishell.h"
 
 int	is_builtin(t_mini *mini, int i) //check if the command is a builtin
 {
@@ -21,9 +21,9 @@ int	is_builtin(t_mini *mini, int i) //check if the command is a builtin
 
 int	builtin(t_mini *mini, int i)
 {
-	if (strcmp(mini->toks[0], "exit") == 0)
+	if (strcmp(mini->toks[0], "exit") == 0) //free everything and exit
 			exit(0);
-	else if (strcmp(mini->toks[0], "echo") == 0 && mini->toks[1]) // fare che la prima parola dell'arg sia -n e se si allora non mettere \n
+	/*else if (strcmp(mini->toks[0], "echo") == 0 && mini->toks[1])
 	{
 		i = 1;
 		if (strncmp(mini->toks[i], "-n", 2) == 0) //funzione che trova la prima parola e fa strcmp con -n
@@ -33,8 +33,8 @@ int	builtin(t_mini *mini, int i)
 			{
 				ft_putstr_fd(mini->toks[i], 1); // ricordarsi nel parser di cambiare il $ con il valore della variabile d'ambiente
 				i++;
-				if (mini->toks[i])
-					write(1, " ", 1);
+				//if (mini->toks[i])
+				//	write(1, " ", 1);
 			}
 		}
 		else
@@ -42,13 +42,13 @@ int	builtin(t_mini *mini, int i)
 			while (mini->toks[i])
 			{
 				ft_putstr_fd(mini->toks[i], 1);
-				write(1, " ", 1);
+				//write(1, " ", 1);
 				i++;
 			}
 			printf("\n");
 		}
 		return (0);
-	}
+	}*/
 	return (1);
 }
 
@@ -56,9 +56,9 @@ int	builtin_2(t_mini *mini, int i)
 {
 	if (strcmp(mini->toks[0], "env") == 0)
 	{
-		while (mini->envp[i])
+		while (mini->env[i])
 		{
-			printf("%s\n", mini->envp[i]);
+			printf("%s\n", mini->env[i]);
 			i++;
 		}
 		printf("\n");
@@ -78,7 +78,7 @@ int	builtin_2(t_mini *mini, int i)
 			}
 			i++;
 		}
-		mini->envp = unset_cmd(mini->envp, mini->toks[1]);
+		mini->env = unset_cmd(mini->env, mini->toks[1]);
 	}
 	else
 		return (1);
@@ -94,7 +94,7 @@ int	builtin_3(t_mini *mini, int i)
 		else
 			chdir(getenv("HOME"));
 		//change_pwd(mini);
-		//cambiare la variabile d'ambiente PWD nell'envp
+		//cambiare la variabile d'ambiente PWD nell'env
 	}
 	else if	(strcmp(mini->toks[0], "pwd") == 0)
 		printf("%s\n", getcwd(NULL, 0)); // questo oppure cerca nell'envp la variabile PWD e la printa

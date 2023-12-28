@@ -6,11 +6,11 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 15:32:21 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/11/29 15:48:47 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/12/28 08:54:29 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../include/minishell.h"
 
 //create first other process to execute the command
 //if the command is not built-in, execute it with execve
@@ -40,7 +40,7 @@ void	executor(t_mini	*mini)
 			strcpy(path, bin);
 			strcat(path, mini->toks[0]);
 		}
-		if (execve(path, mini->toks, mini->envp)) //execve will close the process.
-			perror("niggawhat$");
+		if (execve(path, mini->toks, mini->env)) //execve will close the process.
+			perror("BASH$");
 	}
 }
