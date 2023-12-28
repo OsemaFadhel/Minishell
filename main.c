@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 18:18:50 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/28 09:47:41 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/12/28 11:25:31 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ int	main(int argc, char **argv, char **envp)
 		{
 			if (parser(&mini))
 			{
+				printf("cmds_count: %d\n", mini.cmds_count);
 				if (mini.toks[0]) /* exec try tests should start new process and do it*/
 					executor(&mini);
 			}

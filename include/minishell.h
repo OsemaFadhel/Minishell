@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:21:15 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/27 20:24:56 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/12/28 10:39:36 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int			add_str(char *cmd, char **toks, int i, int j, char **env);
 
 /* Parser */
 
-t_cmds		*parser(char **toks);
+int			parser(t_mini *mini);
 
 /* executortest.c */
 

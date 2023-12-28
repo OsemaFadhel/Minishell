@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 12:40:16 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/24 22:52:48 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/12/28 11:34:46 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,6 +209,8 @@ int	add_str(char *cmd, char **toks, int i, int j, char **env)
 		if ((cmd[i] == '>' && cmd[i + 1] == '>') | (cmd[i] == '<' && cmd[i + 1] == '<'))
 			break;
 		if (cmd[i] == '>' | cmd[i] == '<')
+			break;
+		if (cmd[i] == '|')
 			break;
 		else
 		{

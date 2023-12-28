@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:55:37 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/28 09:44:41 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/12/28 11:30:30 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@
 void    init_cmds(t_cmds *cmds)
 {
     cmds->cmd = NULL;
-    cmds->args = NULL;
+    cmds->args = malloc(sizeof(char *) * 120);
     cmds->redirect = malloc(sizeof(t_redirect) * 20);
     cmds->fdi = 0;
     cmds->fdo = 1;
@@ -73,8 +73,7 @@ void    init_redirect(t_redirect *redirect)
 
 int is_redirect(char *str)
 {
-    if (str[0] == '>' || str[0] == '<'
-            || str[0] == '>>')
+    if (str[0] == '>' || str[0] == '<')
         return (1);
     return (0);
 }
@@ -91,64 +90,67 @@ int    parser(t_mini *mini)
     red_count = 0;
     cmds = malloc(sizeof(t_cmds));
     init_cmds(cmds);
-    while (toks[i] != NULL)
+    while (mini->toks[i])
     {
-        if (mini->toks[i][0] == "|")
+        if (mini->toks[i] == "|")
         {
             mini->cmds_count++;
             cmds->next = malloc(sizeof(t_cmds));
             cmds = cmds->next;
             init_cmds(cmds);
+            i++;
         }
-        else if (mini->toks[i][0] == ">")
+        else if (mini->toks[i] == ">")
         {
-            init_redirect(cmds->redirect[red_count]);
-            if (!mini->toks[i + 1] || mini->toks[i + 1][0] == "|")
+            init_redirect(&cmds->redirect[red_count]);
+            if (!mini->toks[i + 1] || mini->toks[i + 1] == "|")
             {
                 printf("minishell: syntax error near unexpected token\n");
-                return (1);
+                return (0);
             }
-            cmds->redirect[red_count]->outfile = mini->toks[i + 1];
-            cmds->redirect[red_count]->redirect_type = 1;
+            cmds->redirect[red_count].outfile = mini->toks[i + 1];
+            cmds->redirect[red_count].redirect_type = 1;
             red_count++;
             i += 2;
         }
-        else if (mini->toks[i][0] == ">" && mini->toks[i + 1][0] == ">")
+        else if (mini->toks[i] == ">" && mini->toks[i + 1] == ">")
         {
-            init_redirect(cmds->redirect[red_count]);
+            init_redirect(&cmds->redirect[red_count]);
             if (!mini->toks[i + 2] || mini->toks[i + 2] == "|")
             {
                 printf("minishell: syntax error near unexpected token\n");
-                return (1);
+                return (0);
             }
-            cmds->redirect[red_count]->outfile = mini->toks[i + 2];
-            cmds->redirect[red_count]->redirect_type = 2;
+            cmds->redirect[red_count].outfile = mini->toks[i + 2];
+            cmds->redirect[red_count].redirect_type = 2;
             red_count++;
             i += 3;
         }
-        else if (mini->toks[i][0] == "<")
+        else if (mini->toks[i] == "<")
         {
-            init_redirect(cmds->redirect[red_count]);
+            init_redirect(&cmds->redirect[red_count]);
             if (!mini->toks[i + 1] || mini->toks[i + 1][0] == '|')
             {
                 printf("minishell: syntax error near unexpected token\n");
-                return (1);
+                return (0);
             }
-            cmds->redirect[red_count]->infile = mini->toks[i + 1];
-            cmds->redirect[red_count]->redirect_type = 3;
+            cmds->redirect[red_count].infile = mini->toks[i + 1];
+            cmds->redirect[red_count].redirect_type = 3;
             red_count++;
             i += 2;
         }
         else
         {
             if (cmds->cmd == NULL)
+            {
                 cmds->cmd = mini->toks[i];
+                i++;
+            }
             else
             {
-                cmds->args = malloc(sizeof(char *) * 1000);
-                while (mini->toks[i] != NULL && mini->toks[i] == "|"
-                        && !is_redirect(mini->toks[i]))
+                while (mini->toks[i] && ft_strncmp(mini->toks[i], ">", 1) && ft_strncmp(mini->toks[i], "<", 1) && ft_strncmp(mini->toks[i], "|", 1))
                 {
+                    printf("toks: %s\n", mini->toks[i]);
                     cmds->args[j] = mini->toks[i];
                     j++;
                     i++;
@@ -156,7 +158,7 @@ int    parser(t_mini *mini)
                 cmds->args[j] = NULL;
             }
         }
-        i++;
     }
-    return (0);
+    mini->cmds = cmds;
+    return (1);
 }

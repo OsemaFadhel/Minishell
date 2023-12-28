@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:44:53 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/21 15:38:39 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/12/28 11:35:07 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,13 @@ char	**lexersplit_1(char *cmd, char **env)
 			i++;
 			j++;
 		}
+		else if (cmd[i] == '|')
+		{
+			toks[j][0] = cmd[i];
+			toks[j][1] = '\0';
+			i++;
+			j++;
+		}
 		else
 		{
 			i = add_str(cmd, toks, i, j, env);
@@ -113,13 +120,13 @@ int	lexersplit(char *cmd, t_mini *mini)
 
 	mini->toks = lexersplit_1(cmd, mini->env);
 	if (!mini->toks)
-		return (1);
+		return (0);
 	while (mini->toks[i])
 	{
 		printf("lexer tok[%i] = %s\n", i, mini->toks[i]);
 		i++;
 	}
-	return (0);
+	return (1);
 }
 
 // split per virgolette. includere tutto quello dentro in un unico token, incluso virgolette
