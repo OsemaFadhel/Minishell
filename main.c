@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 18:18:50 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/28 13:23:16 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/12/31 21:24:49 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ void	init(t_mini *mini)
 {
 	mini->cmds = NULL;
 	mini->cmds_count = 0;
-	mini->input = NULL;
-	mini->output = NULL;
+	//mini->input = NULL;
+	//mini->output = NULL;
 	mini->history = NULL;
 	mini->toks = NULL;
 }
@@ -77,7 +77,7 @@ int	main(int argc, char **argv, char **envp)
 				printf("mini cmds  %s\n", mini.cmds->cmd);
 				printf("mini cmds  %s\n", mini.cmds->args[0]);
 				if (mini.toks[0]) /* exec try tests should start new process and do it*/
-					executor(&mini);
+					execute(&mini);
 			}
 		}
 		/* free cmds line so loop starts back clean */

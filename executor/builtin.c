@@ -6,13 +6,13 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 14:51:47 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/19 14:06:32 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/12/31 21:27:16 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../include/minishell.h"
 
-int	is_builtin(t_mini *mini, int i) //check if the command is a builtin
+int	is_builtin(t_mini *mini, t_cmds *cmds, int i) //check if the command is a builtin
 {
 	if (!builtin(mini, i) || !builtin_2(mini, i) || !builtin_3(mini, i))
 		return (0);

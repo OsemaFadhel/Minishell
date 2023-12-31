@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:21:15 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/28 13:25:45 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/12/31 21:28:47 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 # include <stdio.h>
 # include <termios.h>
 # include <sys/ioctl.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../libft/libft.h"
@@ -51,8 +53,8 @@ typedef struct s_mini
 {
 	t_cmds	*cmds;
 	int		cmds_count;
-	char	*input; //init to NULL
-	char	*output; //init to NULL
+	//char	*input; //init to NULL
+	//char	*output; //init to NULL
 	char	*history;
 	char	**env;
 	char	**toks;
@@ -83,7 +85,8 @@ int			parser(t_mini *mini);
 
 /* executortest.c */
 
-void		executor(t_mini	*mini); //execute the command
+void		executor(t_mini	*mini, t_cmds *cmds); //execute the command
+void 		execute(t_mini *mini);
 
 /* utils.c */
 
@@ -93,7 +96,7 @@ char		**expand_matrix(char **matrix, char *str); //expand the matrix
 
 /* builtin.c */
 
-int			is_builtin(t_mini *mini, int i); //check if the command is a builtin
+int			is_builtin(t_mini *mini, t_cmds *cmds, int i); //check if the command is a builtin
 int			builtin(t_mini *mini, int i);
 int			builtin_2(t_mini *mini, int i);
 int			builtin_3(t_mini *mini, int i);

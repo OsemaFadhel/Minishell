@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 15:32:21 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/28 08:54:29 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/12/31 21:26:28 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 //if the command is not built-in, execute it with execve
 //execve will close the process
 
-void	executor(t_mini	*mini)
+void	executor(t_mini	*mini, t_cmds *cmds)
 {
 	int	i;
 	char *bin;
@@ -24,9 +24,9 @@ void	executor(t_mini	*mini)
 
 	i = 0;
 	bin = "/bin/";
-	if (!is_builtin(mini, i))
-		return ;
-	else
+	//if (!is_builtin(mini, cmds, i))
+	//	return ;
+	if (1)
 	{
 		//check if there is a path in the command
 		//if there is, execute it with execve
