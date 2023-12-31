@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:55:37 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/28 17:49:40 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/12/31 23:03:17 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,9 +159,6 @@ int	parser(t_mini *mini)
 			}
 		}
 	}
-	printf("cmds redir type: %s\n", cmds->redirect[0].infile);
-	printf("cmds redir type: %s\n", cmds->redirect[0].outfile);
-	printf("cmds redir %d\n", cmds->redirect[0].redirect_type);
 	mini->cmds = head;
 	return (1);
 }

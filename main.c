@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 18:18:50 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/31 21:24:49 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/12/31 23:02:15 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,10 @@ int	main(int argc, char **argv, char **envp)
 		{
 			if (parser(&mini))
 			{
-				printf("mini cmds  %s\n", mini.cmds->cmd);
-				printf("mini cmds  %s\n", mini.cmds->args[0]);
-				if (mini.toks[0]) /* exec try tests should start new process and do it*/
-					execute(&mini);
+				//printf("mini cmds  %s\n", mini.cmds->cmd);
+				printf("if parser main\n");
+					 /* exec try tests should start new process and do it*/
+				execute(&mini);
 			}
 		}
 		/* free cmds line so loop starts back clean */

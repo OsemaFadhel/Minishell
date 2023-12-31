@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 15:32:21 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/31 21:26:28 by ofadhel          ###   ########.fr       */
+/*   Updated: 2023/12/31 23:18:28 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,16 @@ void	executor(t_mini	*mini, t_cmds *cmds)
 		//check if there is a path in the command
 		//if there is, execute it with execve
 		//else, execute it with /bin/ + command
-		if(strchr(mini->toks[0], '/'))
-			path = mini->toks[0];
+		if(ft_strchr(cmds->cmd, '/'))
+			path = cmds->cmd;
 		else
 		{
 			//malloc the path and copy the bin + command into it (strcat
-			path = malloc(sizeof(char) * (ft_strlen(bin) + ft_strlen(mini->toks[0]) + 1));
+			path = malloc(sizeof(char) * (ft_strlen(bin) + ft_strlen(cmds->cmd) + 1));
 			strcpy(path, bin);
-			strcat(path, mini->toks[0]);
+			strcat(path, cmds->cmd);
 		}
-		if (execve(path, mini->toks, mini->env)) //execve will close the process.
+		if (execve(path, cmds->args, mini->env)) //execve will close the process.
 			perror("BASH$");
 	}
 }
