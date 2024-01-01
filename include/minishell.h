@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:21:15 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/01 19:18:04 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/01 19:58:50 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ typedef struct s_mini
 	int		cmds_count;
 	int		fdin; //init to NULL
 	int		fdout; //init to NULL
-	char	*history;
 	char	**env;
 	char	**toks;
 }				t_mini;

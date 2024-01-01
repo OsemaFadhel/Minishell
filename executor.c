@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 17:38:14 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/01 19:20:19 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/01 20:03:11 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,77 +176,64 @@
 void execute(t_mini *mini)
 {
     // Save in/out
-    int tmpin = dup(0);
-    int tmpout = dup(1);
+	int tmpin;
+	int tmpout;
+	int ret;
+	int i;
+	t_cmds *current_cmd;
 
-    int ret;
-    t_cmds *current_cmd = mini->cmds;
-
-	int i = 0;
-	while (current_cmd->redirect[i].redirect_type != 0)
-	{
-		if (current_cmd->redirect[i].redirect_type == 3)
-		{
-			current_cmd->fdi = open(current_cmd->redirect[i].infile, O_RDONLY);
-		}
-		else
-		{
-			// Use default input
-			current_cmd->fdi = dup(tmpin);
-		}
-		i++;
-	}
-	current_cmd->fdi = dup(tmpin);
+	// Set the initial input
+	tmpin = dup(0);
+	tmpout = dup(1);
+	current_cmd = mini->cmds;
+	mini->fdin = dup(tmpin);
 	while (current_cmd != NULL)
 	{
-		// Redirect input
-		dup2(current_cmd->fdi, 0);
-		close(current_cmd->fdi);
-
-        // Setup output
 		i = 0;
 		while (current_cmd->redirect[i].redirect_type != 0)
 		{
-			printf("current_cmd->redirect[i].redirect_type = %d\n", current_cmd->redirect[i].redirect_type);
-		    if (current_cmd->redirect[i].redirect_type == 1)
+			if (current_cmd->redirect[i].redirect_type == 3) // <
+			{
+				mini->fdin = open(current_cmd->redirect[i].infile, O_RDONLY);
+			}
+			else if (current_cmd->redirect[i].redirect_type == 1) // >
 		    {
-		        current_cmd->fdo = open(current_cmd->redirect[i].outfile, O_WRONLY | O_TRUNC | O_CREAT, 0644);
+		        mini->fdout = open(current_cmd->redirect[i].outfile, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 		    }
-		    else if (current_cmd->redirect[i].redirect_type == 2)
+		    else if (current_cmd->redirect[i].redirect_type == 2) // >>
 		    {
-    	        current_cmd->fdo = open(current_cmd->redirect[i].outfile, O_WRONLY | O_APPEND | O_CREAT, 0644);
-    	    }
-    	    else
-    	    {
-    	        // Use default output
-    	        current_cmd->fdo = dup(tmpout);
-    	    }
-    	    i++;
-    	}
-		current_cmd->fdo = dup(tmpout);
-    	if (mini->cmds_count >= 1)
+		        mini->fdout = open(current_cmd->redirect[i].outfile, O_WRONLY | O_APPEND | O_CREAT, 0644);
+		    }
+			i++;
+		}
+		if (mini->fdin == -2)
+			mini->fdin = dup(tmpin);
+		dup2(mini->fdin, 0);
+		if	(mini->fdout == -2)
+			mini->fdout = dup(tmpout);
+		if (mini->cmds_count >= 1)
 		{
 			int fdpipe[2]; // Create pipe
 			pipe(fdpipe);
-			current_cmd->fdo = fdpipe[1];
-			current_cmd->fdi = fdpipe[0];
+			mini->fdout = fdpipe[1];
+			mini->fdin = fdpipe[0];
 		}
-    	dup2(current_cmd->fdo, 1);  // Redirect output
-    	close(current_cmd->fdo);
-		printf("current_cmd->fdo = %d\n", current_cmd->fdo);
-        // Create child process
+		dup2(mini->fdout, 1);  // Redirect output
+		// Create child process
 		ret = fork();
-    	if (ret == 0)
-    	{
-    	    executor(mini, current_cmd); // Call the executor with the current command
-    	    perror("BASH$");
-    	    exit(1);
-    	}
-    	current_cmd = current_cmd->next;
+		if (ret == 0)
+		{
+		    executor(mini, current_cmd); // Call the executor with the current command
+		    perror("BASH$");
+		    exit(1);
+		}
+		current_cmd = current_cmd->next;
 	}
-    // Restore in/out defaults
+	// Restore in/out defaults
 	dup2(tmpin, 0);
 	dup2(tmpout, 1);
+	close(mini->fdin);
+	close(mini->fdout);
 	close(tmpin);
 	close(tmpout);
 	while (waitpid(-1, NULL, 0) > 0);

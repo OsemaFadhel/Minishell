@@ -6,11 +6,23 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 18:18:50 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/31 23:02:15 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/01 20:00:39 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/minishell.h"
+
+void	free_stack(t_cmds *cmds)
+{
+	t_cmds	*tmp;
+
+	while (cmds)
+	{
+		tmp = cmds;
+		cmds = cmds->next;
+		free(tmp);
+	}
+}
 
 void	free_cmds(t_mini *mini, char *input) // free cmds line
 {
@@ -24,6 +36,8 @@ void	free_cmds(t_mini *mini, char *input) // free cmds line
 		i++;
 	}
 	free(mini->toks);
+	free_stack(mini->cmds);
+
 }
 
 int	envdump(char **envp, t_mini *mini) // get envp and put it in mini->envp
@@ -50,9 +64,8 @@ void	init(t_mini *mini)
 {
 	mini->cmds = NULL;
 	mini->cmds_count = 0;
-	//mini->input = NULL;
-	//mini->output = NULL;
-	mini->history = NULL;
+	mini->fdin = -2;
+	mini->fdout = -2;
 	mini->toks = NULL;
 }
 
