@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 17:38:14 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/31 23:14:08 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/01 19:20:19 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,54 +183,57 @@ void execute(t_mini *mini)
     t_cmds *current_cmd = mini->cmds;
 
 	int i = 0;
-	while (mini->cmds->redirect[i].redirect_type != 0)
+	while (current_cmd->redirect[i].redirect_type != 0)
 	{
-		if (mini->cmds->redirect[i].redirect_type == 3)
+		if (current_cmd->redirect[i].redirect_type == 3)
 		{
-			mini->cmds->fdi = open(mini->cmds->redirect[i].infile, O_RDONLY);
+			current_cmd->fdi = open(current_cmd->redirect[i].infile, O_RDONLY);
 		}
 		else
 		{
 			// Use default input
-			mini->cmds->fdi = dup(tmpin);
+			current_cmd->fdi = dup(tmpin);
 		}
 		i++;
 	}
-	mini->cmds->fdi = dup(tmpin);
+	current_cmd->fdi = dup(tmpin);
 	while (current_cmd != NULL)
 	{
 		// Redirect input
-		dup2(mini->cmds->fdi, 0);
-		close(mini->cmds->fdi);
+		dup2(current_cmd->fdi, 0);
+		close(current_cmd->fdi);
 
         // Setup output
 		i = 0;
-		while (mini->cmds->redirect[i].redirect_type != 0)
+		while (current_cmd->redirect[i].redirect_type != 0)
 		{
-			printf("mini->cmds->redirect[i].redirect_type = %d\n", mini->cmds->redirect[i].redirect_type);
-		    if (mini->cmds->redirect[i].redirect_type == 1)
+			printf("current_cmd->redirect[i].redirect_type = %d\n", current_cmd->redirect[i].redirect_type);
+		    if (current_cmd->redirect[i].redirect_type == 1)
 		    {
-		        mini->cmds->fdo = open(mini->cmds->redirect[i].outfile, O_WRONLY | O_TRUNC | O_CREAT, 0644);
+		        current_cmd->fdo = open(current_cmd->redirect[i].outfile, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 		    }
-		    else if (mini->cmds->redirect[i].redirect_type == 2)
+		    else if (current_cmd->redirect[i].redirect_type == 2)
 		    {
-    	        mini->cmds->fdo = open(mini->cmds->redirect[i].outfile, O_WRONLY | O_APPEND | O_CREAT, 0644);
+    	        current_cmd->fdo = open(current_cmd->redirect[i].outfile, O_WRONLY | O_APPEND | O_CREAT, 0644);
     	    }
     	    else
     	    {
     	        // Use default output
-    	        mini->cmds->fdo = dup(tmpout);
+    	        current_cmd->fdo = dup(tmpout);
     	    }
     	    i++;
     	}
-		mini->cmds->fdo = dup(tmpout);
-    	/*int fdpipe[2]; // Create pipe
-    	pipe(fdpipe);
-    	mini->cmds->fdo = fdpipe[1];
-    	mini->cmds->fdi = fdpipe[0];
-    	dup2(mini->cmds->fdo, 1);  // Redirect output
-    	close(mini->cmds->fdo);*/
-		printf("mini->cmds->fdo = %d\n", mini->cmds->fdo);
+		current_cmd->fdo = dup(tmpout);
+    	if (mini->cmds_count >= 1)
+		{
+			int fdpipe[2]; // Create pipe
+			pipe(fdpipe);
+			current_cmd->fdo = fdpipe[1];
+			current_cmd->fdi = fdpipe[0];
+		}
+    	dup2(current_cmd->fdo, 1);  // Redirect output
+    	close(current_cmd->fdo);
+		printf("current_cmd->fdo = %d\n", current_cmd->fdo);
         // Create child process
 		ret = fork();
     	if (ret == 0)

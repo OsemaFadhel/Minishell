@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:55:37 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/31 23:03:17 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/01 16:17:05 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	parser(t_mini *mini)
 	t_cmds  *head;
 
 	i = 0;
-	j = 0;
+	j = 1;
 	red_count = 0;
 	head = cmds = malloc(sizeof(t_cmds));
 	init_cmds(cmds);
@@ -149,6 +149,7 @@ int	parser(t_mini *mini)
 			}
 			else
 			{
+				cmds->args[0] = ft_strdup(cmds->cmd);
 				while (mini->toks[i] && ft_strncmp(mini->toks[i], "|", 1) && !is_redirect(mini->toks[i]))
 				{
 					cmds->args[j] = mini->toks[i];
