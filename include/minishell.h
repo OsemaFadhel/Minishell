@@ -93,12 +93,51 @@ int			ft_isdigitalpha(char *c);
 char		**unset_cmd(char **matrix, char *str); //unset the command
 char		**expand_matrix(char **matrix, char *str); //expand the matrix
 
-/* builtin.c */
+/* builtin.c 
 
 int			is_builtin(t_mini *mini, t_cmds *cmds, int i); //check if the command is a builtin
 int			builtin(t_mini *mini, int i);
 int			builtin_2(t_mini *mini, int i);
-int			builtin_3(t_mini *mini, int i);
+int			builtin_3(t_mini *mini, int i);*/
+typedef struct s_build
+{
+	char	**full_cmd;
+	char	*full_path;
+	int		infile;
+	int		outfile;
+}			t_build;
+
+typedef struct s_prompt
+{
+	t_list	*cmds;
+	char	**envp;
+	pid_t	pid;
+}			t_prompt;
+
+enum	e_mini_error
+{
+	QUOTE = 1,
+	NDIR = 2,
+	NPERM = 3,
+	NCMD = 6,
+	DUPERR = 7,
+	FORKERR = 8,
+	PIPERR = 9,
+	PIPENDERR = 10,
+	MEM = 11,
+	IS_DIR = 12,
+	NOT_DIR = 13
+};
+
+int	builtin(t_prompt *prompt, t_list *cmd, int *is_exit, int n);
+int	is_builtin(t_build *n);
+int	my_cd(t_prompt *p);
+void	*cont_error(int err_type, char *param, int err);
+void	change_error(char **str[2]);
+void	free_matrix(char ***m);
+char	**extend_matrix(char **in, char *newstr);
+char *get_env(char *var, char **envp, int n);
+char **set_env(char *var, char *value, char **envp, int n);
 
 /* signals.c */
 

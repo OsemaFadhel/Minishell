@@ -12,7 +12,7 @@
 
 # include "../include/minishell.h"
 
-int	is_builtin(t_mini *mini, t_cmds *cmds, int i) //check if the command is a builtin
+/*int	is_builtin(t_mini *mini, t_cmds *cmds, int i) //check if the command is a builtin
 {
 	if (!builtin(mini, i) || !builtin_2(mini, i) || !builtin_3(mini, i))
 		return (0);
@@ -23,7 +23,7 @@ int	builtin(t_mini *mini, int i)
 {
 	if (strcmp(mini->toks[0], "exit") == 0) //free everything and exit
 			exit(0);
-	/*else if (strcmp(mini->toks[0], "echo") == 0 && mini->toks[1])
+	else if (strcmp(mini->toks[0], "echo") == 0 && mini->toks[1])
 	{
 		i = 1;
 		if (strncmp(mini->toks[i], "-n", 2) == 0) //funzione che trova la prima parola e fa strcmp con -n
@@ -48,7 +48,7 @@ int	builtin(t_mini *mini, int i)
 			printf("\n");
 		}
 		return (0);
-	}*/
+	}
 	return (1);
 }
 
@@ -63,7 +63,7 @@ int	builtin_2(t_mini *mini, int i)
 		}
 		printf("\n");
 	}
-	/*else if (strcmp(mini->toks[0], "export") == 0);*/
+	else if (strcmp(mini->toks[0], "export") == 0);
 	else if (strcmp(mini->toks[0], "unset") == 0)
 	{
 		//funzione che cerca la variabile d'ambiente e la elimina
@@ -99,6 +99,62 @@ int	builtin_3(t_mini *mini, int i)
 	else if	(strcmp(mini->toks[0], "pwd") == 0)
 		printf("%s\n", getcwd(NULL, 0)); // questo oppure cerca nell'envp la variabile PWD e la printa
 	else
+		return (1);
+	return (0);
+}*/
+
+int	builtin(t_prompt *prompt, t_list *cmd, int *is_exit, int n)
+{
+	char	**a;
+
+	while (cmd)
+	{
+		a = ((t_build *)cmd->content)->full_cmd;
+		n = 0;
+		if (a)
+			n = ft_strlen(*a);
+		if (a && !ft_strncmp(*a, "exit", n) && n == 4)
+			g_status = my_exit(cmd, is_exit);
+		else if (!cmd->next && a && !ft_strncmp(*a, "cd", n) && n == 2)
+			g_status = my_cd(prompt);
+		else if (!cmd->next && a && !ft_strncmp(*a, "export", n) && n == 6)
+			g_status = my_export(prompt);
+		else if (!cmd->next && a && !ft_strncmp(*a, "unset", n) && n == 5)
+			g_status = my_unset(prompt);
+		else
+		{
+			signal(SIGINT, SIG_IGN);
+			signal(SIGQUIT, SIG_IGN);
+			exec_cmd(prompt, cmd);
+		}
+		cmd = cmd->next;
+	}
+	return (g_status);
+}
+
+int	is_builtin(t_build *n)
+{
+	int		l;
+
+	if (!n->full_cmd)
+		return (0);
+	if ((n->full_cmd && ft_strchr(*n->full_cmd, '/')) || (n->full_path && \
+		ft_strchr(n->full_path, '/')))
+		return (0);
+	l = ft_strlen(*n->full_cmd);
+	if (!ft_strncmp(*n->full_cmd, "pwd", l) && l == 3)
+		return (1);
+	if (!ft_strncmp(*n->full_cmd, "env", l) && l == 3)
+		return (1);
+	if (!ft_strncmp(*n->full_cmd, "cd", l) && l == 2)
+		return (1);
+	if (!ft_strncmp(*n->full_cmd, "export", l) && l == 6)
+		return (1);
+	if (!ft_strncmp(*n->full_cmd, "unset", l) && l == 5)
+		return (1);
+	if (!ft_strncmp(*n->full_cmd, "echo", l) && l == 4)
+		return (1);
+	if (!ft_strncmp(*n->full_cmd, "exit", l) && l == 4)
 		return (1);
 	return (0);
 }

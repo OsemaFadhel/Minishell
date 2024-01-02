@@ -12,10 +12,13 @@
 
 NAME 	= minishell
 
+BUILTINS_DIR = builtins
+
 SRCS 	= 	main.c utils1.c signals.c \
 			lexer/lexer.c lexer/count_words.c lexer/add_str.c \
 			parser/parser.c \
-			executor/executortest.c executor/builtin.c  executor.c \
+			executor/executortest.c executor.c \
+			$(wildcard $(BUILTINS_DIR)/*.c) \
 
 #libft
 

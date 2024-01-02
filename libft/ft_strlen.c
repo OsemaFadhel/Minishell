@@ -23,3 +23,13 @@ size_t	ft_strlen(const char *s)
 	}
 	return (c);
 }
+
+int	ft_matrixlen(char **m)
+{
+	int	i;
+
+	i = 0;
+	while (m && m[i])
+		i++;
+	return (i);
+}
