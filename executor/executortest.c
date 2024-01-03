@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 15:32:21 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/01 16:19:36 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/03 16:47:04 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	executor(t_mini	*mini, t_cmds *cmds)
 			strcat(path, cmds->cmd);
 		}
 		i = 0;
-		if (execve(path, cmds->args++, mini->env)) //execve will close the process.
-			perror("BASH$");
+		execve(path, cmds->args, NULL); //execve will close the process.
+		perror("BASH$");
 	}
 }

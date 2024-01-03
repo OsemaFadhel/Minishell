@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 17:38:14 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/01 20:03:11 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/02 16:32:51 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,9 +209,10 @@ void execute(t_mini *mini)
 		if (mini->fdin == -2)
 			mini->fdin = dup(tmpin);
 		dup2(mini->fdin, 0);
+		close(mini->fdin);
 		if	(mini->fdout == -2)
 			mini->fdout = dup(tmpout);
-		if (mini->cmds_count >= 1)
+		if (mini->cmds_count >= 1)  // to check
 		{
 			int fdpipe[2]; // Create pipe
 			pipe(fdpipe);
@@ -219,12 +220,11 @@ void execute(t_mini *mini)
 			mini->fdin = fdpipe[0];
 		}
 		dup2(mini->fdout, 1);  // Redirect output
-		// Create child process
+		close(mini->fdout);
 		ret = fork();
 		if (ret == 0)
 		{
 		    executor(mini, current_cmd); // Call the executor with the current command
-		    perror("BASH$");
 		    exit(1);
 		}
 		current_cmd = current_cmd->next;
@@ -232,8 +232,6 @@ void execute(t_mini *mini)
 	// Restore in/out defaults
 	dup2(tmpin, 0);
 	dup2(tmpout, 1);
-	close(mini->fdin);
-	close(mini->fdout);
 	close(tmpin);
 	close(tmpout);
 	while (waitpid(-1, NULL, 0) > 0);
