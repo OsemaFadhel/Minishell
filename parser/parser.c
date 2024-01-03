@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:55:37 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/01 16:17:05 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/03 20:32:54 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,6 @@ void	init_cmds(t_cmds *cmds)
 	cmds->cmd = NULL;
 	cmds->args = malloc(sizeof(char *) * 120);
 	cmds->redirect = malloc(sizeof(t_redirect) * 20);
-	cmds->fdi = 0;
-	cmds->fdo = 1;
 	cmds->next = NULL;
 }
 
@@ -124,6 +122,19 @@ int	parser(t_mini *mini)
 			}
 			cmds->redirect[red_count].outfile = mini->toks[i + 1];
 			cmds->redirect[red_count].redirect_type = 1;
+			red_count++;
+			i += 2;
+		}
+		else if (!ft_strncmp(mini->toks[i], "<<", 2))
+		{
+			init_redirect(&cmds->redirect[red_count]);
+			if (!mini->toks[i + 1] || mini->toks[i + 1] == "|")
+			{
+				printf("minishell: syntax error near unexpected token\n");
+				return (0);
+			}
+			cmds->redirect[red_count].infile = mini->toks[i + 1];
+			cmds->redirect[red_count].redirect_type = 4;
 			red_count++;
 			i += 2;
 		}

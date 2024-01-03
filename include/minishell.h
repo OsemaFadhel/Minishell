@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:21:15 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/03 16:50:09 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/03 20:31:54 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@
 
 typedef struct s_redirect
 {
-	char	*infile; // <
+	char	*infile; // <, << is delimeter
 	char	*outfile; // >, >>
-	int		redirect_type; // 1 >, 2 >>, 3 <
+	int		redirect_type; // 1 >, 2 >>, 3 <, 4 <<
 }				t_redirect;
 
 typedef struct s_cmds
@@ -105,7 +105,7 @@ int			builtin_3(t_mini *mini, int i);
 
 /* signals.c */
 
-/*void		sig_ignore(void); //ignore signals from keyboard
-void		sig_handler(int signo); *///handle signals from keyboard
+void		sig_ignore(t_mini *mini); //ignore signals from keyboard
+void		sig_handler(int signo); //handle signals from keyboard
 
 #endif
