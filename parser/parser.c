@@ -59,8 +59,8 @@ void	init_cmds(t_cmds *cmds)
 	cmds->cmd = NULL;
 	cmds->args = malloc(sizeof(char *) * 120);
 	cmds->redirect = malloc(sizeof(t_redirect) * 20);
-	cmds->fdi = 0;
-	cmds->fdo = 1;
+//	cmds->fdi = 0;
+//	cmds->fdo = 1;
 	cmds->next = NULL;
 }
 

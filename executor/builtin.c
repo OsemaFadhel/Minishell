@@ -14,14 +14,14 @@
 
 int	is_builtin(t_mini *mini, t_cmds *cmds, int i) //check if the command is a builtin
 {
-	if (!builtin(mini, i) || !builtin_2(mini, i) || !builtin_3(mini, i))
+	if (!builtin(mini, cmds, i) || !builtin_2(mini, cmds, i) || !builtin_3(mini, cmds, i))
 		return (0);
 	return (1);
 }
 
-int	builtin(t_mini *mini, int i)
+int	builtin(t_mini *mini, t_cmds *cmds, int i)
 {
-	if (strcmp(mini->toks[0], "exit") == 0) //free everything and exit
+	if (strcmp(cmds->args[0], "exit") == 0) //free everything and exit
 			exit(0);
 	/*else if (strcmp(mini->toks[0], "echo") == 0 && mini->toks[1])
 	{
@@ -52,9 +52,9 @@ int	builtin(t_mini *mini, int i)
 	return (1);
 }
 
-int	builtin_2(t_mini *mini, int i)
+int	builtin_2(t_mini *mini, t_cmds *cmds, int i)
 {
-	if (strcmp(mini->toks[0], "env") == 0)
+	if (strcmp(cmds->args[0], "env") == 0)
 	{
 		while (mini->env[i])
 		{
@@ -64,39 +64,39 @@ int	builtin_2(t_mini *mini, int i)
 		printf("\n");
 	}
 	/*else if (strcmp(mini->toks[0], "export") == 0);*/
-	else if (strcmp(mini->toks[0], "unset") == 0)
+	else if (strcmp(cmds->args[0], "unset") == 0)
 	{
 		//funzione che cerca la variabile d'ambiente e la elimina
-		if (mini->toks[1] == NULL)
+		if (cmds->args[1] == NULL)
 			return (0);
-		while (mini->toks[i])
+		while (cmds->args[i])
 		{
-			if (ft_isdigitalpha(mini->toks[i]) == 0)
+			if (ft_isdigitalpha(cmds->args[i]) == 0)
 			{
 				write(1, "unset: not a valid identifier\n", 31);
 				return (0);
 			}
 			i++;
 		}
-		mini->env = unset_cmd(mini->env, mini->toks[1]);
+		mini->env = unset_cmd(mini->env, cmds->args[1]);
 	}
 	else
 		return (1);
 	return (0);
 }
 
-int	builtin_3(t_mini *mini, int i)
+int	builtin_3(t_mini *mini, t_cmds *cmds, int i)
 {
-	if (strcmp(mini->toks[0], "cd") == 0)
+	if (strcmp(cmds->args[0], "cd") == 0)
 	{
-		if (mini->toks[1])
-			chdir(mini->toks[1]);
+		if (cmds->args[1])
+			chdir(cmds->args[1]);
 		else
 			chdir(getenv("HOME"));
 		//change_pwd(mini);
 		//cambiare la variabile d'ambiente PWD nell'env
 	}
-	else if	(strcmp(mini->toks[0], "pwd") == 0)
+	else if	(strcmp(cmds->args[0], "pwd") == 0)
 		printf("%s\n", getcwd(NULL, 0)); // questo oppure cerca nell'envp la variabile PWD e la printa
 	else
 		return (1);

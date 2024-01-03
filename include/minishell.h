@@ -99,9 +99,9 @@ char		**expand_matrix(char **matrix, char *str); //expand the matrix
 /* builtin.c */
 
 int			is_builtin(t_mini *mini, t_cmds *cmds, int i); //check if the command is a builtin
-int			builtin(t_mini *mini, int i);
-int			builtin_2(t_mini *mini, int i);
-int			builtin_3(t_mini *mini, int i);
+int			builtin(t_mini *mini, t_cmds *cmds, int i);
+int			builtin_2(t_mini *mini, t_cmds *cmds, int i);
+int			builtin_3(t_mini *mini, t_cmds *cmds, int i);
 
 /* signals.c */
 
