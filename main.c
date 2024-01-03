@@ -80,7 +80,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		init(&mini);
 		//sig_ignore();
-		input = readline("BASH$: ");
+		input = readline("shell>>>>>$: ");
 
 		add_history(input);
 		if (lexersplit(input, &mini)) //creates matrix with all the words splitted and env changed

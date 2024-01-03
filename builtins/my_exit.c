@@ -6,7 +6,7 @@ void print_error(const char *msg) {
 
 int my_exit(t_list *ncd, int *n) {
     // Extract the build information from the linked list node
-    t_build *node = (t_build *)ncd->content;
+    t_mini *node = (t_mini *)ncd->content;
     
     // Check if the command is an exit command (no arguments)
     *n = !ncd->next;
@@ -17,19 +17,19 @@ int my_exit(t_list *ncd, int *n) {
     }
     
     // Check if there are no arguments
-    if (!node->full_cmd || !node->full_cmd[1]) {
+    if (!node->toks || !node->toks[1]) {
         return 0;
     }
     
     // Declare an array to store the exit status and parse the argument
     long status[2];
-    status[1] = atoi(node->full_cmd[1]);
+    status[1] = atoi(node->toks[1]);
     
     // Check for invalid numeric argument
-    if (status[1] == 0 && node->full_cmd[1][0] != '0') {
+    if (status[1] == 0 && node->toks[1][0] != '0') {
         print_error("Numeric argument required");
         return 255;
-    } else if (node->full_cmd[2]) {
+    } else if (node->toks[2]) {
         // Check for too many arguments
         *n = 0;
         print_error("Too many arguments for exit");

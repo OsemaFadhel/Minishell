@@ -173,7 +173,7 @@
     waitpid(ret, NULL);
 }*/
 
-void execute(t_mini *mini)
+/*void execute(t_mini *mini)
 {
     // Save in/out
 	int tmpin;
@@ -237,5 +237,92 @@ void execute(t_mini *mini)
 	close(tmpin);
 	close(tmpout);
 	while (waitpid(-1, NULL, 0) > 0);
+}*/
+
+void execute(t_mini *mini)
+{
+	int tmpin;
+	int tmpout;
+	int ret;
+	int i;
+	t_cmds *current_cmd;
+	int is_exit = 0; // Variable to check if "exit" command was executed
+
+	// Save in/out
+	tmpin = dup(0);
+	tmpout = dup(1);
+	current_cmd = mini->cmds;
+	mini->fdin = dup(tmpin);
+
+	while (current_cmd != NULL && !is_exit)
+	{
+		i = 0;
+		while (current_cmd->redirect[i].redirect_type != 0)
+		{
+			if (current_cmd->redirect[i].redirect_type == 3) // <
+			{
+				mini->fdin = open(current_cmd->redirect[i].infile, O_RDONLY);
+			}
+			else if (current_cmd->redirect[i].redirect_type == 1) // >
+			{
+				mini->fdout = open(current_cmd->redirect[i].outfile, O_WRONLY | O_TRUNC | O_CREAT, 0644);
+			}
+			else if (current_cmd->redirect[i].redirect_type == 2) // >>
+			{
+				mini->fdout = open(current_cmd->redirect[i].outfile, O_WRONLY | O_APPEND | O_CREAT, 0644);
+			}
+			i++;
+		}
+
+		if (mini->fdin == -2)
+			mini->fdin = dup(tmpin);
+
+		dup2(mini->fdin, 0);
+
+		if (mini->fdout == -2)
+			mini->fdout = dup(tmpout);
+
+		if (mini->cmds_count >= 1)
+		{
+			int fdpipe[2]; // Create pipe
+			pipe(fdpipe);
+			mini->fdout = fdpipe[1];
+			mini->fdin = fdpipe[0];
+		}
+
+		dup2(mini->fdout, 1); // Redirect output
+
+		// Check if the command is a built-in command
+		if (is_builtin((t_mini *)current_cmd))
+		{
+			builtin(mini, current_cmd, &is_exit, 0);
+		}
+		else
+		{
+			// Create child process
+			ret = fork();
+			if (ret == 0)
+			{
+				executor(mini, current_cmd); // Call the executor with the current command
+				perror("BASH$");
+				exit(1);
+			}
+		}
+
+		// Restore in/out defaults
+		dup2(tmpin, 0);
+
+		if (mini->fdout != 1)
+			close(mini->fdout);
+
+		close(mini->fdin);
+		close(tmpin);
+		close(tmpout);
+
+		while (waitpid(-1, NULL, 0) > 0);
+
+		current_cmd = current_cmd->next;
+	}
 }
+
 

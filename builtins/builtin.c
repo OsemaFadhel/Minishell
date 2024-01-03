@@ -110,7 +110,7 @@ int	builtin(t_prompt *prompt, t_list *cmd, int *is_exit, int n)
 
 	while (cmd)
 	{
-		a = ((t_build *)cmd->content)->full_cmd;
+		a = ((t_mini *)cmd->content)->toks;
 		n = 0;
 		if (a)
 			n = ft_strlen(*a);
@@ -133,29 +133,29 @@ int	builtin(t_prompt *prompt, t_list *cmd, int *is_exit, int n)
 	return (g_status);
 }
 
-int	is_builtin(t_build *n)
+int	is_builtin(t_mini *n)
 {
 	int		l;
 
-	if (!n->full_cmd)
+	if (!n->toks)
 		return (0);
-	if ((n->full_cmd && ft_strchr(*n->full_cmd, '/')) || (n->full_path && \
-		ft_strchr(n->full_path, '/')))
+	if ((n->toks && ft_strchr(*n->toks, '/')) || (n->env && \
+		ft_strchr(*n->env, '/')))
 		return (0);
-	l = ft_strlen(*n->full_cmd);
-	if (!ft_strncmp(*n->full_cmd, "pwd", l) && l == 3)
+	l = ft_strlen(*n->toks);
+	if (!ft_strncmp(*n->toks, "pwd", l) && l == 3)
 		return (1);
-	if (!ft_strncmp(*n->full_cmd, "env", l) && l == 3)
+	if (!ft_strncmp(*n->toks, "env", l) && l == 3)
 		return (1);
-	if (!ft_strncmp(*n->full_cmd, "cd", l) && l == 2)
+	if (!ft_strncmp(*n->toks, "cd", l) && l == 2)
 		return (1);
-	if (!ft_strncmp(*n->full_cmd, "export", l) && l == 6)
+	if (!ft_strncmp(*n->toks, "export", l) && l == 6)
 		return (1);
-	if (!ft_strncmp(*n->full_cmd, "unset", l) && l == 5)
+	if (!ft_strncmp(*n->toks, "unset", l) && l == 5)
 		return (1);
-	if (!ft_strncmp(*n->full_cmd, "echo", l) && l == 4)
+	if (!ft_strncmp(*n->toks, "echo", l) && l == 4)
 		return (1);
-	if (!ft_strncmp(*n->full_cmd, "exit", l) && l == 4)
+	if (!ft_strncmp(*n->toks, "exit", l) && l == 4)
 		return (1);
 	return (0);
 }

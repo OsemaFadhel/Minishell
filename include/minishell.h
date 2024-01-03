@@ -49,7 +49,7 @@ typedef struct s_cmds
 	struct s_cmds	*next;
 }				t_cmds;
 
-typedef struct s_mini
+/*typedef struct s_mini
 {
 	t_cmds	*cmds;
 	int		cmds_count;
@@ -57,6 +57,16 @@ typedef struct s_mini
 	int		fdout; //init to NULL
 	char	**env;
 	char	**toks;
+}				t_mini;*/
+
+typedef struct s_mini
+{
+	t_cmds	*cmds;
+	int		cmds_count;
+	int		fdin; //init to NULL
+	int		fdout; //init to NULL
+	char	**env; //(full_path)
+	char	**toks; //(full_cmds)
 }				t_mini;
 
 /* functions */
@@ -130,7 +140,7 @@ enum	e_mini_error
 };
 
 int	builtin(t_prompt *prompt, t_list *cmd, int *is_exit, int n);
-int	is_builtin(t_build *n);
+int	is_builtin(t_mini *n);
 int	my_cd(t_prompt *p);
 int my_exit(t_list *ncd, int *n);
 void	*cont_error(int err_type, char *param, int err);
