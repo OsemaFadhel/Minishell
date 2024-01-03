@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/04 09:10:17 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/11/28 16:33:46 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/03 01:39:12 by duzegbu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ typedef struct s_list
 {
 	void			*content;
 	struct s_list	*next;
+	char *data; //added this for my exit function
 }	t_list;
 
 /* Libc functions */

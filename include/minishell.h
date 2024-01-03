@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:21:15 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/01 19:58:50 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/03 01:40:48 by duzegbu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ enum	e_mini_error
 int	builtin(t_prompt *prompt, t_list *cmd, int *is_exit, int n);
 int	is_builtin(t_build *n);
 int	my_cd(t_prompt *p);
+int my_exit(t_list *ncd, int *n);
 void	*cont_error(int err_type, char *param, int err);
 void	change_error(char **str[2]);
 void	free_matrix(char ***m);
@@ -144,4 +145,4 @@ char **set_env(char *var, char *value, char **envp, int n);
 void		sig_ignore(void); //ignore signals from keyboard
 void		sig_handler(int signo); //handle signals from keyboard
 
-#endif
+#endif 
