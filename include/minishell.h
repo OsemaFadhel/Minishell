@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:21:15 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/03 20:31:54 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/04 17:18:11 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,9 @@ typedef struct s_cmds
 	char			*cmd; //init to NULL
 	char			**args;	//init to NULL
 	t_redirect		*redirect;
+	int				out;
+	int				in;
+	int				redirect_count;
 	struct s_cmds	*next;
 }				t_cmds;
 
@@ -58,6 +61,7 @@ typedef struct s_mini
 	int		cmds_count;
 	int		fdin; //init to NULL
 	int		fdout; //init to NULL
+	int		here_doc_flag; //init to 0
 	char	**env;
 	char	**toks;
 }				t_mini;
