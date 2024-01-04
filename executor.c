@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 17:38:14 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/04 17:15:21 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/04 19:37:48 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,28 +52,27 @@ void	update_fd(t_mini *mini, t_cmds *current_cmd)
 	int i;
 
 	i = 0;
-		while (current_cmd->redirect[i].redirect_type != 0)
+	while (current_cmd->redirect[i].redirect_type != 0)
+	{
+		if (current_cmd->redirect[i].redirect_type == 3) // <
 		{
-			if (current_cmd->redirect[i].redirect_type == 3) // <
-			{
-				mini->fdin = open(current_cmd->redirect[i].infile, O_RDONLY);
-			}
-			else if (current_cmd->redirect[i].redirect_type == 1) // >
-		    {
-		        mini->fdout = open(current_cmd->redirect[i].outfile, O_WRONLY | O_TRUNC | O_CREAT, 0644);
-		    }
-		    else if (current_cmd->redirect[i].redirect_type == 2) // >>
-		    {
-		        mini->fdout = open(current_cmd->redirect[i].outfile, O_WRONLY | O_APPEND | O_CREAT, 0644);
-		    }
-			else if (current_cmd->redirect[i].redirect_type == 4) // <<
-			{
-				here_doc(mini, current_cmd->redirect[i].infile);
-				mini->here_doc_flag = 1;
-
-			}
-			i++;
+			mini->fdin = open(current_cmd->redirect[i].infile, O_RDONLY);
 		}
+		else if (current_cmd->redirect[i].redirect_type == 1) // >
+		{
+			mini->fdout = open(current_cmd->redirect[i].outfile, O_WRONLY | O_TRUNC | O_CREAT, 0644);
+		}
+		else if (current_cmd->redirect[i].redirect_type == 2) // >>
+		{
+			mini->fdout = open(current_cmd->redirect[i].outfile, O_WRONLY | O_APPEND | O_CREAT, 0644);
+		}
+		else if (current_cmd->redirect[i].redirect_type == 4) // <<
+		{
+			here_doc(mini, current_cmd->redirect[i].infile);
+			mini->here_doc_flag = 1;
+		}
+		i++;
+	}
 }
 
 void execute(t_mini *mini)
@@ -84,6 +83,7 @@ void execute(t_mini *mini)
 	int ret;
 	int i;
 	int cmd_count;
+	int	pipe_flag;
 	t_cmds *current_cmd;
 
 	// Set the initial input
@@ -92,22 +92,27 @@ void execute(t_mini *mini)
 	cmd_count = 0;
 	current_cmd = mini->cmds;
 	mini->fdin = dup(tmpin);
-	while (current_cmd != NULL)
+	while (current_cmd != NULL)  //missing case like like ls >file txt | wc -l //the fdin for wc need to be the fdout of ls
 	{
 		update_fd(mini, current_cmd);
 		if (mini->fdin == -2 && cmd_count == 0)
 			mini->fdin = dup(tmpin);
+		if (current_cmd->in == 0 && cmd_count != 0 && pipe_flag == 0)
+			mini->fdin = dup(tmpin);
 		dup2(mini->fdin, 0);
 		close(mini->fdin);
-		if	(mini->fdout == -2 || (current_cmd->next == NULL && current_cmd->redirect[0].redirect_type == 0))
+		if	(current_cmd->out == 0 || (current_cmd->next == NULL && current_cmd->out == 0))
 			mini->fdout = dup(tmpout);
-		if (mini->cmds_count >= 1)  // to check
+		if (mini->cmds_count >= 1 && current_cmd->out == 0 && current_cmd->next != NULL)  // to check
 		{
 			int fdpipe[2]; // Create pipe
 			pipe(fdpipe);
 			mini->fdout = fdpipe[1];
 			mini->fdin = fdpipe[0];
+			pipe_flag = 1;
 		}
+		else
+			pipe_flag = 0;
 		dup2(mini->fdout, 1);  // Redirect output
 		close(mini->fdout);
 		ret = fork();

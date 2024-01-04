@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 18:18:50 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/04 16:51:51 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/04 18:01:47 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,6 @@ int	main(int argc, char **argv, char **envp)
 				execute(&mini);
 			}
 		}
-		/* free cmds line so loop starts back clean */
 		free_cmds(&mini, input);
 	}
 	return (0);
