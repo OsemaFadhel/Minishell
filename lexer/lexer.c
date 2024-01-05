@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:44:53 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/31 23:12:54 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/05 03:03:49 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,82 +52,73 @@ int	check_closed_quotes(char *cmd, int i)
 }
 
 //split cmd into tokens taking care of spaces and quotes. anything inside quotes count as one word
-char	**lexersplit_1(char *cmd, char **env)
+char	**lexersplit_1(char *cmd, t_mini *mini, t_lexer *lexer)
 {
-	int		i;
-	int		j;
 	char	**toks;
 	int		words;
 
-	i = 0;
-	j = 0;
 	words = count_words(cmd);
 	toks = malloc(sizeof(char *) * (words + 1));
 	if (!toks)
 		return (NULL);
-	while (cmd[i])
+	while (cmd[lexer->i])
 	{
-		toks[j] = malloc(sizeof(char) * (ft_strlen(cmd) + 1));
-		if (cmd[i] == ' ')
-			i++;
-		else if (cmd[i] == '\"')
+		toks[lexer->j] = malloc(sizeof(char) * (ft_strlen(cmd) + 1));
+		if (cmd[lexer->i] == ' ')
+			lexer->i++;
+		else if (cmd[lexer->i] == '\"')
 		{
-			i = add_str_dquot(cmd, toks, i, j, env);
-			j++;
+			lexer->i = add_str_dquot(cmd, toks, lexer, mini->env);
+			lexer->j++;
 		}
-		else if (cmd[i] == '\'')
+		else if (cmd[lexer->i] == '\'')
 		{
-			i = add_str_quot(cmd, toks, i, j);
-			j++;
+			lexer->i = add_str_quot(cmd, toks, lexer);
+			lexer->j++;
 		}
-		else if ((cmd[i] == '>' && cmd[i + 1] == '>') | (cmd[i] == '<' && cmd[i + 1] == '<'))
+		else if ((cmd[lexer->i] == '>' && cmd[lexer->i + 1] == '>')
+					|| (cmd[lexer->i] == '<' && cmd[lexer->i + 1] == '<'))
 		{
-			toks[j][0] = cmd[i];
-			toks[j][1] = cmd[i + 1];
-			toks[j][2] = '\0';
-			i += 2;
-			j++;
+			toks[lexer->j][0] = cmd[lexer->i];
+			toks[lexer->j][1] = cmd[lexer->i + 1];
+			toks[lexer->j][2] = '\0';
+			lexer->i += 2;
+			lexer->j++;
 		}
-		else if (cmd[i] == '>' | cmd[i] == '<')
+		else if (cmd[lexer->i] == '>' | cmd[lexer->i] == '<')
 		{
-			toks[j][0] = cmd[i];
-			toks[j][1] = '\0';
-			i++;
-			j++;
+			toks[lexer->j][0] = cmd[lexer->i];
+			toks[lexer->j][1] = '\0';
+			lexer->i++;
+			lexer->j++;
 		}
-		else if (cmd[i] == '|')
+		else if (cmd[lexer->i] == '|')
 		{
-			toks[j][0] = cmd[i];
-			toks[j][1] = '\0';
-			i++;
-			j++;
+			toks[lexer->j][0] = cmd[lexer->i];
+			toks[lexer->j][1] = '\0';
+			lexer->i++;
+			lexer->j++;
 		}
 		else
 		{
-			i = add_str(cmd, toks, i, j, env);
-			j++;
+			lexer->i = add_str(cmd, toks, lexer, mini->env);
+			lexer->j++;
 		}
 	}
-	toks[j] = NULL;
+	toks[lexer->j] = NULL;
 	return (toks);
 }
 
 int	lexersplit(char *cmd, t_mini *mini)
 {
-	int	i;
+	t_lexer	lexer;
 
-	i = 0;
-
-	mini->toks = lexersplit_1(cmd, mini->env);
+	lexer.i = 0;
+	lexer.j = 0;
+	lexer.k = 0;
+	lexer.l = 0;
+	mini->toks = lexersplit_1(cmd, mini, &lexer);
 	if (!mini->toks)
 		return (0);
-	/*while (mini->toks[i])
-	{
-		printf("lexer tok[%i] = %s\n", i, mini->toks[i]);
-		i++;
-	}
-	return (1);*/
+	return (1);
 }
-
-// split per virgolette. includere tutto quello dentro in un unico token, incluso virgolette
-//

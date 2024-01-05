@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 12:40:16 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/28 11:34:46 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/05 03:13:01 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ char *get_env_name(char *cmd, int i)
 }
 
 //add str found inside double quotes
-int	add_str_dquot(char *cmd, char **toks, int i, int j, char **env)
+int	add_str_dquot(char *cmd, char **toks, t_lexer *lexer, char **env)
 {
 	int	k;
 	int l;
@@ -73,79 +73,79 @@ int	add_str_dquot(char *cmd, char **toks, int i, int j, char **env)
 	char *env_var;
 	char *var;
 
-	k = 0;
-	if (check_closed_dquotes(cmd, i) == 0) //expander change env var $
+	lexer->k = 0;
+	if (check_closed_dquotes(cmd, lexer->i) == 0) //expander change env var $
 	{
-		if (cmd[i - 1] != ' ' && cmd[i - 1] != '\0') //maybe implent in the expander so firtst we can check the quotes for the env $ thenk remove the spaces
+		if (cmd[lexer->i - 1] != ' ' && cmd[lexer->i - 1] != '\0') //maybe implent in the expander so firtst we can check the quotes for the env $ thenk remove the spaces
 		{
-			toks[j][k] = '\b';
-			k++;
+			toks[lexer->j][lexer->k] = '\b';
+			lexer->k++;
 		}
-		//toks[j][k] = '\"';
-		//k++;
-		i++;
-		while (cmd[i] != '\"')
+		//toks[j][lexer->k] = '\"';
+		//lexer->k++;
+		lexer->i++;
+		while (cmd[lexer->i] != '\"')
 		{
-			if (cmd[i] == '$')
+			if (cmd[lexer->i] == '$')
 			{
-				i++;
+				lexer->j++;
 				l = 0;
-				env_var = get_env_name(cmd, i);
+				env_var = get_env_name(cmd, lexer->i);
 				post =  ft_strlen(env_var) - 1;
 				var = get_env_var(env_var, env);
 				if (var != NULL)
 				{
 					while (var[l] != '\0')
 					{
-						toks[j][k] = var[l];
+						toks[lexer->j][lexer->k] = var[l];
 						l++;
-						k++;
+						lexer->k++;
 					}
 				}
 				free(env_var);
 				free(var);
-				i += post;
+				lexer->i += post;
 			}
 			else
 			{
-				toks[j][k] = cmd[i];
-				i++;
-				k++;
+				toks[lexer->j][lexer->k] = cmd[lexer->i];
+				lexer->j++;
+				lexer->k++;
 			}
 		}
-		//toks[j][k] = '\"';
-		//k++;
+		//toks[j][lexer->k] = '\"';
+		//lexer->k++;
 	}
 	else
 	{
-		toks[j][k] = '\"';
-		k++;
+		toks[lexer->j][lexer->k] = '\"';
+		lexer->k++;
 	}
-	toks[j][k] = '\0';
-	i++;
-	return (i);
+	toks[lexer->j][lexer->k] = '\0';
+	lexer->i++;
+	return (lexer->i);
 }
 
 //add str found inside single quotes
-int add_str_quot(char *cmd, char **toks, int i, int j)
+int add_str_quot(char *cmd, char **toks, t_lexer *lexer)
 {
 	int	k;
 
 	k = 0;
-	if (check_closed_quotes(cmd, i) == 0)
+	if (check_closed_quotes(cmd, lexer->i) == 0)
 	{
-		if (cmd[i - 1] != ' ' && cmd[i - 1] != '\0')
+		if (cmd[lexer->i - 1] != ' ' && cmd[lexer->i - 1] != '\0')
 		{
-			toks[j][k] = '\b';
+			toks[lexer->j][k] = '\b';
 			k++;
 		}
 		//toks[j][k] = '\'';
 		//k++;
-		i++;
-		while (cmd[i] != '\'')
+		lexer->i++;
+		while (cmd[lexer->i] != '\'')
 		{
-			toks[j][k] = cmd[i];
-			i++;
+			toks[lexer->j][k] = cmd[lexer->i];
+			lexer->i++;
 			k++;
 		}
 		//toks[j][k] = '\'';
@@ -153,17 +153,46 @@ int add_str_quot(char *cmd, char **toks, int i, int j)
 	}
 	else
 	{
-		toks[j][k] = '\'';
+		toks[lexer->j][k] = '\'';
 		k++;
 	}
-	toks[j][k] = '\0';
-	i++;
-	return (i);
+	toks[lexer->j][k] = '\0';
+	lexer->i++;
+	return (lexer->i);
 
 }
 
+void	change_env_v(char *cmd, char **toks, t_lexer *lexer, char **env)
+{
+	int	l;
+	int post;
+	char *env_var;
+	char *var;
+
+	if (cmd[lexer->i] == '$')
+	{
+		lexer->j++;
+		lexer->l = 0;
+		env_var = get_env_name(cmd, lexer->i);
+		post =  ft_strlen(env_var) - 1;
+		var = get_env_var(env_var, env);
+		if (var != NULL)
+		{
+			while (var[lexer->l] != '\0')
+			{
+				toks[lexer->j][lexer->k] = var[lexer->l];
+				lexer->l++;
+				lexer->k++;
+			}
+		}
+		free(env_var);
+		free(var);
+		lexer->i += post;
+	}
+}
+
 //add str  found outside quotes
-int	add_str(char *cmd, char **toks, int i, int j, char **env)
+int	add_str(char *cmd, char **toks, t_lexer *lexer, char **env)
 {
 	int	k;
 	int l;
@@ -172,53 +201,53 @@ int	add_str(char *cmd, char **toks, int i, int j, char **env)
 	char *var;
 
 	k = 0;
-	while (cmd[i] != ' ' && cmd[i] != '\0')
+	while (cmd[lexer->i] != ' ' && cmd[lexer->i] != '\0')
 	{
-		if (cmd[i - 1] == '\"' || cmd[i - 1] == '\'') //add in the expander, maybe this not; only the quotes
+		if (cmd[lexer->i - 1] == '\"' || cmd[lexer->i - 1] == '\'') //add in the expander, maybe this not; only the quotes
 		{
-			toks[j][k] = '\b';
+			toks[lexer->j][k] = '\b';
 			k++;
 		}
-		if (cmd[i] == '\"' || cmd[i] == '\'')
+		if (cmd[lexer->i] == '\"' || cmd[lexer->i] == '\'')
 		{
-			if(cmd[i] == '\"' && check_closed_dquotes(cmd, i) == 0)
+			if(cmd[lexer->i] == '\"' && check_closed_dquotes(cmd, lexer->i) == 0)
 				break;
-			else if (cmd[i] == '\'' && check_closed_quotes(cmd, i) == 0)
+			else if (cmd[lexer->i] == '\'' && check_closed_quotes(cmd, lexer->i) == 0)
 				break;
 		}
-		if (cmd[i] == '$')
+		if (cmd[lexer->i] == '$')
 		{
-			i++;
+			lexer->i++;
 			l = 0;
-			env_var = get_env_name(cmd, i);  // add check for exit status $?
+			env_var = get_env_name(cmd, lexer->i);  // add check for exit status $?
 			post =  ft_strlen(env_var) - 1;
 			var = get_env_var(env_var, env);
 			if (var != NULL)
 			{
 				while (var[l] != '\0')
 				{
-					toks[j][k] = var[l];
+					toks[lexer->j][k] = var[l];
 					l++;
 					k++;
 				}
 			}
 			free(env_var);
 			free(var);
-			i += post;
+			lexer->i += post;
 		}
-		if ((cmd[i] == '>' && cmd[i + 1] == '>') | (cmd[i] == '<' && cmd[i + 1] == '<'))
+		if ((cmd[lexer->i] == '>' && cmd[lexer->i + 1] == '>') | (cmd[lexer->i] == '<' && cmd[lexer->i + 1] == '<'))
 			break;
-		if (cmd[i] == '>' | cmd[i] == '<')
+		if (cmd[lexer->i] == '>' | cmd[lexer->i] == '<')
 			break;
-		if (cmd[i] == '|')
+		if (cmd[lexer->i] == '|')
 			break;
 		else
 		{
-			toks[j][k] = cmd[i];
-			i++;
+			toks[lexer->j][k] = cmd[lexer->i];
+			lexer->i++;
 			k++;
 		}
 	}
-	toks[j][k] = '\0';
-	return (i);
+	toks[lexer->j][k] = '\0';
+	return (lexer->i);
 }
