@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:44:53 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/05 03:03:49 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/06 22:10:35 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char	**lexersplit_1(char *cmd, t_mini *mini, t_lexer *lexer)
 	char	**toks;
 	int		words;
 
-	words = count_words(cmd);
+	words = count_words_lex(cmd);
 	toks = malloc(sizeof(char *) * (words + 1));
 	if (!toks)
 		return (NULL);
