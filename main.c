@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 18:18:50 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/04 18:01:47 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/06 20:50:21 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,12 +86,7 @@ int	main(int argc, char **argv, char **envp)
 		if (lexersplit(input, &mini)) //creates matrix with all the words splitted and env changed
 		{
 			if (parser(&mini))
-			{
-				//printf("mini cmds  %s\n", mini.cmds->cmd);
-				printf("if parser main\n");
-					 /* exec try tests should start new process and do it*/
 				execute(&mini);
-			}
 		}
 		free_cmds(&mini, input);
 	}

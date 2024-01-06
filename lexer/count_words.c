@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 12:36:53 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/21 15:54:25 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/06 22:03:26 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	count_words_3(char *cmd, int i, int words)
 	return (i);
 }
 
-int	count_words(char *cmd)
+int	count_words_lex(char *cmd)
 {
 	int	i;
 	int	words;

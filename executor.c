@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 17:38:14 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/06 20:40:41 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/06 20:47:47 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,9 @@ void execute(t_mini *mini)
 		/*if (mini->fdin == -2 && cmd_count == 0)
 			mini->fdin = dup(tmpin);*/ // gia c'e su
 		if (current_cmd->in == 0 && cmd_count != 0 && pipe_flag == 0)
+		{
 			mini->fdin = dup(tmpin); // cambiare il fdin con un fd vuoto
+		}
 		dup2(mini->fdin, 0);
 		close(mini->fdin);
 		if	(current_cmd->next == NULL && current_cmd->out == 0)
@@ -111,6 +113,8 @@ void execute(t_mini *mini)
 			mini->fdin = fdpipe[0];
 			pipe_flag = 1;
 		}
+		else if (current_cmd->out == 0 && current_cmd->next == NULL)
+			mini->fdout = dup(tmpout);
 		else
 			pipe_flag = 0;
 		dup2(mini->fdout, 1);  // Redirect output

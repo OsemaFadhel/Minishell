@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 15:32:21 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/05 16:15:58 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/06 22:07:41 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,70 @@ int		search_env(char **env, char *str)
 	return (-1);
 }
 
+void	ft_free_array(char **array)
+{
+	int	i;
+
+	i = 0;
+	while (array[i])
+	{
+		free(array[i]);
+		i++;
+	}
+	free(array);
+}
+int			check_bin(t_mini *mini, t_cmds *cmds)
+{
+	struct stat buf;
+	char		**path;
+	char		*bin;
+	char		*tmp;
+	size_t		i;
+
+	if (search_env(mini->env, "PATH") == -1)
+		return (-1);
+	path = ft_split(mini->env[search_env(mini->env, "PATH")] + 5, ':');
+	i = 0;
+	while (path[i])
+	{
+		bin = ft_strjoin(path[i], "/");
+		tmp = bin;
+		bin = ft_strjoin(bin, cmds->cmd);
+		free(tmp);
+		if (!lstat(bin, &buf))
+		{
+			ft_free_array(path);
+			free(bin);
+			return (i);
+		}
+		free(bin);
+		i++;
+	}
+	ft_free_array(path);
+	return (0);
+}
+
+char	*add_path(t_mini *mini, t_cmds *cmds, int i)
+{
+	char	**path;
+	char	*bin;
+	char	*tmp;
+
+	path = ft_split(mini->env[search_env(mini->env, "PATH")] + 5, ':');
+	bin = ft_strjoin(path[i], "/");
+	tmp = bin;
+	bin = ft_strjoin(bin, cmds->cmd);
+	free(tmp);
+	ft_free_array(path);
+	return (bin);
+}
+
 void	executor(t_mini	*mini, t_cmds *cmds)
 {
 	int	i;
 	char *bin;
-	char *path;
 
 	i = 0;
-	bin = "/bin/";
 	//if (!is_builtin(mini, cmds, i))
 	//	return ;
 	if (1)
@@ -51,22 +107,16 @@ void	executor(t_mini	*mini, t_cmds *cmds)
 		//check if there is a path in the command
 		//if there is, execute it with execve
 		//else, execute it with /bin/ + command
-		if (search_env(mini->env, "PATH") == -1)
-		{
-			printf("Error: No such file or directory\n");
-			return ;
-		}
 		if(ft_strchr(cmds->cmd, '/'))
-			path = cmds->cmd;
-		else
+			bin = cmds->cmd;
+		else if (check_bin(mini, cmds) > 0)
 		{
-			//malloc the path and copy the bin + command into it (strcat
-			path = malloc(sizeof(char) * (ft_strlen(bin) + ft_strlen(cmds->cmd) + 1));
-			strcpy(path, bin);
-			strcat(path, cmds->cmd);
+			i = check_bin(mini, cmds);
+			bin = add_path(mini, cmds, i);
 		}
-		i = 0;
-		execve(path, cmds->args, mini->env); //execve will close the process.
+		else
+			bin = ft_strjoin(bin, cmds->cmd);
+		execve(bin, cmds->args, mini->env); //execve will close the process.
 		//perror("BASH$");
 	}
 }

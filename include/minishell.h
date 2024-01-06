@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:21:15 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/05 03:01:15 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/06 22:03:43 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../libft/libft.h"
+#include <sys/stat.h>
 # include "lexer.h"
 
 
@@ -81,7 +82,7 @@ int			check_closed_dquotes(char *cmd, int i);
 int			check_closed_quotes(char *cmd, int i);
 int			count_words_2(char *cmd, int i, int words);
 int			count_words_3(char *cmd, int i, int words);
-int			count_words(char *cmd);
+int			count_words_lex(char *cmd);
 int			add_str_dquot(char *cmd, char **toks, t_lexer *lexer, char **env);
 int			add_str_quot(char *cmd, char **toks, t_lexer *lexer);
 int			add_str(char *cmd, char **toks, t_lexer *lexer, char **env);
