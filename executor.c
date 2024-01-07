@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 17:38:14 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/06 20:47:47 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/07 01:48:18 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	ft_strcmp(char *s1, char *s2)
 	return (s1[i] - s2[i]);
 }
 
-void	here_doc(t_mini *mini, char *delimeter)
+void	here_doc(t_mini *mini, char *delimeter, t_cmds *current_cmd)
 {
 	char	*line;
 	int		fd;
@@ -44,7 +44,7 @@ void	here_doc(t_mini *mini, char *delimeter)
 		free(line);
 	}
 	close(fd);
-	mini->fdin = open(".tmp.txt", O_RDONLY);
+	current_cmd->fdin = open(".tmp.txt", O_RDONLY);
 }
 
 void	update_fd(t_mini *mini, t_cmds *current_cmd)
@@ -56,19 +56,19 @@ void	update_fd(t_mini *mini, t_cmds *current_cmd)
 	{
 		if (current_cmd->redirect[i].redirect_type == 3) // <
 		{
-			mini->fdin = open(current_cmd->redirect[i].infile, O_RDONLY);
+			current_cmd->fdin = open(current_cmd->redirect[i].infile, O_RDONLY);
 		}
 		else if (current_cmd->redirect[i].redirect_type == 1) // >
 		{
-			mini->fdout = open(current_cmd->redirect[i].outfile, O_WRONLY | O_TRUNC | O_CREAT, 0644);
+			current_cmd->fdout = open(current_cmd->redirect[i].outfile, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 		}
 		else if (current_cmd->redirect[i].redirect_type == 2) // >>
 		{
-			mini->fdout = open(current_cmd->redirect[i].outfile, O_WRONLY | O_APPEND | O_CREAT, 0644);
+			current_cmd->fdout = open(current_cmd->redirect[i].outfile, O_WRONLY | O_APPEND | O_CREAT, 0644);
 		}
 		else if (current_cmd->redirect[i].redirect_type == 4) // <<
 		{
-			here_doc(mini, current_cmd->redirect[i].infile);
+			here_doc(mini, current_cmd->redirect[i].infile, current_cmd);
 			mini->here_doc_flag = 1;
 		}
 		i++;
@@ -91,34 +91,33 @@ void execute(t_mini *mini)
 	tmpout = dup(1);
 	cmd_count = 0;
 	current_cmd = mini->cmds;
-	mini->fdin = dup(tmpin);
+	current_cmd->fdin = dup(tmpin);
 	while (current_cmd != NULL)  //missing case like like ls >file txt | wc -l //the fdin for wc need to be the fdout of ls
 	{
-		update_fd(mini, current_cmd);
-		/*if (mini->fdin == -2 && cmd_count == 0)
-			mini->fdin = dup(tmpin);*/ // gia c'e su
+		/*if (current_cmd->fdin == -2 && cmd_count == 0)
+			current_cmd->fdin = dup(tmpin);*/ // gia c'e su
 		if (current_cmd->in == 0 && cmd_count != 0 && pipe_flag == 0)
-		{
-			mini->fdin = dup(tmpin); // cambiare il fdin con un fd vuoto
-		}
-		dup2(mini->fdin, 0);
-		close(mini->fdin);
+			current_cmd->fdin = dup(tmpin); // cambiare il fdin con un fd vuoto
 		if	(current_cmd->next == NULL && current_cmd->out == 0)
-			mini->fdout = dup(tmpout);
+			current_cmd->fdout = dup(tmpout);
 		if (mini->cmds_count >= 1 && current_cmd->out == 0 && current_cmd->next != NULL)  // to check
 		{
+			printf("pipe\n");
 			int fdpipe[2]; // Create pipe
 			pipe(fdpipe);
-			mini->fdout = fdpipe[1];
-			mini->fdin = fdpipe[0];
+			current_cmd->fdout = fdpipe[1];
+			current_cmd->next->fdin = fdpipe[0];
 			pipe_flag = 1;
 		}
 		else if (current_cmd->out == 0 && current_cmd->next == NULL)
-			mini->fdout = dup(tmpout);
+			current_cmd->fdout = dup(tmpout);
 		else
 			pipe_flag = 0;
-		dup2(mini->fdout, 1);  // Redirect output
-		close(mini->fdout);
+		update_fd(mini, current_cmd);
+		dup2(current_cmd->fdin, 0);
+		close(current_cmd->fdin);
+		dup2(current_cmd->fdout, 1);  // Redirect output
+		close(current_cmd->fdout);
 		ret = fork();
 		if (ret == 0)
 		{
@@ -135,6 +134,7 @@ void execute(t_mini *mini)
 		if (mini->here_doc_flag == 1)
 			unlink(".tmp.txt");
 	}
+	free_cmds_list(current_cmd);
 	// Restore in/out defaults
 	dup2(tmpin, 0);
 	dup2(tmpout, 1);

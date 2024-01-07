@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 15:32:21 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/06 22:31:41 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/07 01:49:02 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,18 +36,6 @@ int		search_env(char **env, char *str)
 	return (-1);
 }
 
-void	ft_free_array(char **array)
-{
-	int	i;
-
-	i = 0;
-	while (array[i])
-	{
-		free(array[i]);
-		i++;
-	}
-	free(array);
-}
 int	check_bin(t_mini *mini, t_cmds *cmds)
 {
 	struct stat buf;
@@ -93,23 +81,21 @@ char	*add_path(t_mini *mini, t_cmds *cmds, int i)
 void	executor(t_mini	*mini, t_cmds *cmds)
 {
 	int	i;
-	char *bin;
 
 	i = 0;
 	//if (!is_builtin(mini, cmds, i))
 	//	return ;
 	if (1)
 	{
-		if(ft_strchr(cmds->cmd, '/'))
-			bin = cmds->cmd;
+		if(ft_strchr(cmds->cmd, '/'));
 		else if (check_bin(mini, cmds) > 0)
 		{
 			i = check_bin(mini, cmds);
-			bin = add_path(mini, cmds, i);
+			cmds->cmd = add_path(mini, cmds, i);
 		}
-		else
-			bin = ft_strjoin(bin, cmds->cmd);
-		if (execve(bin, cmds->args, mini->env)) //execve will close the process.
+		printf("cmd: %s\n", cmds->cmd);
+		printf("args: %s\n", cmds->args[0]);
+		if (execve(cmds->cmd, cmds->args, mini->env)) //execve will close the process.
 			perror("BASH$");
 	}
 }
