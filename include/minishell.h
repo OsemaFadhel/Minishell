@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:21:15 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/07 18:41:55 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/07 21:00:45 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 # include <readline/history.h>
 # include "../libft/libft.h"
 #include <sys/stat.h>
-# include "lexer.h"
+# include "utils.h"
 
 
 /* global variables */

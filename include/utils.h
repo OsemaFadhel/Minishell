@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer.h                                            :+:      :+:    :+:   */
+/*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 02:26:00 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/05 02:57:38 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/07 21:00:59 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LEXER_H
-# define LEXER_H
+#ifndef UTILS_H
+# define UTILS_H
 
 # include "../libft/libft.h"
 # include "minishell.h"
@@ -24,5 +24,10 @@ typedef struct s_lexer
 	int				l;
 }				t_lexer;
 
+typedef struct s_parser
+{
+	int				i;
+	int				j;
+}				t_parser;
 
 #endif
