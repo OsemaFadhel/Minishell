@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 17:38:14 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/07 18:49:47 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/07 21:50:18 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,7 +170,6 @@ void execute(t_mini *mini)
 	}
 	dup2(tmpin, 0);
 	dup2(tmpout, 1);
-	ft_close(mini);
 	close(tmpin);
 	close(tmpout);
 	while (waitpid(-1, NULL, 0) > 0);
