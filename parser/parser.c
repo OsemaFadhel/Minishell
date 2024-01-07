@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:55:37 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/07 21:01:33 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/07 21:43:57 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,32 @@ int	count_args(t_mini *mini)
 	return (count);
 }
 
-void	init_cmds(t_cmds *cmds, t_mini *mini)
+int	count_redirect(t_mini *mini, t_parser *parser)
+{
+	int count;
+
+	count = 0;
+	while (mini->toks[parser->k] && ft_strncmp(mini->toks[parser->k], "|", 1))
+	{
+		printf("mini->toks[parser->k]: %s\n", mini->toks[parser->k]);
+		if (!ft_strncmp(mini->toks[parser->k], ">>", 2))
+			count++;
+		else if (!ft_strncmp(mini->toks[parser->k], ">", 1))
+			count++;
+		else if (!ft_strncmp(mini->toks[parser->k], "<<", 2))
+			count++;
+		else if (!ft_strncmp(mini->toks[parser->k], "<", 1))
+			count++;
+		parser->k++;
+	}
+	return (count);
+}
+
+void	init_cmds(t_cmds *cmds, t_mini *mini, t_parser *parser)
 {
 	cmds->cmd = NULL;
 	cmds->args = malloc(sizeof(char *) * (count_args(mini) + 1));
-	cmds->redirect = malloc(sizeof(t_redirect) * 15); //count_redirect(mini) + 1
+	cmds->redirect = malloc(sizeof(t_redirect) * (count_redirect(mini, parser) + 1));
 	cmds->out = 0;
 	cmds->in = 0;
 	cmds->redirect_count = 0;
@@ -110,16 +131,15 @@ int	add_in_redirect(t_cmds *cmds, char **toks, t_parser *parser , int type)
 
 int	parser(t_mini *mini)
 {
-	int i;
-	int j;
 	t_parser parser;
 	t_cmds	*cmds;
 	t_cmds  *head;
 
 	parser.i = 0;
 	parser.j = 1;
+	parser.k = 0;
 	head = cmds = malloc(sizeof(t_cmds));
-	init_cmds(cmds, mini);
+	init_cmds(cmds, mini, &parser);
 	while (mini->toks[parser.i])
 	{
 		if (ft_strncmp(mini->toks[parser.i], "|", 1) == 0)
@@ -127,8 +147,10 @@ int	parser(t_mini *mini)
 			mini->cmds_count++;
 			cmds->next = malloc(sizeof(t_cmds));
 			cmds = cmds->next;
-			init_cmds(cmds, mini);
+			parser.k++;
+			init_cmds(cmds, mini, &parser);
 			parser.i++;
+			parser.j = 1;
 		}
 		else if (!ft_strncmp(mini->toks[parser.i], ">>", 2))
 		{
@@ -163,7 +185,7 @@ int	parser(t_mini *mini)
 				while (mini->toks[parser.i] && ft_strncmp(mini->toks[parser.i], "|", 1)
 					&& !is_redirect(mini->toks[parser.i]))
 				{
-					cmds->args[j] = ft_strdup(mini->toks[parser.i]);
+					cmds->args[parser.j] = ft_strdup(mini->toks[parser.i]);
 					parser.j++;
 					parser.i++;
 				}
