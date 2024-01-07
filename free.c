@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 00:42:27 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/07 01:43:37 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/07 20:13:09 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,13 @@ void free_redirect(t_redirect *redirect)
 {
 	int i;
 
-	i = 0;
-	while (redirect[i].redirect_type != 0)
+	i = -1;
+	while (redirect[++i].redirect_type != 0)
 	{
-		free(redirect[i].infile);
-		free(redirect[i].outfile);
-		i++;
+		if (redirect[i].redirect_type == 1 || redirect[i].redirect_type == 2)
+			free(redirect[i].outfile);
+		else if (redirect[i].redirect_type == 3 || redirect[i].redirect_type == 4)
+			free(redirect[i].infile);
 	}
 	free(redirect);
 }
@@ -44,7 +45,7 @@ void free_cmds_list(t_cmds *head)
 				i++;
 			}
 			free(tmp->args);
-		}
+		};
 		free_redirect(tmp->redirect);
 		head = head->next;
 		free(tmp);
@@ -68,5 +69,5 @@ void	free_cmds(t_mini *mini, char *input) // free cmds line
 {
 	ft_free_array(mini->toks);
 	free_cmds_list(mini->cmds);
-	free(input);
+	//free(input);
 }

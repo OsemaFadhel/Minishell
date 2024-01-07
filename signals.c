@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 13:53:30 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/06 22:33:36 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/07 04:25:12 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,11 @@ void	sig_handler(int signo) // handle signals from keyboard
 		rl_on_new_line();
 		rl_replace_line("", 0); //test on unix; replace line with empty string
 		//rl_redisplay();
+	}
+	else if (signo == SIGQUIT)
+	{
+		ft_putstr_fd("Quit: ", 2);
+		ft_putendl_fd(ft_itoa(signo), 2);
 	}
 }
 

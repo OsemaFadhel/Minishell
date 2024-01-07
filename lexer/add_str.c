@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 12:40:16 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/05 03:13:01 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/07 19:18:15 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	add_str_dquot(char *cmd, char **toks, t_lexer *lexer, char **env)
 		{
 			if (cmd[lexer->i] == '$')
 			{
-				lexer->j++;
+				lexer->i++;
 				l = 0;
 				env_var = get_env_name(cmd, lexer->i);
 				post =  ft_strlen(env_var) - 1;
@@ -109,8 +109,8 @@ int	add_str_dquot(char *cmd, char **toks, t_lexer *lexer, char **env)
 			else
 			{
 				toks[lexer->j][lexer->k] = cmd[lexer->i];
-				lexer->j++;
 				lexer->k++;
+				lexer->i++;
 			}
 		}
 		//toks[j][lexer->k] = '\"';

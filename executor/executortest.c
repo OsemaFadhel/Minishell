@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 15:32:21 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/07 01:49:02 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/07 03:26:40 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,18 +83,18 @@ void	executor(t_mini	*mini, t_cmds *cmds)
 	int	i;
 
 	i = 0;
+	if (!cmds->cmd)
+		exit(0);
 	//if (!is_builtin(mini, cmds, i))
 	//	return ;
 	if (1)
-	{
+	{	
 		if(ft_strchr(cmds->cmd, '/'));
 		else if (check_bin(mini, cmds) > 0)
 		{
 			i = check_bin(mini, cmds);
 			cmds->cmd = add_path(mini, cmds, i);
 		}
-		printf("cmd: %s\n", cmds->cmd);
-		printf("args: %s\n", cmds->args[0]);
 		if (execve(cmds->cmd, cmds->args, mini->env)) //execve will close the process.
 			perror("BASH$");
 	}

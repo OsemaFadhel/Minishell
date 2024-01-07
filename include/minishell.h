@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:21:15 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/07 01:35:14 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/07 18:41:55 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,10 @@ typedef struct s_cmds
 	char			*cmd; //init to NULL
 	char			**args;	//init to NULL
 	t_redirect		*redirect;
-	int				out;
+	int				out; //indicates if there is a redirection
 	int				in;
-	int				fdin;
-	int				fdout;
+	//int				fdin;
+	//int				fdout;
 	int				redirect_count;
 	struct s_cmds	*next;
 }				t_cmds;
@@ -63,8 +63,8 @@ typedef struct s_mini
 {
 	t_cmds	*cmds;
 	int		cmds_count;
-	//int		fdin; //init to NULL
-	//int		fdout; //init to NULL
+	int		fdin; //init to NULL
+	int		fdout; //init to NULL
 	int		here_doc_flag; //init to 0
 	char	**env;
 	char	**toks;
@@ -111,6 +111,8 @@ void 		execute(t_mini *mini);
 int			ft_isdigitalpha(char *c);
 char		**unset_cmd(char **matrix, char *str); //unset the command
 char		**expand_matrix(char **matrix, char *str); //expand the matrix
+int			ft_strcmp(char *s1, char *s2);
+
 
 /* builtin.c */
 
