@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 12:36:53 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/06 22:03:26 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/07 22:49:22 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,37 +44,45 @@ int	count_words_3(char *cmd, int i, int words)
 	return (i);
 }
 
-int	count_words_lex(char *cmd)
+int	sub_count_words(char *cmd, int i, t_lexer *lexer)
+{
+	if (cmd[i] == '\"')
+	{
+		i = count_words_2(cmd, i, lexer->words);
+		lexer->words++;
+	}
+	else if (cmd[i] == '\'')
+	{
+		i = count_words_3(cmd, i, lexer->words);
+		lexer->words++;
+	}
+	else if ((cmd[i] == '>' && cmd[i + 1] == '>') | (cmd[i] == '<' && cmd[i + 1] == '<'))
+	{
+		lexer->words += 2;
+		i++;
+	}
+	else if (cmd[i] == '>' | cmd[i] == '<')
+	{
+		lexer->words++;
+		i++;
+	}
+	else
+		return (-1);
+	return (i);
+}
+
+int	count_words_lex(char *cmd, t_lexer *lexer)
 {
 	int	i;
-	int	words;
 
 	i = 0;
-	words = 0;
+	lexer->words = 0;
 	while (cmd[i])
 	{
 		if (cmd[i] == ' ')
 			i++;
-		else if (cmd[i] == '\"')
-		{
-			i = count_words_2(cmd, i, words);
-			words++;
-		}
-		else if (cmd[i] == '\'')
-		{
-			i = count_words_3(cmd, i, words);
-			words++;
-		}
-		else if ((cmd[i] == '>' && cmd[i + 1] == '>') | (cmd[i] == '<' && cmd[i + 1] == '<'))
-		{
-			words += 2;
-			i++;
-		}
-		else if (cmd[i] == '>' | cmd[i] == '<')
-		{
-			words++;
-			i++;
-		}
+		else if (sub_count_words(cmd, i, lexer) != -1)
+			i = sub_count_words(cmd, i, lexer);
 		else
 		{
 			while (cmd[i] != ' ' && cmd[i] != '\0' && (check_closed_dquotes(cmd, i) == 1 || check_closed_quotes(cmd, i) == 1))
@@ -85,8 +93,8 @@ int	count_words_lex(char *cmd)
 					break;
 				i++;
 			}
-			words++;
+			lexer->words++;
 		}
 	}
-	return (words);
+	return (lexer->words);
 }

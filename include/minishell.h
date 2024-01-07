@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:21:15 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/07 21:00:45 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/07 22:46:37 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int			check_closed_dquotes(char *cmd, int i);
 int			check_closed_quotes(char *cmd, int i);
 int			count_words_2(char *cmd, int i, int words);
 int			count_words_3(char *cmd, int i, int words);
-int			count_words_lex(char *cmd);
+int			count_words_lex(char *cmd, t_lexer *lexer);
 int			add_str_dquot(char *cmd, char **toks, t_lexer *lexer, char **env);
 int			add_str_quot(char *cmd, char **toks, t_lexer *lexer);
 int			add_str(char *cmd, char **toks, t_lexer *lexer, char **env);

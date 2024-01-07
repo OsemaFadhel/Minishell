@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:44:53 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/07 19:44:14 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/07 22:50:46 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ int	check_closed_quotes(char *cmd, int i)
 		return (1);
 	return (0);
 }
+
 void	add_pipe_char(char *cmd, char **toks, t_lexer *lexer)
 {
 	toks[lexer->j][0] = cmd[lexer->i];
@@ -91,13 +92,13 @@ int	sub_ifs_lexersplit(char *cmd, t_mini *mini, t_lexer *lexer, char **toks)
 		return (0);
 	return (1);
 }
-//split cmd into tokens taking care of spaces and quotes. anything inside quotes count as one word
+
 char	**lexersplit_1(char *cmd, t_mini *mini, t_lexer *lexer)
 {
 	char	**toks;
 	int		words;
 
-	words = count_words_lex(cmd);
+	words = count_words_lex(cmd, lexer);
 	toks = malloc(sizeof(char *) * (words + 1));
 	if (!toks)
 		return (NULL);

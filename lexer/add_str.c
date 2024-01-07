@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 12:40:16 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/07 19:18:15 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/07 22:51:27 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,6 @@ int	add_str_dquot(char *cmd, char **toks, t_lexer *lexer, char **env)
 			toks[lexer->j][lexer->k] = '\b';
 			lexer->k++;
 		}
-		//toks[j][lexer->k] = '\"';
-		//lexer->k++;
 		lexer->i++;
 		while (cmd[lexer->i] != '\"')
 		{
@@ -113,8 +111,6 @@ int	add_str_dquot(char *cmd, char **toks, t_lexer *lexer, char **env)
 				lexer->i++;
 			}
 		}
-		//toks[j][lexer->k] = '\"';
-		//lexer->k++;
 	}
 	else
 	{
@@ -139,8 +135,6 @@ int add_str_quot(char *cmd, char **toks, t_lexer *lexer)
 			toks[lexer->j][k] = '\b';
 			k++;
 		}
-		//toks[j][k] = '\'';
-		//k++;
 		lexer->i++;
 		while (cmd[lexer->i] != '\'')
 		{
@@ -148,8 +142,6 @@ int add_str_quot(char *cmd, char **toks, t_lexer *lexer)
 			lexer->i++;
 			k++;
 		}
-		//toks[j][k] = '\'';
-		//k++;
 	}
 	else
 	{

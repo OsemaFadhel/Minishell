@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:55:37 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/07 21:43:57 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/07 22:35:38 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ int	count_redirect(t_mini *mini, t_parser *parser)
 	count = 0;
 	while (mini->toks[parser->k] && ft_strncmp(mini->toks[parser->k], "|", 1))
 	{
-		printf("mini->toks[parser->k]: %s\n", mini->toks[parser->k]);
 		if (!ft_strncmp(mini->toks[parser->k], ">>", 2))
 			count++;
 		else if (!ft_strncmp(mini->toks[parser->k], ">", 1))
@@ -129,15 +128,52 @@ int	add_in_redirect(t_cmds *cmds, char **toks, t_parser *parser , int type)
 	return (parser->i);
 }
 
+void	sub_last_else(t_mini *mini, t_parser *parser, t_cmds *cmds)
+{
+	if (cmds->cmd == NULL)
+	{
+		cmds->cmd = ft_strdup(mini->toks[parser->i]);
+		cmds->args[0] = ft_strdup(mini->toks[parser->i]);
+		parser->i++;
+	}
+	else
+	{
+		while (mini->toks[parser->i] && ft_strncmp(mini->toks[parser->i], "|", 1)
+				&& !is_redirect(mini->toks[parser->i]))
+		{
+			cmds->args[parser->j] = ft_strdup(mini->toks[parser->i]);
+			parser->j++;
+			parser->i++;
+		}
+		cmds->args[parser->j] = NULL;
+	}
+}
+
+void	new_cmd(t_mini *mini, t_parser *parser, t_cmds *cmds)
+{
+	mini->cmds_count++;
+	cmds->next = malloc(sizeof(t_cmds));
+	cmds = cmds->next;
+	parser->k++;
+	init_cmds(cmds, mini, parser);
+	parser->i++;
+	parser->j = 1;
+}
+
+void	init_parser(t_parser *parser)
+{
+	parser->i = 0;
+	parser->j = 1;
+	parser->k = 0;
+}
+
 int	parser(t_mini *mini)
 {
 	t_parser parser;
 	t_cmds	*cmds;
 	t_cmds  *head;
 
-	parser.i = 0;
-	parser.j = 1;
-	parser.k = 0;
+	init_parser(&parser);
 	head = cmds = malloc(sizeof(t_cmds));
 	init_cmds(cmds, mini, &parser);
 	while (mini->toks[parser.i])
@@ -155,43 +191,25 @@ int	parser(t_mini *mini)
 		else if (!ft_strncmp(mini->toks[parser.i], ">>", 2))
 		{
 			if (add_out_redirect(cmds, mini->toks, &parser, 2) == -1)
-				return (0);
+				return (-1);
 		}
 		else if (!ft_strncmp(mini->toks[parser.i], ">", 1))
 		{
 			if (add_out_redirect(cmds, mini->toks, &parser, 1) == -1)
-				return (0);
+				return (-1);
 		}
 		else if (!ft_strncmp(mini->toks[parser.i], "<<", 2))
 		{
 			if (add_in_redirect(cmds, mini->toks, &parser, 4) == -1)
-				return (0);
+				return (-1);
 		}
 		else if (!ft_strncmp(mini->toks[parser.i], "<", 1))
 		{
 			if (add_in_redirect(cmds, mini->toks, &parser, 3) == -1)
-				return (0);
+				return (-1);
 		}
 		else
-		{
-			if (cmds->cmd == NULL)
-			{
-				cmds->cmd = ft_strdup(mini->toks[parser.i]);
-				cmds->args[0] = ft_strdup(mini->toks[parser.i]);
-				parser.i++;
-			}
-			else
-			{
-				while (mini->toks[parser.i] && ft_strncmp(mini->toks[parser.i], "|", 1)
-					&& !is_redirect(mini->toks[parser.i]))
-				{
-					cmds->args[parser.j] = ft_strdup(mini->toks[parser.i]);
-					parser.j++;
-					parser.i++;
-				}
-				cmds->args[parser.j] = NULL;
-			}
-		}
+			sub_last_else(mini, &parser, cmds);
 	}
 	mini->cmds = head;
 	return (1);
