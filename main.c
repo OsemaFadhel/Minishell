@@ -6,12 +6,13 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 18:18:50 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/07 18:32:23 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/08 20:37:16 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/minishell.h"
 
+int	g_exit_status = 0;
 
 int	envdump(char **envp, t_mini *mini) // get envp and put it in mini->envp
 {
@@ -51,18 +52,25 @@ int	main(int argc, char **argv, char **envp)
 	int		i;
 
 	envdump(envp, &mini);
+	//ft_signals(&mini);
 	while (1)
 	{
 		init(&mini);
-		sig_ignore(&mini);
+		sig_ignore();
 		input = readline("BASH$: ");
-		add_history(input);
-		if (lexersplit(input, &mini)) //creates matrix with all the words splitted and env changed
+		if (input && input[0])
+			add_history(input);
+		if (input == NULL)
+			ft_ctrld(input, &mini);
+		if (input && input[0])
 		{
-			if (parser(&mini))
-				execute(&mini);
+			if (lexersplit(input, &mini)) //creates matrix with all the words splitted and env changed
+			{
+				if (parser(&mini))
+					execute(&mini);
+			}
+			free_cmds(&mini, input);
 		}
-		free_cmds(&mini, input);
 	}
 	return (0);
 }

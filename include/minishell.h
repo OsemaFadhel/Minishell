@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:21:15 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/07 22:46:37 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/08 20:36:14 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,12 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../libft/libft.h"
-#include <sys/stat.h>
+# include <sys/stat.h>
 # include "utils.h"
 
 
 /* global variables */
-
-
+extern int	g_exit_status;
 
 /* structs */
 
@@ -69,6 +68,10 @@ typedef struct s_mini
 	char	**env;
 	char	**toks;
 	int		toks_count;
+	struct sigaction	signal_nothing;
+	struct sigaction	signal_int;
+	struct sigaction	signal_quit;
+	struct termios		tty_attrs;
 }				t_mini;
 
 /* functions */
@@ -123,7 +126,11 @@ int			builtin_3(t_mini *mini, int i);
 
 /* signals.c */
 
-void		sig_ignore(t_mini *mini); //ignore signals from keyboard
-void		sig_handler(int signo); //handle signals from keyboard
+void		sig_ignore(); //ignore signals from keyboard
+//void		sig_handler(int signo); //handle signals from keyboard
+//void		ft_signals(t_mini *mini);
+void		ft_ctrld(char *line, t_mini *mini);
+
+
 
 #endif
