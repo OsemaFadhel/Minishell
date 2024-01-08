@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 17:38:14 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/07 21:50:18 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/08 17:26:00 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	in_redirect(t_mini *mini, t_cmds *current_cmd)
 	int	flag;
 
 	i = 0;
+	flag = 0;
 	while (current_cmd->redirect[i].redirect_type != 0)
 	{
 		if (current_cmd->redirect[i].redirect_type == 3) // <
@@ -118,27 +119,90 @@ void	out_redirect(t_mini *mini, t_cmds *current_cmd)
 
 void	update_fd(t_mini *mini, t_cmds *current_cmd)
 {
-	in_redirect(mini, current_cmd);
-	out_redirect(mini, current_cmd);
-	if (mini->fdin > 0)
-		dup2(mini->fdin, 0);
+	if (current_cmd->in == 1)
+	{
+		close(mini->fdin);
+		in_redirect(mini, current_cmd);
+		if (mini->fdin > 0)
+			dup2(mini->fdin, 0);
+		if (mini->fdin > 0)
+			close(mini->fdin);
+	}
+	if (current_cmd->out == 1)
+	{
+		close(mini->fdout);
+		out_redirect(mini, current_cmd);
+	}
 	if (mini->fdout > 0)
 		dup2(mini->fdout, 1);
-	if (mini->fdin > 0)
-		close(mini->fdin);
 	if (mini->fdout > 0)
 		close(mini->fdout);
 }
 
-void	ft_close(t_mini *mini)
+/*void	ft_close(t_mini *mini)
 {
 	if (mini->fdin > 0)
 		close(mini->fdin);
 	if (mini->fdout > 0)
 		close(mini->fdout);
-}
+}*/
 
 void execute(t_mini *mini)
+{
+    // Save in/out
+	int tmpin;
+	int tmpout;
+	int ret;
+	int i;
+	int cmd_count;
+	int	pipe_flag;
+	t_cmds *current_cmd;
+
+	// Set the initial input
+	tmpin = dup(0);
+	tmpout = dup(1);
+	cmd_count = 0;
+	current_cmd = mini->cmds;
+	mini->fdin = dup(tmpin);
+	while (current_cmd != NULL)  //missing case like like ls >file txt | wc -l //the fdin for wc need to be the fdout of ls
+	{
+		dup2(mini->fdin, 0);
+		close(mini->fdin);
+		if	(current_cmd->out == 0 || (current_cmd->next == NULL && current_cmd->out == 0))
+			mini->fdout = dup(tmpout);
+		if (mini->cmds_count >= 1 /*&& current_cmd->out == 0 */&& current_cmd->next != NULL)  // to check
+		{
+			int fdpipe[2]; // Create pipe
+			pipe(fdpipe);
+			mini->fdout = fdpipe[1];
+			mini->fdin = fdpipe[0];
+			pipe_flag = 1;
+		}
+		else
+			pipe_flag = 0;
+		update_fd(mini, current_cmd);
+		/*dup2(mini->fdout, 1);  // Redirect output
+		close(mini->fdout);*/
+		ret = fork();
+		if (ret == 0)
+		{
+			executor(mini, current_cmd); // Call the executor with the current command
+			exit(1);
+		}
+		current_cmd = current_cmd->next;
+		cmd_count++;
+		if (mini->here_doc_flag == 1)
+			unlink("tmp.txt");
+	}
+	// Restore in/out defaults
+	dup2(tmpin, 0);
+	dup2(tmpout, 1);
+	close(tmpin);
+	close(tmpout);
+	while (waitpid(-1, NULL, 0) > 0);
+}
+
+/*void execute(t_mini *mini)
 {
 	int tmpin;
 	int tmpout;
@@ -173,5 +237,5 @@ void execute(t_mini *mini)
 	close(tmpin);
 	close(tmpout);
 	while (waitpid(-1, NULL, 0) > 0);
-}
+}*/
 
