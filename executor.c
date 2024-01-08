@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 17:38:14 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/08 17:26:00 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/08 18:14:23 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,14 +139,6 @@ void	update_fd(t_mini *mini, t_cmds *current_cmd)
 		close(mini->fdout);
 }
 
-/*void	ft_close(t_mini *mini)
-{
-	if (mini->fdin > 0)
-		close(mini->fdin);
-	if (mini->fdout > 0)
-		close(mini->fdout);
-}*/
-
 void execute(t_mini *mini)
 {
     // Save in/out
@@ -166,6 +158,7 @@ void execute(t_mini *mini)
 	mini->fdin = dup(tmpin);
 	while (current_cmd != NULL)  //missing case like like ls >file txt | wc -l //the fdin for wc need to be the fdout of ls
 	{
+		// check in red
 		dup2(mini->fdin, 0);
 		close(mini->fdin);
 		if	(current_cmd->out == 0 || (current_cmd->next == NULL && current_cmd->out == 0))
@@ -181,11 +174,12 @@ void execute(t_mini *mini)
 		else
 			pipe_flag = 0;
 		update_fd(mini, current_cmd);
-		/*dup2(mini->fdout, 1);  // Redirect output
-		close(mini->fdout);*/
 		ret = fork();
 		if (ret == 0)
 		{
+			close(mini->fdin);
+			close(tmpin);
+			close(tmpout);
 			executor(mini, current_cmd); // Call the executor with the current command
 			exit(1);
 		}
@@ -201,41 +195,3 @@ void execute(t_mini *mini)
 	close(tmpout);
 	while (waitpid(-1, NULL, 0) > 0);
 }
-
-/*void execute(t_mini *mini)
-{
-	int tmpin;
-	int tmpout;
-	int ret;
-	int i;
-	int fd[2];
-	int cmd_count;
-	int	pipe_flag;
-	t_cmds *current_cmd;
-
-	tmpin = dup(0);
-	tmpout = dup(1);
-	cmd_count = 0;
-	current_cmd = mini->cmds;
-	mini->fdin = dup(tmpin);
-	while (current_cmd != NULL)
-	{
-		update_fd(mini, current_cmd);
-		ret = fork();
-		if (ret == 0)
-		{
-			executor(mini, current_cmd);
-			exit(0);
-		}
-		current_cmd = current_cmd->next;
-		cmd_count++;
-		if (mini->here_doc_flag == 1)
-			unlink("tmp.txt");
-	}
-	dup2(tmpin, 0);
-	dup2(tmpout, 1);
-	close(tmpin);
-	close(tmpout);
-	while (waitpid(-1, NULL, 0) > 0);
-}*/
-
