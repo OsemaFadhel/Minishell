@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 15:32:21 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/07 03:26:40 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/09 11:15:16 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	executor(t_mini	*mini, t_cmds *cmds)
 	//if (!is_builtin(mini, cmds, i))
 	//	return ;
 	if (1)
-	{	
+	{
 		if(ft_strchr(cmds->cmd, '/'));
 		else if (check_bin(mini, cmds) > 0)
 		{

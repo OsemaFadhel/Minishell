@@ -6,11 +6,11 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 17:38:14 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/08 18:14:23 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/09 12:17:01 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/minishell.h"
+#include "../include/minishell.h"
 
 void	here_doc(t_mini *mini, char *delimeter)
 {
@@ -139,18 +139,51 @@ void	update_fd(t_mini *mini, t_cmds *current_cmd)
 		close(mini->fdout);
 }
 
+void	ft_fork(t_mini *mini, t_cmds *current_cmd, int tmpin, int tmpout)
+{
+	pid_t ret;
+
+	ret = fork();
+	if (ret == 0)
+	{
+		close(mini->fdin);
+		close(tmpin);
+		close(tmpout);
+		executor(mini, current_cmd); // Call the executor with the current command
+		exit(0);
+	}
+}
+
+void	restore_stds(int tmpin, int tmpout)
+{
+	dup2(tmpin, 0);
+	dup2(tmpout, 1);
+	close(tmpin);
+	close(tmpout);
+}
+
+void	set_pipes(t_mini *mini, t_cmds *current_cmd, int cmd_count, int tmpout)
+{
+	int	fdpipe[2];
+
+	if	(current_cmd->out == 0 || (current_cmd->next == NULL && current_cmd->out == 0))
+		mini->fdout = dup(tmpout);
+	if (mini->cmds_count >= 1 && current_cmd->next != NULL)  // to check
+	{
+		pipe(fdpipe);
+		mini->fdout = fdpipe[1];
+		mini->fdin = fdpipe[0];
+	}
+}
+
 void execute(t_mini *mini)
 {
-    // Save in/out
 	int tmpin;
 	int tmpout;
-	int ret;
 	int i;
 	int cmd_count;
-	int	pipe_flag;
 	t_cmds *current_cmd;
 
-	// Set the initial input
 	tmpin = dup(0);
 	tmpout = dup(1);
 	cmd_count = 0;
@@ -158,40 +191,16 @@ void execute(t_mini *mini)
 	mini->fdin = dup(tmpin);
 	while (current_cmd != NULL)  //missing case like like ls >file txt | wc -l //the fdin for wc need to be the fdout of ls
 	{
-		// check in red
 		dup2(mini->fdin, 0);
 		close(mini->fdin);
-		if	(current_cmd->out == 0 || (current_cmd->next == NULL && current_cmd->out == 0))
-			mini->fdout = dup(tmpout);
-		if (mini->cmds_count >= 1 /*&& current_cmd->out == 0 */&& current_cmd->next != NULL)  // to check
-		{
-			int fdpipe[2]; // Create pipe
-			pipe(fdpipe);
-			mini->fdout = fdpipe[1];
-			mini->fdin = fdpipe[0];
-			pipe_flag = 1;
-		}
-		else
-			pipe_flag = 0;
+		set_pipes(mini, current_cmd, cmd_count, tmpout);
 		update_fd(mini, current_cmd);
-		ret = fork();
-		if (ret == 0)
-		{
-			close(mini->fdin);
-			close(tmpin);
-			close(tmpout);
-			executor(mini, current_cmd); // Call the executor with the current command
-			exit(1);
-		}
+		ft_fork(mini, current_cmd, tmpin, tmpout);
 		current_cmd = current_cmd->next;
 		cmd_count++;
 		if (mini->here_doc_flag == 1)
 			unlink("tmp.txt");
 	}
-	// Restore in/out defaults
-	dup2(tmpin, 0);
-	dup2(tmpout, 1);
-	close(tmpin);
-	close(tmpout);
+	restore_stds(tmpin, tmpout);
 	while (waitpid(-1, NULL, 0) > 0);
 }
