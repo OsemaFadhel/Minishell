@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 12:36:53 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/07 22:49:22 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/09 20:06:07 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ int	sub_count_words(char *cmd, int i, t_lexer *lexer)
 		i = count_words_3(cmd, i, lexer->words);
 		lexer->words++;
 	}
-	else if ((cmd[i] == '>' && cmd[i + 1] == '>') | (cmd[i] == '<' && cmd[i + 1] == '<'))
+	else if ((cmd[i] == '>' && cmd[i + 1] == '>')
+		|| (cmd[i] == '<' && cmd[i + 1] == '<'))
 	{
 		lexer->words += 2;
 		i++;
@@ -85,12 +86,15 @@ int	count_words_lex(char *cmd, t_lexer *lexer)
 			i = sub_count_words(cmd, i, lexer);
 		else
 		{
-			while (cmd[i] != ' ' && cmd[i] != '\0' && (check_closed_dquotes(cmd, i) == 1 || check_closed_quotes(cmd, i) == 1))
+			while (cmd[i] != ' ' && cmd[i] != '\0'
+				&& (check_closed_dquotes(cmd, i) == 1
+					|| check_closed_quotes(cmd, i) == 1))
 			{
-				if ((cmd[i] == '>' && cmd[i + 1] == '>') | (cmd[i] == '<' && cmd[i + 1] == '<'))
-					break;
-				if (cmd[i] == '>' | cmd[i] == '<')
-					break;
+				if ((cmd[i] == '>' && cmd[i + 1] == '>')
+					|| (cmd[i] == '<' && cmd[i + 1] == '<'))
+					break ;
+				if (cmd[i] == '>' || cmd[i] == '<')
+					break ;
 				i++;
 			}
 			lexer->words++;

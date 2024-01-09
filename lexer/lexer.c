@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:44:53 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/07 22:50:46 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/09 20:06:59 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	sub_ifs_lexersplit(char *cmd, t_mini *mini, t_lexer *lexer, char **toks)
 		lexer->j++;
 	}
 	else if ((cmd[lexer->i] == '>' && cmd[lexer->i + 1] == '>')
-			|| (cmd[lexer->i] == '<' && cmd[lexer->i + 1] == '<'))
+		|| (cmd[lexer->i] == '<' && cmd[lexer->i + 1] == '<'))
 		add_redirect(cmd, toks, lexer);
 	else if (cmd[lexer->i] == '>' | cmd[lexer->i] == '<')
 		add_single_char(cmd, toks, lexer);
@@ -99,12 +99,12 @@ char	**lexersplit_1(char *cmd, t_mini *mini, t_lexer *lexer)
 	int		words;
 
 	words = count_words_lex(cmd, lexer);
-	toks = malloc(sizeof(char *) * (words + 1));
+	toks = ft_calloc(sizeof(char *), (words + 1));
 	if (!toks)
 		return (NULL);
 	while (cmd[lexer->i])
 	{
-		toks[lexer->j] = malloc(sizeof(char) * (ft_strlen(cmd) + 1));
+		toks[lexer->j] = ft_calloc(sizeof(char), (ft_strlen(cmd) +1));
 		if (cmd[lexer->i] == ' ')
 			lexer->i++;
 		else if (sub_ifs_lexersplit(cmd, mini, lexer, toks) == 1);

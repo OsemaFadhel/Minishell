@@ -6,7 +6,7 @@
 #    By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/17 18:27:27 by ofadhel           #+#    #+#              #
-#    Updated: 2024/01/09 12:25:26 by ofadhel          ###   ########.fr        #
+#    Updated: 2024/01/09 21:52:43 by ofadhel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,7 @@ all: $(NAME)
 $(NAME): $(OBJS)
 		@echo "$(COLOUR_YELLOW)COMPILING...$(COLOUR_END)"
 		make -C $(LIBFT_PATH)
-		$(CC) $(OBJS) $(LIBFT)/libft.a -o $(NAME) $(CFLAGS)
+		$(CC) -g $(OBJS) $(LIBFT)/libft.a -o $(NAME) $(CFLAGS)
 		@echo "$(COLOUR_GREEN)READY TO GO!$(COLOUR_END)"
 
 clean:

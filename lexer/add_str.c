@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 12:40:16 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/07 22:51:27 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/09 22:55:08 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*get_env_var(char *tmp, char **env)
 			while (env[i][j] != '=')
 				j++;
 			j++;
-			env_var = malloc(sizeof(char) * ft_strlen(env[i]) - j + 1);
+			env_var = ft_calloc(sizeof(char), ft_strlen(env[i]) - j + 1);
 			while (env[i][j] != '\0')
 			{
 				env_var[k] = env[i][j];
@@ -52,7 +52,7 @@ char *get_env_name(char *cmd, int i)
 	int l;
 
 	l = 0;
-	env_var = malloc(sizeof(char) * 1000);
+	env_var = ft_calloc(sizeof(char),  1000);
 	while (cmd[i] != ' ' && cmd[i] != '\0' && cmd[i] != '\"' && cmd[i] != '=')
 	{
 		env_var[l] = cmd[i];
@@ -195,10 +195,13 @@ int	add_str(char *cmd, char **toks, t_lexer *lexer, char **env)
 	k = 0;
 	while (cmd[lexer->i] != ' ' && cmd[lexer->i] != '\0')
 	{
-		if (cmd[lexer->i - 1] == '\"' || cmd[lexer->i - 1] == '\'') //add in the expander, maybe this not; only the quotes
+		if (lexer->i > 0)
 		{
-			toks[lexer->j][k] = '\b';
-			k++;
+			if (cmd[lexer->i - 1] == '\"' || cmd[lexer->i - 1] == '\'') //add in the expander, maybe this not; only the quotes
+			{ //to check with builtins
+				toks[lexer->j][k] = '\b';
+				k++;
+			}
 		}
 		if (cmd[lexer->i] == '\"' || cmd[lexer->i] == '\'')
 		{

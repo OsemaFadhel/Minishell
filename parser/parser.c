@@ -6,53 +6,57 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:55:37 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/09 10:47:01 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/09 23:14:42 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../include/minishell.h"
+#include "../include/minishell.h"
 
 void	sub_last_else(t_mini *mini, t_parser *parser, t_cmds *cmds)
 {
 	if (cmds->cmd == NULL)
 	{
 		cmds->cmd = ft_strdup(mini->toks[parser->i]);
-		cmds->args[0] = ft_strdup(mini->toks[parser->i]);
+		cmds->args[parser->j] = ft_strdup(mini->toks[parser->i]);
 		parser->i++;
 	}
 	else
 	{
-		while (mini->toks[parser->i] && ft_strncmp(mini->toks[parser->i], "|", 1)
-				&& !is_redirect(mini->toks[parser->i]))
+		while (mini->toks[parser->i]
+			&& ft_strncmp(mini->toks[parser->i], "|", 1)
+			&& !is_redirect(mini->toks[parser->i]))
 		{
 			cmds->args[parser->j] = ft_strdup(mini->toks[parser->i]);
-			parser->j++;
 			parser->i++;
 		}
-		cmds->args[parser->j] = NULL;
 	}
+	parser->j++;
+	cmds->args[parser->j] = NULL;
 }
 
 int	parser(t_mini *mini)
 {
-	t_parser parser;
-	t_cmds	*cmds;
-	t_cmds  *head;
+	t_parser	parser;
+	t_cmds		*cmds;
+	t_cmds		*head;
 
 	init_parser(&parser);
-	head = cmds = malloc(sizeof(t_cmds));
+	cmds = ft_calloc(sizeof(t_cmds), 1);
+	head = cmds;
 	init_cmds(cmds, mini, &parser);
 	while (mini->toks[parser.i])
 	{
 		if (ft_strncmp(mini->toks[parser.i], "|", 1) == 0)
 		{
+			if (mini->toks[parser.i + 1] == NULL)
+				return (-1);
 			mini->cmds_count++;
-			cmds->next = malloc(sizeof(t_cmds));
+			parser.j = 0;
+			cmds->next = ft_calloc(sizeof(t_cmds), 1);
 			cmds = cmds->next;
 			parser.k++;
 			init_cmds(cmds, mini, &parser);
 			parser.i++;
-			parser.j = 1;
 		}
 		else if (!ft_strncmp(mini->toks[parser.i], ">>", 2))
 		{

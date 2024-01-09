@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 17:38:14 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/09 12:24:55 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/09 19:50:19 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,10 @@ void	ft_fork(t_mini *mini, t_cmds *current_cmd, int tmpin, int tmpout)
 	}
 }
 
-void	restore_stds(int tmpin, int tmpout)
+void	restore_stds(int tmpin, int tmpout, t_mini *mini)
 {
+	/*close(mini->fdpipe[0]);
+	close(mini->fdpipe[1]);*/
 	dup2(tmpin, 0);
 	dup2(tmpout, 1);
 	close(tmpin);
@@ -37,15 +39,13 @@ void	restore_stds(int tmpin, int tmpout)
 
 void	set_pipes(t_mini *mini, t_cmds *current_cmd, int cmd_count, int tmpout)
 {
-	int	fdpipe[2];
-
 	if	(current_cmd->out == 0 || (current_cmd->next == NULL && current_cmd->out == 0))
 		mini->fdout = dup(tmpout);
 	if (mini->cmds_count >= 1 && current_cmd->next != NULL)  // to check
 	{
-		pipe(fdpipe);
-		mini->fdout = fdpipe[1];
-		mini->fdin = fdpipe[0];
+		pipe(mini->fdpipe);
+		mini->fdout = mini->fdpipe[1];
+		mini->fdin = mini->fdpipe[0];
 	}
 }
 
@@ -74,6 +74,6 @@ void execute(t_mini *mini)
 		if (mini->here_doc_flag == 1)
 			unlink("tmp.txt");
 	}
-	restore_stds(tmpin, tmpout);
+	restore_stds(tmpin, tmpout, mini);
 	while (waitpid(-1, NULL, 0) > 0);
 }

@@ -6,11 +6,11 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 10:43:05 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/09 10:46:16 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/09 23:13:01 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../include/minishell.h"
+#include "../include/minishell.h"
 
 int	count_red_arg(t_mini *mini, int i)
 {
@@ -25,25 +25,27 @@ int	count_red_arg(t_mini *mini, int i)
 	return (i);
 }
 
-int	count_args(t_mini *mini)
+int	count_args(t_mini *mini, t_parser *parser)
 {
-	int i;
-	int count;
+	int	count;
 
-	i = 0;
 	count = 0;
-	while (mini->toks[i])
+	while (mini->toks[parser->l])
 	{
-		if (ft_strncmp(mini->toks[i], "|", 1) == 0)
+		if (ft_strncmp(mini->toks[parser->l], "|", 1) == 0)
+		{
+			parser->l++;
 			break ;
-		else if (is_redirect(mini->toks[i]))
-			i = count_red_arg(mini, i);
+		}
+		else if (is_redirect(mini->toks[parser->l]))
+			parser->l += 2;
 		else
 		{
-			while (mini->toks[i] && ft_strncmp(mini->toks[i], "|", 1) && !is_redirect(mini->toks[i]))
+			while (mini->toks[parser->l] && ft_strncmp(mini->toks[parser->l], "|", 1)
+				&& !is_redirect(mini->toks[parser->l]))
 			{
 				count++;
-				i++;
+				parser->l++;
 			}
 		}
 	}
@@ -52,7 +54,7 @@ int	count_args(t_mini *mini)
 
 int	count_redirect(t_mini *mini, t_parser *parser)
 {
-	int count;
+	int	count;
 
 	count = 0;
 	while (mini->toks[parser->k] && ft_strncmp(mini->toks[parser->k], "|", 1))
