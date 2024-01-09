@@ -6,15 +6,11 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 15:32:21 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/09 11:15:16 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/09 12:29:28 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-//create first other process to execute the command
-//if the command is not built-in, execute it with execve
-//execve will close the process
 
 int		search_env(char **env, char *str)
 {

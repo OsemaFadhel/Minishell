@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:21:15 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/09 10:47:16 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/09 12:28:15 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,14 +79,14 @@ typedef struct s_mini
 
 int			envdump(char **envp, t_mini *mini); //store envp in a struct
 
-/* free.c */
+/* free */
 
 void		free_cmds(t_mini *mini, char *input); //free the cmds array and input given by readline
 void		ft_free_array(char **array);
 void 		free_cmds_list(t_cmds *head);
 void		free_redirect(t_redirect *redirect);
 
-/* lexer.c */
+/* lexer*/
 
 int			lexersplit(char *cmd, t_mini *mini);	//split the input into tokens
 char		**lexersplit_1(char *cmd, t_mini *mini, t_lexer *lexer); //split cmd into tokens taking care of spaces and quotes. anything inside quotes count as one word
@@ -115,12 +115,25 @@ void	sub_last_else(t_mini *mini, t_parser *parser, t_cmds *cmds);
 int		parser(t_mini *mini);
 
 
-/* executortest.c */
+/* executor */
 
 void		executor(t_mini	*mini, t_cmds *cmds); //execute the command
+char		*add_path(t_mini *mini, t_cmds *cmds, int i);
+int			check_bin(t_mini *mini, t_cmds *cmds);
+int			search_env(char **env, char *str);
 void 		execute(t_mini *mini);
+void		set_pipes(t_mini *mini, t_cmds *current_cmd, int cmd_count, int tmpout);
+void		restore_stds(int tmpin, int tmpout);
+void		ft_fork(t_mini *mini, t_cmds *current_cmd, int tmpin, int tmpout);
+void		here_doc(t_mini *mini, char *delimeter);
+void		in_redirect(t_mini *mini, t_cmds *current_cmd);
+void		out_redirect(t_mini *mini, t_cmds *current_cmd);
+void		update_fd(t_mini *mini, t_cmds *current_cmd);
 
-/* utils.c */
+
+
+
+/* utils */
 
 int			ft_isdigitalpha(char *c);
 char		**unset_cmd(char **matrix, char *str); //unset the command
@@ -128,18 +141,16 @@ char		**expand_matrix(char **matrix, char *str); //expand the matrix
 int			ft_strcmp(char *s1, char *s2);
 
 
-/* builtin.c */
+/* builtin */
 
 int			is_builtin(t_mini *mini, t_cmds *cmds, int i); //check if the command is a builtin
 int			builtin(t_mini *mini, int i);
 int			builtin_2(t_mini *mini, int i);
 int			builtin_3(t_mini *mini, int i);
 
-/* signals.c */
+/* signals */
 
 void		sig_ignore(); //ignore signals from keyboard
-//void		sig_handler(int signo); //handle signals from keyboard
-//void		ft_signals(t_mini *mini);
 void		ft_ctrld(char *line, t_mini *mini);
 
 
