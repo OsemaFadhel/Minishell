@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 15:32:21 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/09 12:29:28 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/09 12:56:23 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	check_bin(t_mini *mini, t_cmds *cmds)
 	struct stat buf;
 	char		**path;
 	char		*bin;
+	char		*tmp;
 	size_t		i;
 
 	if (search_env(mini->env, "PATH") == -1)
@@ -45,8 +46,9 @@ int	check_bin(t_mini *mini, t_cmds *cmds)
 	i = 0;
 	while (path[i++])
 	{
-		bin = ft_strjoin(path[i], "/");
-		bin = ft_strjoin(bin, cmds->cmd);
+		tmp = ft_strjoin(path[i], "/");
+		bin = ft_strjoin(tmp, cmds->cmd);
+		free(tmp);
 		if (!lstat(bin, &buf))
 		{
 			ft_free_array(path);

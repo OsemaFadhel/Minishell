@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 18:18:50 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/09 11:22:07 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/09 14:47:33 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ int	main(int argc, char **argv, char **envp)
 	int		i;
 
 	envdump(envp, &mini);
-	//ft_signals(&mini);
 	while (1)
 	{
 		init(&mini);
