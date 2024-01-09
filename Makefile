@@ -6,7 +6,7 @@
 #    By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/17 18:27:27 by ofadhel           #+#    #+#              #
-#    Updated: 2024/01/07 00:43:53 by ofadhel          ###   ########.fr        #
+#    Updated: 2024/01/09 10:50:54 by ofadhel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,8 @@ NAME 	= minishell
 
 SRCS 	= 	main.c utils1.c signals.c \
 			lexer/lexer.c lexer/count_words.c lexer/add_str.c \
-			parser/parser.c \
+			parser/parser.c parser/init_pars.c \
+			parser/parser_counts.c parser/parser_red.c \
 			executor/executortest.c executor/builtin.c  executor.c \
 			free.c \
 

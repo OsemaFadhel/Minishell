@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:21:15 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/08 20:36:14 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/09 10:47:16 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,18 @@ void		change_env_v(char *cmd, char **toks, t_lexer *lexer, char **env);
 
 /* Parser */
 
-int			parser(t_mini *mini);
+void	init_cmds(t_cmds *cmds, t_mini *mini, t_parser *parser);
+void	new_cmd(t_mini *mini, t_parser *parser, t_cmds *cmds);
+void	init_parser(t_parser *parser);
+int		is_redirect(char *str);
+int		add_out_redirect(t_cmds *cmds, char **toks, t_parser *parser, int type);
+int		add_in_redirect(t_cmds *cmds, char **toks, t_parser *parser , int type);
+int		count_red_arg(t_mini *mini, int i);
+int		count_args(t_mini *mini);
+int		count_redirect(t_mini *mini, t_parser *parser);
+void	sub_last_else(t_mini *mini, t_parser *parser, t_cmds *cmds);
+int		parser(t_mini *mini);
+
 
 /* executortest.c */
 
