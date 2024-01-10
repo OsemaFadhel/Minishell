@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:21:15 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/09 12:28:15 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/10 20:37:00 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,6 @@ typedef struct s_cmds
 	t_redirect		*redirect;
 	int				out; //indicates if there is a redirection
 	int				in;
-	//int				fdin;
-	//int				fdout;
 	int				redirect_count;
 	struct s_cmds	*next;
 }				t_cmds;
@@ -89,30 +87,30 @@ void		free_redirect(t_redirect *redirect);
 /* lexer*/
 
 int			lexersplit(char *cmd, t_mini *mini);	//split the input into tokens
-char		**lexersplit_1(char *cmd, t_mini *mini, t_lexer *lexer); //split cmd into tokens taking care of spaces and quotes. anything inside quotes count as one word
+int			lexersplit_1(char *cmd, t_mini *mini, t_lexer *lexer); //split cmd into tokens taking care of spaces and quotes. anything inside quotes count as one word
 int			check_closed_dquotes(char *cmd, int i);
 int			check_closed_quotes(char *cmd, int i);
 int			count_words_2(char *cmd, int i, int words);
 int			count_words_3(char *cmd, int i, int words);
 int			count_words_lex(char *cmd, t_lexer *lexer);
-int			add_str_dquot(char *cmd, char **toks, t_lexer *lexer, char **env);
-int			add_str_quot(char *cmd, char **toks, t_lexer *lexer);
-int			add_str(char *cmd, char **toks, t_lexer *lexer, char **env);
-void		change_env_v(char *cmd, char **toks, t_lexer *lexer, char **env);
+int			add_str_dquot(char *cmd, t_mini *mini, t_lexer *lexer, char **env);
+int			add_str_quot(char *cmd, t_mini *mini, t_lexer *lexer);
+int			add_str(char *cmd, t_mini *mini, t_lexer *lexer, char **env);
+void		change_env_v(char *cmd, t_mini *mini, t_lexer *lexer, char **env);
 
 /* Parser */
 
-void	init_cmds(t_cmds *cmds, t_mini *mini, t_parser *parser);
-void	new_cmd(t_mini *mini, t_parser *parser, t_cmds *cmds);
-void	init_parser(t_parser *parser);
-int		is_redirect(char *str);
-int		add_out_redirect(t_cmds *cmds, char **toks, t_parser *parser, int type);
-int		add_in_redirect(t_cmds *cmds, char **toks, t_parser *parser , int type);
-int		count_red_arg(t_mini *mini, int i);
-int		count_args(t_mini *mini);
-int		count_redirect(t_mini *mini, t_parser *parser);
-void	sub_last_else(t_mini *mini, t_parser *parser, t_cmds *cmds);
-int		parser(t_mini *mini);
+void		init_cmds(t_cmds *cmds, t_mini *mini, t_parser *parser);
+void		new_cmd(t_mini *mini, t_parser *parser, t_cmds *cmds);
+void		init_parser(t_parser *parser);
+int			is_redirect(char *str);
+int			add_out_redirect(t_cmds *cmds, char **toks, t_parser *parser, int type);
+int			add_in_redirect(t_cmds *cmds, char **toks, t_parser *parser , int type);
+int			count_red_arg(t_mini *mini, int i);
+int			count_args(t_mini *mini);
+int			count_redirect(t_mini *mini, t_parser *parser);
+void		sub_last_else(t_mini *mini, t_parser *parser, t_cmds *cmds);
+int			parser(t_mini *mini);
 
 
 /* executor */

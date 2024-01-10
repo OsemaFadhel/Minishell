@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:55:37 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/09 10:47:01 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/10 19:22:07 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ void	sub_last_else(t_mini *mini, t_parser *parser, t_cmds *cmds)
 			parser->j++;
 			parser->i++;
 		}
-		cmds->args[parser->j] = NULL;
 	}
+	cmds->args[parser->j] = NULL;
 }
 
 int	parser(t_mini *mini)

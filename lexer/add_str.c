@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 12:40:16 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/07 22:51:27 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/10 19:18:16 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ char *get_env_name(char *cmd, int i)
 }
 
 //add str found inside double quotes
-int	add_str_dquot(char *cmd, char **toks, t_lexer *lexer, char **env)
+int	add_str_dquot(char *cmd, t_mini *mini, t_lexer *lexer, char **env)
 {
 	int	k;
 	int l;
@@ -78,7 +78,7 @@ int	add_str_dquot(char *cmd, char **toks, t_lexer *lexer, char **env)
 	{
 		if (cmd[lexer->i - 1] != ' ' && cmd[lexer->i - 1] != '\0') //maybe implent in the expander so firtst we can check the quotes for the env $ thenk remove the spaces
 		{
-			toks[lexer->j][lexer->k] = '\b';
+			mini->toks[lexer->j][lexer->k] = '\b';
 			lexer->k++;
 		}
 		lexer->i++;
@@ -95,7 +95,7 @@ int	add_str_dquot(char *cmd, char **toks, t_lexer *lexer, char **env)
 				{
 					while (var[l] != '\0')
 					{
-						toks[lexer->j][lexer->k] = var[l];
+						mini->toks[lexer->j][lexer->k] = var[l];
 						l++;
 						lexer->k++;
 					}
@@ -106,7 +106,7 @@ int	add_str_dquot(char *cmd, char **toks, t_lexer *lexer, char **env)
 			}
 			else
 			{
-				toks[lexer->j][lexer->k] = cmd[lexer->i];
+				mini->toks[lexer->j][lexer->k] = cmd[lexer->i];
 				lexer->k++;
 				lexer->i++;
 			}
@@ -114,16 +114,16 @@ int	add_str_dquot(char *cmd, char **toks, t_lexer *lexer, char **env)
 	}
 	else
 	{
-		toks[lexer->j][lexer->k] = '\"';
+		mini->toks[lexer->j][lexer->k] = '\"';
 		lexer->k++;
 	}
-	toks[lexer->j][lexer->k] = '\0';
+	mini->toks[lexer->j][lexer->k] = '\0';
 	lexer->i++;
 	return (lexer->i);
 }
 
 //add str found inside single quotes
-int add_str_quot(char *cmd, char **toks, t_lexer *lexer)
+int add_str_quot(char *cmd, t_mini *mini, t_lexer *lexer)
 {
 	int	k;
 
@@ -132,59 +132,30 @@ int add_str_quot(char *cmd, char **toks, t_lexer *lexer)
 	{
 		if (cmd[lexer->i - 1] != ' ' && cmd[lexer->i - 1] != '\0')
 		{
-			toks[lexer->j][k] = '\b';
+			mini->toks[lexer->j][k] = '\b';
 			k++;
 		}
 		lexer->i++;
 		while (cmd[lexer->i] != '\'')
 		{
-			toks[lexer->j][k] = cmd[lexer->i];
+			mini->toks[lexer->j][k] = cmd[lexer->i];
 			lexer->i++;
 			k++;
 		}
 	}
 	else
 	{
-		toks[lexer->j][k] = '\'';
+		mini->toks[lexer->j][k] = '\'';
 		k++;
 	}
-	toks[lexer->j][k] = '\0';
+	mini->toks[lexer->j][k] = '\0';
 	lexer->i++;
 	return (lexer->i);
 
 }
 
-void	change_env_v(char *cmd, char **toks, t_lexer *lexer, char **env)
-{
-	int	l;
-	int post;
-	char *env_var;
-	char *var;
-
-	if (cmd[lexer->i] == '$')
-	{
-		lexer->j++;
-		lexer->l = 0;
-		env_var = get_env_name(cmd, lexer->i);
-		post =  ft_strlen(env_var) - 1;
-		var = get_env_var(env_var, env);
-		if (var != NULL)
-		{
-			while (var[lexer->l] != '\0')
-			{
-				toks[lexer->j][lexer->k] = var[lexer->l];
-				lexer->l++;
-				lexer->k++;
-			}
-		}
-		free(env_var);
-		free(var);
-		lexer->i += post;
-	}
-}
-
 //add str  found outside quotes
-int	add_str(char *cmd, char **toks, t_lexer *lexer, char **env)
+int	add_str(char *cmd, t_mini *mini, t_lexer *lexer, char **env)
 {
 	int	k;
 	int l;
@@ -195,10 +166,13 @@ int	add_str(char *cmd, char **toks, t_lexer *lexer, char **env)
 	k = 0;
 	while (cmd[lexer->i] != ' ' && cmd[lexer->i] != '\0')
 	{
-		if (cmd[lexer->i - 1] == '\"' || cmd[lexer->i - 1] == '\'') //add in the expander, maybe this not; only the quotes
+		if (lexer->i > 0)
 		{
-			toks[lexer->j][k] = '\b';
-			k++;
+			if ((cmd[lexer->i - 1] == '\"' || cmd[lexer->i - 1] == '\'') && k == 0) //add in the expander, maybe this not; only the quotes
+			{
+				mini->toks[lexer->j][k] = '\b';
+				k++;
+			}
 		}
 		if (cmd[lexer->i] == '\"' || cmd[lexer->i] == '\'')
 		{
@@ -218,7 +192,7 @@ int	add_str(char *cmd, char **toks, t_lexer *lexer, char **env)
 			{
 				while (var[l] != '\0')
 				{
-					toks[lexer->j][k] = var[l];
+					mini->toks[lexer->j][k] = var[l];
 					l++;
 					k++;
 				}
@@ -235,11 +209,11 @@ int	add_str(char *cmd, char **toks, t_lexer *lexer, char **env)
 			break;
 		else
 		{
-			toks[lexer->j][k] = cmd[lexer->i];
+			mini->toks[lexer->j][k] = cmd[lexer->i];
 			lexer->i++;
 			k++;
 		}
 	}
-	toks[lexer->j][k] = '\0';
+	mini->toks[lexer->j][k] = '\0';
 	return (lexer->i);
 }

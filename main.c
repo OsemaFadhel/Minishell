@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 18:18:50 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/09 11:22:07 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/10 20:41:05 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,6 @@ void	init(t_mini *mini)
 {
 	mini->cmds = NULL;
 	mini->cmds_count = 0;
-	//mini->fdin = -2;
-	//mini->fdout = -2;
 	mini->here_doc_flag = 0;
 	mini->toks = NULL;
 	mini->toks_count = 0;
@@ -52,7 +50,6 @@ int	main(int argc, char **argv, char **envp)
 	int		i;
 
 	envdump(envp, &mini);
-	//ft_signals(&mini);
 	while (1)
 	{
 		init(&mini);
@@ -68,8 +65,8 @@ int	main(int argc, char **argv, char **envp)
 			{
 				if (parser(&mini))
 					execute(&mini);
+				free_cmds(&mini, input);
 			}
-			free_cmds(&mini, input);
 		}
 	}
 	return (0);

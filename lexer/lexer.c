@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:44:53 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/07 22:50:46 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/10 19:19:29 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,78 +44,77 @@ int	check_closed_quotes(char *cmd, int i)
 	return (0);
 }
 
-void	add_pipe_char(char *cmd, char **toks, t_lexer *lexer)
+void	add_pipe_char(char *cmd, t_mini *mini, t_lexer *lexer)
 {
-	toks[lexer->j][0] = cmd[lexer->i];
-	toks[lexer->j][1] = '\0';
+	mini->toks[lexer->j][0] = cmd[lexer->i];
+	mini->toks[lexer->j][1] = '\0';
 	lexer->i++;
 	lexer->j++;
 }
 
-void	add_single_char(char *cmd, char **toks, t_lexer *lexer)
+void	add_single_char(char *cmd, t_mini *mini, t_lexer *lexer)
 {
-	toks[lexer->j][0] = cmd[lexer->i];
-	toks[lexer->j][1] = '\0';
+	mini->toks[lexer->j][0] = cmd[lexer->i];
+	mini->toks[lexer->j][1] = '\0';
 	lexer->i++;
 	lexer->j++;
 }
 
-void	add_redirect(char *cmd, char **toks, t_lexer *lexer)
+void	add_redirect(char *cmd, t_mini *mini, t_lexer *lexer)
 {
-	toks[lexer->j][0] = cmd[lexer->i];
-	toks[lexer->j][1] = cmd[lexer->i + 1];
-	toks[lexer->j][2] = '\0';
+	mini->toks[lexer->j][0] = cmd[lexer->i];
+	mini->toks[lexer->j][1] = cmd[lexer->i + 1];
+	mini->toks[lexer->j][2] = '\0';
 	lexer->i += 2;
 	lexer->j++;
 }
 
-int	sub_ifs_lexersplit(char *cmd, t_mini *mini, t_lexer *lexer, char **toks)
+int	sub_ifs_lexersplit(char *cmd, t_mini *mini, t_lexer *lexer)
 {
 	if (cmd[lexer->i] == '\"')
 	{
-		lexer->i = add_str_dquot(cmd, toks, lexer, mini->env);
+		lexer->i = add_str_dquot(cmd, mini, lexer, mini->env);
 		lexer->j++;
 	}
 	else if (cmd[lexer->i] == '\'')
 	{
-		lexer->i = add_str_quot(cmd, toks, lexer);
+		lexer->i = add_str_quot(cmd, mini, lexer);
 		lexer->j++;
 	}
 	else if ((cmd[lexer->i] == '>' && cmd[lexer->i + 1] == '>')
 			|| (cmd[lexer->i] == '<' && cmd[lexer->i + 1] == '<'))
-		add_redirect(cmd, toks, lexer);
+		add_redirect(cmd, mini, lexer);
 	else if (cmd[lexer->i] == '>' | cmd[lexer->i] == '<')
-		add_single_char(cmd, toks, lexer);
+		add_single_char(cmd, mini, lexer);
 	else if (cmd[lexer->i] == '|')
-		add_pipe_char(cmd, toks, lexer);
+		add_pipe_char(cmd, mini, lexer);
 	else
 		return (0);
 	return (1);
 }
 
-char	**lexersplit_1(char *cmd, t_mini *mini, t_lexer *lexer)
+int	lexersplit_1(char *cmd, t_mini *mini, t_lexer *lexer)
 {
-	char	**toks;
 	int		words;
 
 	words = count_words_lex(cmd, lexer);
-	toks = malloc(sizeof(char *) * (words + 1));
-	if (!toks)
-		return (NULL);
+	mini->toks = malloc(sizeof(char *) * (words + 1));
+	if (!mini->toks)
+		return (-1);
 	while (cmd[lexer->i])
 	{
-		toks[lexer->j] = malloc(sizeof(char) * (ft_strlen(cmd) + 1));
+		mini->toks[lexer->j] = malloc(sizeof(char) * (ft_strlen(cmd) + 1));
 		if (cmd[lexer->i] == ' ')
 			lexer->i++;
-		else if (sub_ifs_lexersplit(cmd, mini, lexer, toks) == 1);
+		else if (sub_ifs_lexersplit(cmd, mini, lexer) == 1);
 		else
 		{
-			lexer->i = add_str(cmd, toks, lexer, mini->env);
+			add_str(cmd, mini, lexer, mini->env);
 			lexer->j++;
 		}
 	}
-	toks[lexer->j] = NULL;
-	return (toks);
+	mini->toks[lexer->j] = NULL;
+	return (0);
 }
 
 int	lexersplit(char *cmd, t_mini *mini)
@@ -126,7 +125,7 @@ int	lexersplit(char *cmd, t_mini *mini)
 	lexer.j = 0;
 	lexer.k = 0;
 	lexer.l = 0;
-	mini->toks = lexersplit_1(cmd, mini, &lexer);
+	lexersplit_1(cmd, mini, &lexer);
 	free(cmd);
 	if (!mini->toks)
 		return (0);

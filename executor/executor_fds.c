@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 12:24:13 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/09 12:34:24 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/10 19:05:26 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,6 @@ void	update_fd(t_mini *mini, t_cmds *current_cmd)
 		close(mini->fdout);
 		out_redirect(mini, current_cmd);
 	}
-	printf("fdout = %d\n", mini->fdout);
 	if (mini->fdout > 0)
 		dup2(mini->fdout, 1);
 	if (mini->fdout > 0)
