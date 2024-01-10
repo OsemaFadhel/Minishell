@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:21:15 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/10 20:37:00 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/10 22:26:54 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,12 @@ int			add_str_dquot(char *cmd, t_mini *mini, t_lexer *lexer, char **env);
 int			add_str_quot(char *cmd, t_mini *mini, t_lexer *lexer);
 int			add_str(char *cmd, t_mini *mini, t_lexer *lexer, char **env);
 void		change_env_v(char *cmd, t_mini *mini, t_lexer *lexer, char **env);
+int			add_env(t_mini *mini, t_lexer *lexer, char *cmd);
+char		*get_env_var(char *tmp, char **env);
+char 		*get_env_name(char *cmd, int i);
+void		add_pipe_char(char *cmd, t_mini *mini, t_lexer *lexer);
+void		add_single_char(char *cmd, t_mini *mini, t_lexer *lexer);
+void		add_redirect(char *cmd, t_mini *mini, t_lexer *lexer);
 
 /* Parser */
 
