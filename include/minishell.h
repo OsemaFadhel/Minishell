@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:21:15 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/09 23:02:26 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/10 00:20:05 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int			envdump(char **envp, t_mini *mini); //store envp in a struct
 
 /* free */
 
-void		free_cmds(t_mini *mini, char *input);
+void		free_cmds(t_mini *mini);
 void		ft_free_array(char **array);
 void		free_cmds_list(t_cmds *head);
 void		free_redirect(t_cmds *tmp);

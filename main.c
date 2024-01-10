@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 18:18:50 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/09 22:54:05 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/10 00:20:35 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void	init(t_mini *mini)
 int	main(int argc, char **argv, char **envp)
 {
 	char	*input;
-	char	*read;
 	t_mini	mini;
 	int		i;
 
@@ -58,13 +57,11 @@ int	main(int argc, char **argv, char **envp)
 	{
 		init(&mini);
 		sig_ignore();
-		read = readline("BASH$: ");
-		if (read && read[0])
-			add_history(read);
-		if (read == NULL)
+		input = readline("BASH$: ");
+		if (input && input[0])
+			add_history(input);
+		if (input == NULL)
 			ft_ctrld(&mini);
-		input = ft_strdup(read);
-		free(read);
 		if (input && input[0])
 		{
 			if (lexersplit(input, &mini))
@@ -73,7 +70,7 @@ int	main(int argc, char **argv, char **envp)
 					execute(&mini);
 			}
 		}
-		free_cmds(&mini, input);
+		free_cmds(&mini);
 	}
 	return (0);
 }

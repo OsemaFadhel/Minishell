@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 13:53:30 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/09 21:39:30 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/10 00:19:54 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	ft_ctrlc(int sign)
 void	ft_ctrld(t_mini *mini)
 {
 	ft_free_array(mini->env);
+	free_cmds(mini);
 	ft_putstr_fd("exit\n", 1);
 	exit(g_exit_status);
 }
