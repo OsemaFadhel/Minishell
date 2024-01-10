@@ -25,7 +25,7 @@ int	count_red_arg(t_mini *mini, int i)
 	return (i);
 }
 
-int	count_args(t_mini *mini)
+int	count_args(t_mini *mini) //change i to parser->i
 {
 	int	i;
 	int	count;
