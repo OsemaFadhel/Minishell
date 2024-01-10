@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 12:24:13 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/10 19:05:26 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/10 21:46:36 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,21 +34,36 @@ void	here_doc(t_mini *mini, char *delimeter)
 	mini->fdin = open("tmp.txt", O_RDONLY);
 }
 
+void	in_redirect2(t_mini *mini, t_cmds *current_cmd, int i)
+{
+	if (mini->here_doc_flag == 0)
+	{
+		here_doc(mini, current_cmd->redirect[i].infile);
+		mini->here_doc_flag = 1;
+	}
+	else
+	{
+		if (mini->fdin > 0)
+			close(mini->fdin);
+		here_doc(mini, current_cmd->redirect[i].infile);
+	}
+	mini->here_doc_flag = 1;
+}
+
 void	in_redirect(t_mini *mini, t_cmds *current_cmd)
 {
 	int i;
-	int	flag;
 
 	i = 0;
-	flag = 0;
+	mini->here_doc_flag = 0;
 	while (current_cmd->redirect[i].redirect_type != 0)
 	{
 		if (current_cmd->redirect[i].redirect_type == 3) // <
 		{
-			if (flag == 0)
+			if (mini->here_doc_flag == 0)
 			{
 				mini->fdin = open(current_cmd->redirect[i].infile, O_RDONLY);
-				flag = 1;
+				mini->here_doc_flag = 1;
 			}
 			else
 			{
@@ -58,39 +73,41 @@ void	in_redirect(t_mini *mini, t_cmds *current_cmd)
 			}
 		}
 		else if (current_cmd->redirect[i].redirect_type == 4) // <<
-		{
-			if (flag == 0)
-			{
-				here_doc(mini, current_cmd->redirect[i].infile);
-				flag = 1;
-			}
-			else
-			{
-				if (mini->fdin > 0)
-					close(mini->fdin);
-				here_doc(mini, current_cmd->redirect[i].infile);
-			}
-			mini->here_doc_flag = 1;
-		}
+			in_redirect2(mini, current_cmd, i);
 		i++;
 	}
+}
+
+void	out_redirect2(t_mini *mini, t_cmds *current_cmd, int i)
+{
+	if (mini->here_doc_flag == 0)
+	{
+		mini->fdout = open(current_cmd->redirect[i].outfile, O_WRONLY | O_APPEND | O_CREAT, 0644);
+		mini->here_doc_flag = 1;
+	}
+	else
+	{
+		if (mini->fdout > 0)
+			close(mini->fdout);
+		mini->fdout = open(current_cmd->redirect[i].outfile, O_WRONLY | O_APPEND | O_CREAT, 0644);
+	}
+
 }
 
 void	out_redirect(t_mini *mini, t_cmds *current_cmd)
 {
 	int i;
-	int	flag;
 
 	i = 0;
-	flag = 0;
+	mini->here_doc_flag = 0;
 	while (current_cmd->redirect[i].redirect_type != 0)
 	{
 		if (current_cmd->redirect[i].redirect_type == 1) // >
 		{
-			if (flag == 0)
+			if (mini->here_doc_flag == 0)
 			{
 				mini->fdout = open(current_cmd->redirect[i].outfile, O_WRONLY | O_TRUNC | O_CREAT, 0644);
-				flag = 1;
+				mini->here_doc_flag = 1;
 			}
 			else
 			{
@@ -100,19 +117,7 @@ void	out_redirect(t_mini *mini, t_cmds *current_cmd)
 			}
 		}
 		else if (current_cmd->redirect[i].redirect_type == 2) // >>
-		{
-			if (flag == 0)
-			{
-				mini->fdout = open(current_cmd->redirect[i].outfile, O_WRONLY | O_APPEND | O_CREAT, 0644);
-				flag = 1;
-			}
-			else
-			{
-				if (mini->fdout > 0)
-					close(mini->fdout);
-				mini->fdout = open(current_cmd->redirect[i].outfile, O_WRONLY | O_APPEND | O_CREAT, 0644);
-			}
-		}
+			out_redirect2(mini, current_cmd, i);
 		i++;
 	}
 }
@@ -133,8 +138,6 @@ void	update_fd(t_mini *mini, t_cmds *current_cmd)
 		close(mini->fdout);
 		out_redirect(mini, current_cmd);
 	}
-	if (mini->fdout > 0)
-		dup2(mini->fdout, 1);
-	if (mini->fdout > 0)
-		close(mini->fdout);
+	dup2(mini->fdout, 1);
+	close(mini->fdout);
 }
