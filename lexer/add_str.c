@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 12:40:16 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/10 19:18:16 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/10 21:59:18 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,24 +154,48 @@ int add_str_quot(char *cmd, t_mini *mini, t_lexer *lexer)
 
 }
 
-//add str  found outside quotes
-int	add_str(char *cmd, t_mini *mini, t_lexer *lexer, char **env)
+int	add_env(t_mini *mini, t_lexer *lexer, char *cmd)
 {
-	int	k;
 	int l;
 	int post;
 	char *env_var;
 	char *var;
 
-	k = 0;
+	l = 0;
+	env_var = get_env_name(cmd, lexer->i);
+	post =  ft_strlen(env_var) - 1;
+	var = get_env_var(env_var, mini->env);
+	if (var != NULL)
+	{
+		while (var[l] != '\0')
+		{
+			mini->toks[lexer->j][lexer->k] = var[l];
+			l++;
+			lexer->k++;
+		}
+	}
+	free(env_var);
+	free(var);
+	return (post);
+}
+
+//add str  found outside quotes
+int	add_str(char *cmd, t_mini *mini, t_lexer *lexer, char **env)
+{
+	int	k;
+	int post;
+	char *env_var;
+	char *var;
+
+	lexer->k = 0;
 	while (cmd[lexer->i] != ' ' && cmd[lexer->i] != '\0')
 	{
 		if (lexer->i > 0)
 		{
-			if ((cmd[lexer->i - 1] == '\"' || cmd[lexer->i - 1] == '\'') && k == 0) //add in the expander, maybe this not; only the quotes
+			if ((cmd[lexer->i - 1] == '\"' || cmd[lexer->i - 1] == '\'') && lexer->k == 0) //add in the expander, maybe this not; only the quotes
 			{
-				mini->toks[lexer->j][k] = '\b';
-				k++;
+				mini->toks[lexer->j][lexer->k] = '\b';
+				lexer->k++;
 			}
 		}
 		if (cmd[lexer->i] == '\"' || cmd[lexer->i] == '\'')
@@ -184,22 +208,7 @@ int	add_str(char *cmd, t_mini *mini, t_lexer *lexer, char **env)
 		if (cmd[lexer->i] == '$')
 		{
 			lexer->i++;
-			l = 0;
-			env_var = get_env_name(cmd, lexer->i);  // add check for exit status $?
-			post =  ft_strlen(env_var) - 1;
-			var = get_env_var(env_var, env);
-			if (var != NULL)
-			{
-				while (var[l] != '\0')
-				{
-					mini->toks[lexer->j][k] = var[l];
-					l++;
-					k++;
-				}
-			}
-			free(env_var);
-			free(var);
-			lexer->i += post;
+			lexer->i += add_env(mini, lexer, cmd);
 		}
 		if ((cmd[lexer->i] == '>' && cmd[lexer->i + 1] == '>') | (cmd[lexer->i] == '<' && cmd[lexer->i + 1] == '<'))
 			break;
@@ -209,11 +218,11 @@ int	add_str(char *cmd, t_mini *mini, t_lexer *lexer, char **env)
 			break;
 		else
 		{
-			mini->toks[lexer->j][k] = cmd[lexer->i];
+			mini->toks[lexer->j][lexer->k] = cmd[lexer->i];
 			lexer->i++;
-			k++;
+			lexer->k++;
 		}
 	}
-	mini->toks[lexer->j][k] = '\0';
+	mini->toks[lexer->j][lexer->k] = '\0';
 	return (lexer->i);
 }
