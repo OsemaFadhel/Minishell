@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 17:38:14 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/09 12:24:55 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/10 23:35:59 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_fork(t_mini *mini, t_cmds *current_cmd, int tmpin, int tmpout)
 {
-	pid_t ret;
+	pid_t	ret;
 
 	ret = fork();
 	if (ret == 0)
@@ -22,7 +22,7 @@ void	ft_fork(t_mini *mini, t_cmds *current_cmd, int tmpin, int tmpout)
 		close(mini->fdin);
 		close(tmpin);
 		close(tmpout);
-		executor(mini, current_cmd); // Call the executor with the current command
+		executor(mini, current_cmd);
 		exit(0);
 	}
 }
@@ -39,9 +39,10 @@ void	set_pipes(t_mini *mini, t_cmds *current_cmd, int cmd_count, int tmpout)
 {
 	int	fdpipe[2];
 
-	if	(current_cmd->out == 0 || (current_cmd->next == NULL && current_cmd->out == 0))
+	if (current_cmd->out == 0
+		|| (current_cmd->next == NULL && current_cmd->out == 0))
 		mini->fdout = dup(tmpout);
-	if (mini->cmds_count >= 1 && current_cmd->next != NULL)  // to check
+	if (mini->cmds_count >= 1 && current_cmd->next != NULL)
 	{
 		pipe(fdpipe);
 		mini->fdout = fdpipe[1];
@@ -49,20 +50,19 @@ void	set_pipes(t_mini *mini, t_cmds *current_cmd, int cmd_count, int tmpout)
 	}
 }
 
-void execute(t_mini *mini)
+void	execute(t_mini *mini)
 {
-	int tmpin;
-	int tmpout;
-	int i;
-	int cmd_count;
-	t_cmds *current_cmd;
+	int		tmpin;
+	int		tmpout;
+	int		cmd_count;
+	t_cmds	*current_cmd;
 
 	tmpin = dup(0);
 	tmpout = dup(1);
 	cmd_count = 0;
 	current_cmd = mini->cmds;
 	mini->fdin = dup(tmpin);
-	while (current_cmd != NULL)  //missing case like like ls >file txt | wc -l //the fdin for wc need to be the fdout of ls
+	while (current_cmd != NULL)
 	{
 		dup2(mini->fdin, 0);
 		close(mini->fdin);
@@ -75,5 +75,6 @@ void execute(t_mini *mini)
 			unlink("tmp.txt");
 	}
 	restore_stds(tmpin, tmpout);
-	while (waitpid(-1, NULL, 0) > 0);
+	while (waitpid(-1, NULL, 0) > 0)
+		;
 }

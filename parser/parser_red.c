@@ -6,11 +6,11 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 10:44:27 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/09 10:46:20 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/10 23:25:33 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../include/minishell.h"
+#include "../include/minishell.h"
 
 int	is_redirect(char *str)
 {
@@ -30,7 +30,8 @@ int	add_out_redirect(t_cmds *cmds, char **toks, t_parser *parser, int type)
 		parser->i++;
 	else
 	{
-		cmds->redirect[cmds->redirect_count].outfile = ft_strdup(toks[parser->i + 1]);
+		cmds->redirect[cmds->redirect_count].outfile
+			= ft_strdup(toks[parser->i + 1]);
 		cmds->redirect[cmds->redirect_count].redirect_type = type;
 		cmds->redirect_count++;
 		cmds->out = 1;
@@ -39,7 +40,7 @@ int	add_out_redirect(t_cmds *cmds, char **toks, t_parser *parser, int type)
 	return (parser->i);
 }
 
-int	add_in_redirect(t_cmds *cmds, char **toks, t_parser *parser , int type)
+int	add_in_redirect(t_cmds *cmds, char **toks, t_parser *parser, int type)
 {
 	if (!toks[parser->i + 1] || ft_strncmp(toks[parser->i + 1], "|", 1) == 0)
 	{
@@ -50,7 +51,8 @@ int	add_in_redirect(t_cmds *cmds, char **toks, t_parser *parser , int type)
 		parser->i++;
 	else
 	{
-		cmds->redirect[cmds->redirect_count].infile = ft_strdup(toks[parser->i + 1]);
+		cmds->redirect[cmds->redirect_count].infile
+			= ft_strdup(toks[parser->i + 1]);
 		cmds->redirect[cmds->redirect_count].redirect_type = type;
 		cmds->redirect_count++;
 		cmds->in = 1;

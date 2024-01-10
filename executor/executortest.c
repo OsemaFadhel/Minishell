@@ -6,13 +6,13 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 15:32:21 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/09 12:29:28 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/10 23:32:26 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int		search_env(char **env, char *str)
+int	search_env(char **env, char *str)
 {
 	int	i;
 	int	j;
@@ -34,7 +34,7 @@ int		search_env(char **env, char *str)
 
 int	check_bin(t_mini *mini, t_cmds *cmds)
 {
-	struct stat buf;
+	struct stat	buf;
 	char		**path;
 	char		*bin;
 	size_t		i;
@@ -81,17 +81,16 @@ void	executor(t_mini	*mini, t_cmds *cmds)
 	i = 0;
 	if (!cmds->cmd)
 		exit(0);
-	//if (!is_builtin(mini, cmds, i))
-	//	return ;
 	if (1)
 	{
-		if(ft_strchr(cmds->cmd, '/'));
+		if (ft_strchr(cmds->cmd, '/'))
+			;
 		else if (check_bin(mini, cmds) > 0)
 		{
 			i = check_bin(mini, cmds);
 			cmds->cmd = add_path(mini, cmds, i);
 		}
-		if (execve(cmds->cmd, cmds->args, mini->env)) //execve will close the process.
+		if (execve(cmds->cmd, cmds->args, mini->env))
 			perror("BASH$");
 	}
 }

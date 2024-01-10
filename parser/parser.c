@@ -6,11 +6,11 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:55:37 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/10 19:22:07 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/10 23:26:16 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../include/minishell.h"
+#include "../include/minishell.h"
 
 void	sub_last_else(t_mini *mini, t_parser *parser, t_cmds *cmds)
 {
@@ -22,8 +22,9 @@ void	sub_last_else(t_mini *mini, t_parser *parser, t_cmds *cmds)
 	}
 	else
 	{
-		while (mini->toks[parser->i] && ft_strncmp(mini->toks[parser->i], "|", 1)
-				&& !is_redirect(mini->toks[parser->i]))
+		while (mini->toks[parser->i]
+			&& ft_strncmp(mini->toks[parser->i], "|", 1)
+			&& !is_redirect(mini->toks[parser->i]))
 		{
 			cmds->args[parser->j] = ft_strdup(mini->toks[parser->i]);
 			parser->j++;
@@ -35,12 +36,13 @@ void	sub_last_else(t_mini *mini, t_parser *parser, t_cmds *cmds)
 
 int	parser(t_mini *mini)
 {
-	t_parser parser;
-	t_cmds	*cmds;
-	t_cmds  *head;
+	t_parser	parser;
+	t_cmds		*cmds;
+	t_cmds		*head;
 
 	init_parser(&parser);
-	head = cmds = malloc(sizeof(t_cmds));
+	cmds = malloc(sizeof(t_cmds));
+	head = cmds;
 	init_cmds(cmds, mini, &parser);
 	while (mini->toks[parser.i])
 	{

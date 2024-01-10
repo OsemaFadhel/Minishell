@@ -6,17 +6,18 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 10:45:05 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/10 20:35:05 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/10 23:24:45 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../include/minishell.h"
+#include "../include/minishell.h"
 
 void	init_cmds(t_cmds *cmds, t_mini *mini, t_parser *parser)
 {
 	cmds->cmd = NULL;
 	cmds->args = ft_calloc(sizeof(char *), (count_args(mini) + 1));
-	cmds->redirect = ft_calloc(sizeof(t_redirect), (count_redirect(mini, parser) + 1));
+	cmds->redirect = ft_calloc(sizeof(t_redirect),
+			(count_redirect(mini, parser) + 1));
 	cmds->out = 0;
 	cmds->in = 0;
 	cmds->redirect_count = 0;

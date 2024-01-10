@@ -6,11 +6,11 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 12:24:13 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/10 21:46:36 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/10 23:34:27 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../include/minishell.h"
+#include "../include/minishell.h"
 
 void	here_doc(t_mini *mini, char *delimeter)
 {
@@ -38,6 +38,8 @@ void	in_redirect2(t_mini *mini, t_cmds *current_cmd, int i)
 {
 	if (mini->here_doc_flag == 0)
 	{
+		if (mini->fdin > 0)
+			close(mini->fdin);
 		here_doc(mini, current_cmd->redirect[i].infile);
 		mini->here_doc_flag = 1;
 	}
@@ -47,32 +49,23 @@ void	in_redirect2(t_mini *mini, t_cmds *current_cmd, int i)
 			close(mini->fdin);
 		here_doc(mini, current_cmd->redirect[i].infile);
 	}
-	mini->here_doc_flag = 1;
 }
 
 void	in_redirect(t_mini *mini, t_cmds *current_cmd)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	mini->here_doc_flag = 0;
 	while (current_cmd->redirect[i].redirect_type != 0)
 	{
-		if (current_cmd->redirect[i].redirect_type == 3) // <
+		if (current_cmd->redirect[i].redirect_type == 3)
 		{
-			if (mini->here_doc_flag == 0)
-			{
-				mini->fdin = open(current_cmd->redirect[i].infile, O_RDONLY);
-				mini->here_doc_flag = 1;
-			}
-			else
-			{
-				if (mini->fdin > 0)
-					close(mini->fdin);
-				mini->fdin = open(current_cmd->redirect[i].infile, O_RDONLY);
-			}
+			if (mini->fdin != 0)
+				close(mini->fdin);
+			mini->fdin = open(current_cmd->redirect[i].infile, O_RDONLY);
 		}
-		else if (current_cmd->redirect[i].redirect_type == 4) // <<
+		else if (current_cmd->redirect[i].redirect_type == 4)
 			in_redirect2(mini, current_cmd, i);
 		i++;
 	}
@@ -80,43 +73,27 @@ void	in_redirect(t_mini *mini, t_cmds *current_cmd)
 
 void	out_redirect2(t_mini *mini, t_cmds *current_cmd, int i)
 {
-	if (mini->here_doc_flag == 0)
-	{
-		mini->fdout = open(current_cmd->redirect[i].outfile, O_WRONLY | O_APPEND | O_CREAT, 0644);
-		mini->here_doc_flag = 1;
-	}
-	else
-	{
-		if (mini->fdout > 0)
-			close(mini->fdout);
-		mini->fdout = open(current_cmd->redirect[i].outfile, O_WRONLY | O_APPEND | O_CREAT, 0644);
-	}
-
+	if (mini->fdout != 1)
+		close(mini->fdout);
+	mini->fdout = open(current_cmd->redirect[i].outfile,
+			O_WRONLY | O_APPEND | O_CREAT, 0644);
 }
 
 void	out_redirect(t_mini *mini, t_cmds *current_cmd)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	mini->here_doc_flag = 0;
 	while (current_cmd->redirect[i].redirect_type != 0)
 	{
-		if (current_cmd->redirect[i].redirect_type == 1) // >
+		if (current_cmd->redirect[i].redirect_type == 1)
 		{
-			if (mini->here_doc_flag == 0)
-			{
-				mini->fdout = open(current_cmd->redirect[i].outfile, O_WRONLY | O_TRUNC | O_CREAT, 0644);
-				mini->here_doc_flag = 1;
-			}
-			else
-			{
-				if (mini->fdout > 0)
-					close(mini->fdout);
-				mini->fdout = open(current_cmd->redirect[i].outfile, O_WRONLY | O_TRUNC | O_CREAT, 0644);
-			}
+			if (mini->fdout != 1)
+				close(mini->fdout);
+			mini->fdout = open(current_cmd->redirect[i].outfile,
+					O_WRONLY | O_TRUNC | O_CREAT, 0644);
 		}
-		else if (current_cmd->redirect[i].redirect_type == 2) // >>
+		else if (current_cmd->redirect[i].redirect_type == 2)
 			out_redirect2(mini, current_cmd, i);
 		i++;
 	}
