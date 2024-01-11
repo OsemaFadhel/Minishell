@@ -6,11 +6,11 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:51:23 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/07 16:45:34 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/11 16:07:12 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "include/minishell.h"
+#include "include/minishell.h"
 
 int	ft_isdigitalpha(char *c)
 {
@@ -27,7 +27,7 @@ int	ft_isdigitalpha(char *c)
 	return (1);
 }
 
-char	**expand_matrix(char **matrix, char *str) //for export command and maybe something else
+char	**expand_matrix(char **matrix, char *str)
 {
 	int		i;
 	char	**new_matrix;
@@ -48,7 +48,7 @@ char	**expand_matrix(char **matrix, char *str) //for export command and maybe so
 	return (new_matrix);
 }
 
-char	**unset_cmd(char **matrix, char *str) //for unset builtin
+char	**unset_cmd(char **matrix, char *str)
 {
 	int		i;
 	int		j;
