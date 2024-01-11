@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 13:53:30 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/09 10:40:22 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/11 16:13:53 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	ft_ctrld(char *line, t_mini *mini)
 
 void	sig_ignore(void) // ignore signals from keyboard
 {
-	signal(SIGINT, ft_ctrlc); // ctrl + c; arg sig_ign means ignore
-	signal(SIGQUIT, SIG_IGN); // ctrl + \;
-	signal(SIGTSTP, SIG_IGN); // ctrl + z;
+	signal(SIGINT, ft_ctrlc);
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGTSTP, SIG_IGN);
 }
