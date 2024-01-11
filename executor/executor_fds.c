@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 12:24:13 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/10 23:34:27 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/11 12:14:19 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,24 +97,4 @@ void	out_redirect(t_mini *mini, t_cmds *current_cmd)
 			out_redirect2(mini, current_cmd, i);
 		i++;
 	}
-}
-
-void	update_fd(t_mini *mini, t_cmds *current_cmd)
-{
-	if (current_cmd->in == 1)
-	{
-		close(mini->fdin);
-		in_redirect(mini, current_cmd);
-		if (mini->fdin > 0)
-			dup2(mini->fdin, 0);
-		if (mini->fdin > 0)
-			close(mini->fdin);
-	}
-	if (current_cmd->out == 1)
-	{
-		close(mini->fdout);
-		out_redirect(mini, current_cmd);
-	}
-	dup2(mini->fdout, 1);
-	close(mini->fdout);
 }

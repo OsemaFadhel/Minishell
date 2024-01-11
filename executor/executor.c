@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 17:38:14 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/10 23:35:59 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/11 12:14:26 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,26 @@ void	set_pipes(t_mini *mini, t_cmds *current_cmd, int cmd_count, int tmpout)
 		mini->fdout = fdpipe[1];
 		mini->fdin = fdpipe[0];
 	}
+}
+
+void	update_fd(t_mini *mini, t_cmds *current_cmd)
+{
+	if (current_cmd->in == 1)
+	{
+		close(mini->fdin);
+		in_redirect(mini, current_cmd);
+		if (mini->fdin > 0)
+			dup2(mini->fdin, 0);
+		if (mini->fdin > 0)
+			close(mini->fdin);
+	}
+	if (current_cmd->out == 1)
+	{
+		close(mini->fdout);
+		out_redirect(mini, current_cmd);
+	}
+	dup2(mini->fdout, 1);
+	close(mini->fdout);
 }
 
 void	execute(t_mini *mini)
