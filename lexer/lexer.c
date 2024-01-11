@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:44:53 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/10 23:02:34 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/11 22:47:48 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	lexersplit_1(char *cmd, t_mini *mini, t_lexer *lexer)
 	int		words;
 
 	words = count_words_lex(cmd, lexer);
+	printf("words = %d\n", words);
 	mini->toks = malloc(sizeof(char *) * (words + 1));
 	if (!mini->toks)
 		return (-1);
