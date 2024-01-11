@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 10:43:05 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/10 23:25:04 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/11 12:37:59 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,26 +25,25 @@ int	count_red_arg(t_mini *mini, int i)
 	return (i);
 }
 
-int	count_args(t_mini *mini) //change i to parser->i
+int	count_args(t_mini *mini, t_parser *parser)
 {
-	int	i;
 	int	count;
 
-	i = 0;
 	count = 0;
-	while (mini->toks[i])
+	while (mini->toks[parser->l])
 	{
-		if (ft_strncmp(mini->toks[i], "|", 1) == 0)
+		if (ft_strncmp(mini->toks[parser->l], "|", 1) == 0)
 			break ;
-		else if (is_redirect(mini->toks[i]))
-			i = count_red_arg(mini, i);
+		else if (is_redirect(mini->toks[parser->l]))
+			parser->l = count_red_arg(mini, parser->l);
 		else
 		{
-			while (mini->toks[i] && ft_strncmp(mini->toks[i], "|", 1) \
-				&& !is_redirect(mini->toks[i]))
+			while (mini->toks[parser->l]
+				&& ft_strncmp(mini->toks[parser->l], "|", 1)
+				&& !is_redirect(mini->toks[parser->l]))
 			{
 				count++;
-				i++;
+				parser->l++;
 			}
 		}
 	}

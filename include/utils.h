@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 02:26:00 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/07 22:50:25 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/11 12:25:57 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct s_parser
 	int				i; //parser toks
 	int				j; //parser args
 	int				k; //count_redirect
+	int				l; //count_args
 }				t_parser;
 
 #endif
