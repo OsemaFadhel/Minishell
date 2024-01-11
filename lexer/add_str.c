@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 12:40:16 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/11 23:43:54 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/12 00:41:48 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,16 +99,15 @@ int	add_str2(char *cmd, t_mini *mini, t_lexer *lexer)
 	}
 	if (cmd[lexer->i] == '\"' || cmd[lexer->i] == '\'')
 	{
-		if (cmd[lexer->i] == '\"' && check_closed_dquotes(cmd, lexer->i, lexer) == 0)
+		if (cmd[lexer->i] == '\"'
+			&& check_closed_dquotes(cmd, lexer->i, lexer) == 0)
 			return (0);
 		else if (cmd[lexer->i] == '\''
 			&& check_closed_quotes(cmd, lexer->i, lexer) == 0)
 			return (0);
-		else
-			return (-1);
 	}
 	if (cmd[lexer->i] == '$')
-		lexer->i += add_env(mini, lexer, cmd);
+		lexer->i += add_env(mini, lexer, cmd) - 1;
 	if ((cmd[lexer->i] == '>' && cmd[lexer->i + 1] == '>')
 		|| (cmd[lexer->i] == '<' && cmd[lexer->i + 1] == '<'))
 		return (0);

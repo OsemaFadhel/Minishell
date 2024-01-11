@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:44:53 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/11 23:59:35 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/12 00:31:03 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	sub_ifs_lexersplit(char *cmd, t_mini *mini, t_lexer *lexer)
 {
 	if (cmd[lexer->i] == ' ')
-			lexer->i++;
+		lexer->i++;
 	else if (cmd[lexer->i] == '\"')
 	{
 		lexer->i = add_str_dquot(cmd, mini, lexer, mini->env);
@@ -48,12 +48,12 @@ int	lexersplit_1(char *cmd, t_mini *mini, t_lexer *lexer)
 		ft_error(lexer->flag);
 		return (-1);
 	}
-	mini->toks = malloc(sizeof(char *) * (words + 1));
+	mini->toks = ft_calloc(sizeof(char *), (words + 1));
 	if (!mini->toks)
 		return (-1);
 	while (cmd[lexer->i])
 	{
-		mini->toks[lexer->j] = malloc(sizeof(char) * (ft_strlen(cmd) + 1));
+		mini->toks[lexer->j] = ft_calloc(sizeof(char), 1000);
 		if (sub_ifs_lexersplit(cmd, mini, lexer) == 1)
 			;
 		else

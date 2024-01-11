@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 22:23:08 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/10 23:23:27 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/12 00:37:58 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,7 @@ char	*get_env_var(char *tmp, char **env)
 	{
 		if (ft_strncmp(env[i], tmp, j) == 0)
 		{
-			j = ft_strlen(env[i]) - j;
-			j++;
-			env_var = ft_calloc(sizeof(char), ft_strlen(env[i]) - j + 1);
+			env_var = malloc(sizeof(char) * ft_strlen(env[i]) - j + 1);
 			while (env[i][j] != '\0')
 			{
 				env_var[++k] = env[i][j];
