@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 18:18:50 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/12 00:05:55 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/12 00:18:57 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ void	init(t_mini *mini)
 	mini->cmds_count = 0;
 	mini->here_doc_flag = 0;
 	mini->toks = NULL;
+	mini->fdin = 0;
+	mini->fdout = 0;
 	mini->toks_count = 0;
 }
 
