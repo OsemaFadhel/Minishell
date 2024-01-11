@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 15:32:21 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/10 23:32:26 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/11 12:49:27 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	check_bin(t_mini *mini, t_cmds *cmds)
 	struct stat	buf;
 	char		**path;
 	char		*bin;
-	size_t		i;
+	int			i;
 
 	if (search_env(mini->env, "PATH") == -1)
 		return (-1);

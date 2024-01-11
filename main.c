@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 18:18:50 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/10 20:41:05 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/11 12:57:21 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	main(int argc, char **argv, char **envp)
 			ft_ctrld(input, &mini);
 		if (input && input[0])
 		{
-			if (lexersplit(input, &mini)) //creates matrix with all the words splitted and env changed
+			if (lexersplit(input, &mini))
 			{
 				if (parser(&mini))
 					execute(&mini);

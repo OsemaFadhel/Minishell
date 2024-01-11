@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 12:40:16 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/10 22:52:07 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/11 12:58:58 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,13 @@
 
 int	str_dquot2(char *cmd, t_mini *mini, t_lexer *lexer)
 {
-	if (cmd[lexer->i - 1] != ' ' && cmd[lexer->i - 1] != '\0')
+	if (lexer->i > 0)
 	{
-		mini->toks[lexer->j][lexer->k] = '\b';
-		lexer->k++;
+		if (cmd[lexer->i - 1] != ' ' && cmd[lexer->i - 1] != '\0')
+		{
+			mini->toks[lexer->j][lexer->k] = '\b';
+			lexer->k++;
+		}
 	}
 	lexer->i++;
 	while (cmd[lexer->i] != '\"')
