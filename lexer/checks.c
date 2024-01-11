@@ -6,13 +6,13 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 22:25:43 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/11 23:00:27 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/11 23:52:39 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	check_closed_dquotes(char *cmd, int i)
+int	check_closed_dquotes(char *cmd, int i, t_lexer *lexer)
 {
 	int	quotes;
 
@@ -24,11 +24,14 @@ int	check_closed_dquotes(char *cmd, int i)
 		i++;
 	}
 	if (quotes != 2)
+	{
+		lexer->flag = 1;
 		return (1);
+	}
 	return (0);
 }
 
-int	check_closed_quotes(char *cmd, int i)
+int	check_closed_quotes(char *cmd, int i, t_lexer *lexer)
 {
 	int	quotes;
 
@@ -40,7 +43,10 @@ int	check_closed_quotes(char *cmd, int i)
 		i++;
 	}
 	if (quotes != 2)
+	{
+		lexer->flag = 1;
 		return (1);
+	}
 	return (0);
 }
 

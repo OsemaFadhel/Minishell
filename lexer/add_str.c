@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 12:40:16 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/11 12:58:58 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/11 23:43:54 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	add_str_dquot(char *cmd, t_mini *mini, t_lexer *lexer, char **env)
 	int	flag;
 
 	lexer->k = 0;
-	if (check_closed_dquotes(cmd, lexer->i) == 0)
+	if (check_closed_dquotes(cmd, lexer->i, lexer) == 0)
 	{
 		flag = str_dquot2(cmd, mini, lexer);
 		if (flag == 0)
@@ -61,7 +61,7 @@ int	add_str_dquot(char *cmd, t_mini *mini, t_lexer *lexer, char **env)
 int	add_str_quot(char *cmd, t_mini *mini, t_lexer *lexer)
 {
 	lexer->k = 0;
-	if (check_closed_quotes(cmd, lexer->i) == 0)
+	if (check_closed_quotes(cmd, lexer->i, lexer) == 0)
 	{
 		if (cmd[lexer->i - 1] != ' ' && cmd[lexer->i - 1] != '\0')
 		{
@@ -99,10 +99,10 @@ int	add_str2(char *cmd, t_mini *mini, t_lexer *lexer)
 	}
 	if (cmd[lexer->i] == '\"' || cmd[lexer->i] == '\'')
 	{
-		if (cmd[lexer->i] == '\"' && check_closed_dquotes(cmd, lexer->i) == 0)
+		if (cmd[lexer->i] == '\"' && check_closed_dquotes(cmd, lexer->i, lexer) == 0)
 			return (0);
 		else if (cmd[lexer->i] == '\''
-			&& check_closed_quotes(cmd, lexer->i) == 0)
+			&& check_closed_quotes(cmd, lexer->i, lexer) == 0)
 			return (0);
 		else
 			return (-1);

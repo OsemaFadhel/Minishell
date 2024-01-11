@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:44:53 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/11 22:47:48 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/11 23:59:35 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 int	sub_ifs_lexersplit(char *cmd, t_mini *mini, t_lexer *lexer)
 {
-	if (cmd[lexer->i] == '\"')
+	if (cmd[lexer->i] == ' ')
+			lexer->i++;
+	else if (cmd[lexer->i] == '\"')
 	{
 		lexer->i = add_str_dquot(cmd, mini, lexer, mini->env);
 		lexer->j++;
@@ -41,16 +43,18 @@ int	lexersplit_1(char *cmd, t_mini *mini, t_lexer *lexer)
 	int		words;
 
 	words = count_words_lex(cmd, lexer);
-	printf("words = %d\n", words);
+	if (lexer->flag != 0)
+	{
+		ft_error(lexer->flag);
+		return (-1);
+	}
 	mini->toks = malloc(sizeof(char *) * (words + 1));
 	if (!mini->toks)
 		return (-1);
 	while (cmd[lexer->i])
 	{
 		mini->toks[lexer->j] = malloc(sizeof(char) * (ft_strlen(cmd) + 1));
-		if (cmd[lexer->i] == ' ')
-			lexer->i++;
-		else if (sub_ifs_lexersplit(cmd, mini, lexer) == 1)
+		if (sub_ifs_lexersplit(cmd, mini, lexer) == 1)
 			;
 		else
 		{
@@ -70,7 +74,12 @@ int	lexersplit(char *cmd, t_mini *mini)
 	lexer.j = 0;
 	lexer.k = 0;
 	lexer.l = 0;
-	lexersplit_1(cmd, mini, &lexer);
+	lexer.flag = 0;
+	if (lexersplit_1(cmd, mini, &lexer) == -1)
+	{
+		free(cmd);
+		return (-1);
+	}
 	free(cmd);
 	if (!mini->toks)
 		return (0);

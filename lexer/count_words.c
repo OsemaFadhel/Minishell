@@ -6,15 +6,15 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 12:36:53 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/11 23:19:13 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/11 23:46:25 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	count_words_2(char *cmd, int i, int words)
+int	count_words_2(char *cmd, int i, int words, t_lexer *lexer)
 {
-	if (check_closed_dquotes(cmd, i) == 0)
+	if (check_closed_dquotes(cmd, i, lexer) == 0)
 	{
 		i++;
 		while (cmd[i] != '\"')
@@ -26,9 +26,9 @@ int	count_words_2(char *cmd, int i, int words)
 	return (i);
 }
 
-int	count_words_3(char *cmd, int i, int words)
+int	count_words_3(char *cmd, int i, int words, t_lexer *lexer)
 {
-	if (check_closed_quotes(cmd, i) == 0)
+	if (check_closed_quotes(cmd, i, lexer) == 0)
 	{
 		i++;
 		while (cmd[i] != '\'')
@@ -43,11 +43,9 @@ int	count_words_3(char *cmd, int i, int words)
 int	sub_count_words(char *cmd, int i, t_lexer *lexer)
 {
 	if (cmd[i] == '\"')
-	{
-		i = count_words_2(cmd, i, lexer->words);
-	}
+		i = count_words_2(cmd, i, lexer->words, lexer);
 	else if (cmd[i] == '\'')
-		i = count_words_3(cmd, i, lexer->words);
+		i = count_words_3(cmd, i, lexer->words, lexer);
 	else if ((cmd[i] == '>' && cmd[i + 1] == '>')
 		|| (cmd[i] == '<' && cmd[i + 1] == '<'))
 		i += 2;
@@ -62,13 +60,13 @@ int	sub_count_words2(char *cmd, t_lexer *lexer, int i)
 {
 	while (cmd[i] != ' ' && cmd[i] != '\0')
 	{
-		if (cmd[i] == '\"' && check_closed_dquotes(cmd, i) == 0)
+		if (cmd[i] == '\"' && check_closed_dquotes(cmd, i, lexer) == 0)
 		{
 			i++;
 			while (cmd[i] != '\"')
 				i++;
 		}
-		if (cmd[i] == '\'' && check_closed_quotes(cmd, i) == 0)
+		if (cmd[i] == '\'' && check_closed_quotes(cmd, i, lexer) == 0)
 		{
 			i++;
 			while (cmd[i] != '\'' && cmd[i] != '\0')

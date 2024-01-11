@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:21:15 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/11 12:45:18 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/11 23:57:13 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ typedef struct s_mini
 
 /* functions */
 /* main.c */
-
+int			ft_error(int flag);
 int			envdump(char **envp, t_mini *mini); //store envp in a struct
 
 /* free */
@@ -83,10 +83,10 @@ void		free_redirect(t_redirect *redirect);
 
 int			lexersplit(char *cmd, t_mini *mini);
 int			lexersplit_1(char *cmd, t_mini *mini, t_lexer *lexer);
-int			check_closed_dquotes(char *cmd, int i);
-int			check_closed_quotes(char *cmd, int i);
-int			count_words_2(char *cmd, int i, int words);
-int			count_words_3(char *cmd, int i, int words);
+int			check_closed_dquotes(char *cmd, int i, t_lexer *lexer);
+int			check_closed_quotes(char *cmd, int i, t_lexer *lexer);
+int			count_words_2(char *cmd, int i, int words, t_lexer *lexer);
+int			count_words_3(char *cmd, int i, int words, t_lexer *lexer);
 int			count_words_lex(char *cmd, t_lexer *lexer);
 int			add_str_dquot(char *cmd, t_mini *mini, t_lexer *lexer, char **env);
 int			add_str_quot(char *cmd, t_mini *mini, t_lexer *lexer);

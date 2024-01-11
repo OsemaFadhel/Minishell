@@ -6,13 +6,13 @@
 #    By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/17 18:27:27 by ofadhel           #+#    #+#              #
-#    Updated: 2024/01/10 22:27:09 by ofadhel          ###   ########.fr        #
+#    Updated: 2024/01/11 23:57:20 by ofadhel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME 	= minishell
 
-SRCS 	= 	main.c utils1.c signals.c \
+SRCS 	= 	main.c utils1.c signals.c error.c \
 			lexer/lexer.c lexer/count_words.c lexer/add_str.c \
 			lexer/lex_env.c lexer/checks.c \
 			parser/parser.c parser/init_pars.c \
