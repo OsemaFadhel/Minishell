@@ -6,15 +6,15 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 12:36:53 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/21 15:54:25 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/11 23:46:25 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	count_words_2(char *cmd, int i, int words)
+int	count_words_2(char *cmd, int i, int words, t_lexer *lexer)
 {
-	if (check_closed_dquotes(cmd, i) == 0)
+	if (check_closed_dquotes(cmd, i, lexer) == 0)
 	{
 		i++;
 		while (cmd[i] != '\"')
@@ -22,15 +22,13 @@ int	count_words_2(char *cmd, int i, int words)
 		i++;
 	}
 	else
-	{
 		i++;
-	}
 	return (i);
 }
 
-int	count_words_3(char *cmd, int i, int words)
+int	count_words_3(char *cmd, int i, int words, t_lexer *lexer)
 {
-	if (check_closed_quotes(cmd, i) == 0)
+	if (check_closed_quotes(cmd, i, lexer) == 0)
 	{
 		i++;
 		while (cmd[i] != '\'')
@@ -38,55 +36,70 @@ int	count_words_3(char *cmd, int i, int words)
 		i++;
 	}
 	else
-	{
 		i++;
-	}
 	return (i);
 }
 
-int	count_words(char *cmd)
+int	sub_count_words(char *cmd, int i, t_lexer *lexer)
+{
+	if (cmd[i] == '\"')
+		i = count_words_2(cmd, i, lexer->words, lexer);
+	else if (cmd[i] == '\'')
+		i = count_words_3(cmd, i, lexer->words, lexer);
+	else if ((cmd[i] == '>' && cmd[i + 1] == '>')
+		|| (cmd[i] == '<' && cmd[i + 1] == '<'))
+		i += 2;
+	else if (cmd[i] == '>' || cmd[i] == '<')
+		i++;
+	else
+		return (-1);
+	return (i);
+}
+
+int	sub_count_words2(char *cmd, t_lexer *lexer, int i)
+{
+	while (cmd[i] != ' ' && cmd[i] != '\0')
+	{
+		if (cmd[i] == '\"' && check_closed_dquotes(cmd, i, lexer) == 0)
+		{
+			i++;
+			while (cmd[i] != '\"')
+				i++;
+		}
+		if (cmd[i] == '\'' && check_closed_quotes(cmd, i, lexer) == 0)
+		{
+			i++;
+			while (cmd[i] != '\'' && cmd[i] != '\0')
+				i++;
+		}
+		if ((cmd[i] == '>' && cmd[i + 1] == '>')
+			|| (cmd[i] == '<' && cmd[i + 1] == '<'))
+			break ;
+		if (cmd[i] == '>' || cmd[i] == '<')
+			break ;
+		i++;
+	}
+	lexer->words++;
+	return (i);
+}
+
+int	count_words_lex(char *cmd, t_lexer *lexer)
 {
 	int	i;
-	int	words;
 
 	i = 0;
-	words = 0;
+	lexer->words = 0;
 	while (cmd[i])
 	{
 		if (cmd[i] == ' ')
 			i++;
-		else if (cmd[i] == '\"')
+		else if (sub_count_words(cmd, i, lexer) != -1)
 		{
-			i = count_words_2(cmd, i, words);
-			words++;
-		}
-		else if (cmd[i] == '\'')
-		{
-			i = count_words_3(cmd, i, words);
-			words++;
-		}
-		else if ((cmd[i] == '>' && cmd[i + 1] == '>') | (cmd[i] == '<' && cmd[i + 1] == '<'))
-		{
-			words += 2;
-			i++;
-		}
-		else if (cmd[i] == '>' | cmd[i] == '<')
-		{
-			words++;
-			i++;
+			i = sub_count_words(cmd, i, lexer);
+			lexer->words++;
 		}
 		else
-		{
-			while (cmd[i] != ' ' && cmd[i] != '\0' && (check_closed_dquotes(cmd, i) == 1 || check_closed_quotes(cmd, i) == 1))
-			{
-				if ((cmd[i] == '>' && cmd[i + 1] == '>') | (cmd[i] == '<' && cmd[i + 1] == '<'))
-					break;
-				if (cmd[i] == '>' | cmd[i] == '<')
-					break;
-				i++;
-			}
-			words++;
-		}
+			i = sub_count_words2(cmd, lexer, i);
 	}
-	return (words);
+	return (lexer->words);
 }

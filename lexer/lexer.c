@@ -6,128 +6,82 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:44:53 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/28 11:35:07 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/12 00:31:03 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-/*
-	splittare prima parola = comando, e poi il resto tutto unico arg
-	quindi tok[0] = comando, tok[1] = argomento
-	se c'è un pipe, allora tok[0] = comando, tok[1] = argomento, tok[2] = comando, tok[3] = argomento
-	oppure tok[0] = comando, tok[1] = argomento, tok[2] = pipe, tok[3] = comando, tok[4] = argomento
-	tenere conto delle redirect, pensare a una soluzione
-*/
-int	check_closed_dquotes(char *cmd, int i)
+int	sub_ifs_lexersplit(char *cmd, t_mini *mini, t_lexer *lexer)
 {
-	int	quotes;
-
-	quotes = 0;
-	while (cmd[i] && quotes != 2)
+	if (cmd[lexer->i] == ' ')
+		lexer->i++;
+	else if (cmd[lexer->i] == '\"')
 	{
-		if (cmd[i] == '\"')
-			quotes++;
-		i++;
+		lexer->i = add_str_dquot(cmd, mini, lexer, mini->env);
+		lexer->j++;
 	}
-	if (quotes != 2)
-		return (1);
-	return (0);
+	else if (cmd[lexer->i] == '\'')
+	{
+		lexer->i = add_str_quot(cmd, mini, lexer);
+		lexer->j++;
+	}
+	else if ((cmd[lexer->i] == '>' && cmd[lexer->i + 1] == '>')
+		|| (cmd[lexer->i] == '<' && cmd[lexer->i + 1] == '<'))
+		add_redirect(cmd, mini, lexer);
+	else if (cmd[lexer->i] == '>' || cmd[lexer->i] == '<')
+		add_single_char(cmd, mini, lexer);
+	else if (cmd[lexer->i] == '|')
+		add_pipe_char(cmd, mini, lexer);
+	else
+		return (0);
+	return (1);
 }
 
-int	check_closed_quotes(char *cmd, int i)
+int	lexersplit_1(char *cmd, t_mini *mini, t_lexer *lexer)
 {
-	int	quotes;
-
-	quotes = 0;
-	while (cmd[i] && quotes != 2)
-	{
-		if (cmd[i] == '\'')
-			quotes++;
-		i++;
-	}
-	if (quotes != 2)
-		return (1);
-	return (0);
-}
-
-//split cmd into tokens taking care of spaces and quotes. anything inside quotes count as one word
-char	**lexersplit_1(char *cmd, char **env)
-{
-	int		i;
-	int		j;
-	char	**toks;
 	int		words;
 
-	i = 0;
-	j = 0;
-	words = count_words(cmd);
-	toks = malloc(sizeof(char *) * (words + 1));
-	if (!toks)
-		return (NULL);
-	while (cmd[i])
+	words = count_words_lex(cmd, lexer);
+	if (lexer->flag != 0)
 	{
-		toks[j] = malloc(sizeof(char) * (ft_strlen(cmd) + 1));
-		if (cmd[i] == ' ')
-			i++;
-		else if (cmd[i] == '\"')
-		{
-			i = add_str_dquot(cmd, toks, i, j, env);
-			j++;
-		}
-		else if (cmd[i] == '\'')
-		{
-			i = add_str_quot(cmd, toks, i, j);
-			j++;
-		}
-		else if ((cmd[i] == '>' && cmd[i + 1] == '>') | (cmd[i] == '<' && cmd[i + 1] == '<'))
-		{
-			toks[j][0] = cmd[i];
-			toks[j][1] = cmd[i + 1];
-			toks[j][2] = '\0';
-			i += 2;
-			j++;
-		}
-		else if (cmd[i] == '>' | cmd[i] == '<')
-		{
-			toks[j][0] = cmd[i];
-			toks[j][1] = '\0';
-			i++;
-			j++;
-		}
-		else if (cmd[i] == '|')
-		{
-			toks[j][0] = cmd[i];
-			toks[j][1] = '\0';
-			i++;
-			j++;
-		}
+		ft_error(lexer->flag);
+		return (-1);
+	}
+	mini->toks = ft_calloc(sizeof(char *), (words + 1));
+	if (!mini->toks)
+		return (-1);
+	while (cmd[lexer->i])
+	{
+		mini->toks[lexer->j] = ft_calloc(sizeof(char), 1000);
+		if (sub_ifs_lexersplit(cmd, mini, lexer) == 1)
+			;
 		else
 		{
-			i = add_str(cmd, toks, i, j, env);
-			j++;
+			add_str(cmd, mini, lexer, mini->env);
+			lexer->j++;
 		}
 	}
-	toks[j] = NULL;
-	return (toks);
+	mini->toks[lexer->j] = NULL;
+	return (0);
 }
 
 int	lexersplit(char *cmd, t_mini *mini)
 {
-	int	i;
+	t_lexer	lexer;
 
-	i = 0;
-
-	mini->toks = lexersplit_1(cmd, mini->env);
+	lexer.i = 0;
+	lexer.j = 0;
+	lexer.k = 0;
+	lexer.l = 0;
+	lexer.flag = 0;
+	if (lexersplit_1(cmd, mini, &lexer) == -1)
+	{
+		free(cmd);
+		return (-1);
+	}
+	free(cmd);
 	if (!mini->toks)
 		return (0);
-	while (mini->toks[i])
-	{
-		printf("lexer tok[%i] = %s\n", i, mini->toks[i]);
-		i++;
-	}
 	return (1);
 }
-
-// split per virgolette. includere tutto quello dentro in un unico token, incluso virgolette
-//

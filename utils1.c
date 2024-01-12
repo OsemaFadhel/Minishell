@@ -6,11 +6,11 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:51:23 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/14 12:52:22 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/11 16:07:12 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "include/minishell.h"
+#include "include/minishell.h"
 
 int	ft_isdigitalpha(char *c)
 {
@@ -27,7 +27,7 @@ int	ft_isdigitalpha(char *c)
 	return (1);
 }
 
-char	**expand_matrix(char **matrix, char *str) //for export command and maybe something else
+char	**expand_matrix(char **matrix, char *str)
 {
 	int		i;
 	char	**new_matrix;
@@ -48,7 +48,7 @@ char	**expand_matrix(char **matrix, char *str) //for export command and maybe so
 	return (new_matrix);
 }
 
-char	**unset_cmd(char **matrix, char *str) //for unset builtin
+char	**unset_cmd(char **matrix, char *str)
 {
 	int		i;
 	int		j;
@@ -74,4 +74,16 @@ char	**unset_cmd(char **matrix, char *str) //for unset builtin
 	new_matrix[j] = NULL;
 	free(matrix);
 	return (new_matrix);
+}
+
+int	ft_strcmp(char *s1, char *s2)
+{
+	int	i;
+
+	i = 0;
+	if (!s1 || !s2)
+		return (1);
+	while ((s1[i] && s2[i]) && (s1[i] == s2[i]))
+		i++;
+	return (s1[i] - s2[i]);
 }

@@ -1,24 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
+/*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/31 12:46:35 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/11 16:06:00 by ofadhel          ###   ########.fr       */
+/*   Created: 2024/01/05 02:26:00 by ofadhel           #+#    #+#             */
+/*   Updated: 2024/01/12 01:56:28 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef UTILS_H
+# define UTILS_H
 
-void	ft_putendl_fd(char *s, int fd)
+# include "../libft/libft.h"
+# include "minishell.h"
+
+typedef struct s_lexer
 {
-	if (!s)
-		return ;
-	while (*s)
-	{
-		write(fd, s++, 1);
-	}
-	write(fd, "\n", 1);
-}
+	int				i;
+	int				j;
+	int				k;
+	int				l;
+	int				words;
+	int				flag;
+}				t_lexer;
+
+typedef struct s_parser
+{
+	int				i;
+	int				j;
+	int				k;
+	int				l;
+}				t_parser;
+
+#endif

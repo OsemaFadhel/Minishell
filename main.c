@@ -6,25 +6,13 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 18:18:50 by ofadhel           #+#    #+#             */
-/*   Updated: 2023/12/28 13:23:16 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/12 02:04:27 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/minishell.h"
 
-void	free_cmds(t_mini *mini, char *input) // free cmds line
-{
-	int	i;
-
-	i = 0;
-	free(input);
-	while (mini->toks[i])
-	{
-		free(mini->toks[i]);
-		i++;
-	}
-	free(mini->toks);
-}
+int	g_exit_status = 0;
 
 int	envdump(char **envp, t_mini *mini) // get envp and put it in mini->envp
 {
@@ -50,10 +38,11 @@ void	init(t_mini *mini)
 {
 	mini->cmds = NULL;
 	mini->cmds_count = 0;
-	mini->input = NULL;
-	mini->output = NULL;
-	mini->history = NULL;
+	mini->here_doc_flag = 0;
 	mini->toks = NULL;
+	mini->fdin = 0;
+	mini->fdout = 0;
+	mini->toks_count = 0;
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -66,22 +55,21 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		init(&mini);
-		//sig_ignore();
+		sig_ignore();
 		input = readline("BASH$: ");
-
-		add_history(input);
-		if (lexersplit(input, &mini)) //creates matrix with all the words splitted and env changed
+		if (input && input[0])
+			add_history(input);
+		if (input == NULL)
+			ft_ctrld(input, &mini);
+		if (input && input[0])
 		{
-			if (parser(&mini))
+			if (lexersplit(input, &mini) != -1)
 			{
-				printf("mini cmds  %s\n", mini.cmds->cmd);
-				printf("mini cmds  %s\n", mini.cmds->args[0]);
-				if (mini.toks[0]) /* exec try tests should start new process and do it*/
-					executor(&mini);
+				if (parser(&mini))
+					execute(&mini);
+				free_cmds(&mini, input);
 			}
 		}
-		/* free cmds line so loop starts back clean */
-		free_cmds(&mini, input);
 	}
 	return (0);
 }
