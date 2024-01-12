@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 12:40:16 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/12 16:26:17 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/12 19:44:46 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,8 +120,10 @@ int	add_str(char *cmd, t_mini *mini, t_lexer *lexer, char **env)
 	int	flag;
 
 	lexer->k = 0;
+	printf("cmd[%d] = %c\n", lexer->i, cmd[lexer->i]);
 	while (cmd[lexer->i] != ' ' && cmd[lexer->i] != '\0')
 	{
+		printf("cmd[%d] = %c\n", lexer->i, cmd[lexer->i]);
 		flag = add_str2(cmd, mini, lexer);
 		if (flag == 0)
 			break ;
@@ -131,7 +133,7 @@ int	add_str(char *cmd, t_mini *mini, t_lexer *lexer, char **env)
 			break ;
 		if (cmd[lexer->i] == '|')
 			break ;
-		else
+		else if (cmd[lexer->i] != ' ' && cmd[lexer->i] != '\0')
 		{
 			mini->toks[lexer->j][lexer->k] = cmd[lexer->i];
 			lexer->i++;

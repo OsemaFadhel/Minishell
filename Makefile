@@ -6,7 +6,7 @@
 #    By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/17 18:27:27 by ofadhel           #+#    #+#              #
-#    Updated: 2024/01/11 23:57:20 by ofadhel          ###   ########.fr        #
+#    Updated: 2024/01/12 18:55:42 by ofadhel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ SRCS 	= 	main.c utils1.c signals.c error.c \
 			parser/parser_counts.c parser/parser_red.c \
 			executor/executortest.c executor/builtin.c \
 			executor/executor_fds.c executor/executor.c \
+			executor/executor_fds2.c \
 			free.c \
 
 #libft

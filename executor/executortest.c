@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 15:32:21 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/12 18:05:50 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/12 18:52:21 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ char	*add_path(t_mini *mini, t_cmds *cmds, int i)
 
 void	executor(t_mini	*mini, t_cmds *cmds)
 {
-	int	i;
+	int			i;
 	struct stat	buf;
 
 	i = 0;
@@ -96,4 +96,20 @@ void	executor(t_mini	*mini, t_cmds *cmds)
 		else
 			perror("BASH$ ");
 	}
+}
+
+int	ft_fork(t_mini *mini, t_cmds *current_cmd, int tmpin, int tmpout)
+{
+	pid_t	ret;
+
+	ret = fork();
+	if (ret == 0)
+	{
+		close(mini->fdin);
+		close(tmpin);
+		close(tmpout);
+		executor(mini, current_cmd);
+		exit(127);
+	}
+	return (0);
 }
