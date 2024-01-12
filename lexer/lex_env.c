@@ -6,21 +6,20 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 22:23:08 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/12 00:37:58 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/12 19:16:55 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	add_env(t_mini *mini, t_lexer *lexer, char *cmd)
+int	add_env2(t_mini *mini, t_lexer *lexer, char *cmd)
 {
-	int		l;
 	int		post;
 	char	*env_var;
 	char	*var;
+	int		l;
 
 	l = 0;
-	lexer->i++;
 	env_var = get_env_name(cmd, lexer->i);
 	post = ft_strlen(env_var) - 1;
 	var = get_env_var(env_var, mini->env);
@@ -36,6 +35,33 @@ int	add_env(t_mini *mini, t_lexer *lexer, char *cmd)
 	free(env_var);
 	free(var);
 	return (post);
+}
+
+int	add_env(t_mini *mini, t_lexer *lexer, char *cmd)
+{
+	int		post;
+	char	*var;
+	int		l;
+
+	l = 0;
+	lexer->i++;
+	if (cmd[lexer->i] == '?')
+	{
+		var = ft_itoa(g_exit_status);
+		while (var[l] != '\0')
+		{
+			mini->toks[lexer->j][lexer->k] = var[l];
+			l++;
+			lexer->k++;
+		}
+		free(var);
+		return (1);
+	}
+	else
+	{
+		post = add_env2(mini, lexer, cmd);
+		return (post);
+	}
 }
 
 char	*get_env_var(char *tmp, char **env)
