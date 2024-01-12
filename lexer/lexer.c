@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:44:53 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/12 19:37:56 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/12 19:54:29 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ int	lexersplit_1(char *cmd, t_mini *mini, t_lexer *lexer)
 			add_str(cmd, mini, lexer, mini->env);
 			lexer->j++;
 		}
-		printf("j = %d\n", lexer->j);
 	}
 	mini->toks[lexer->j] = NULL;
 	return (0);
