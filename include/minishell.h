@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:21:15 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/12 17:12:06 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/12 18:55:08 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,8 +130,9 @@ int			ft_fork(t_mini *mini, t_cmds *current_cmd, int tmpin, int tmpout);
 void		here_doc(t_mini *mini, char *delimeter);
 int			in_redirect(t_mini *mini, t_cmds *current_cmd);
 void		out_redirect(t_mini *mini, t_cmds *current_cmd);
-int			update_fd(t_mini *mini, t_cmds *current_cmd, int cmd_count,
-				int tmpout);
+int			update_fd(t_mini *mini, t_cmds *current_cmd, int tmpout);
+int			process(t_mini *mini, t_cmds *current_cmd, int tmpin, int tmpout);
+void		store_std(int *tmpin, int *tmpout);
 
 /* utils */
 

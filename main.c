@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 18:18:50 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/12 17:11:50 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/12 18:17:46 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	envdump(char **envp, t_mini *mini) // get envp and put it in mini->envp
 	i = 0;
 	while (envp && envp[i])
 		i++;
-	mini->env = malloc(sizeof(char *) * (i + 1));
+	mini->env = ft_calloc(sizeof(char *), (i + 1));
 	if (!mini->env)
 		return (1);
 	i = 0;
@@ -43,6 +43,7 @@ void	init(t_mini *mini)
 	mini->fdin = 0;
 	mini->fdout = 0;
 	mini->toks_count = 0;
+	sig_ignore();
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -55,7 +56,6 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		init(&mini);
-		sig_ignore();
 		input = readline("BASH$: ");
 		if (input && input[0])
 			add_history(input);
