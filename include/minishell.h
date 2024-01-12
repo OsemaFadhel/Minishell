@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:21:15 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/11 23:57:13 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/12 01:56:59 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,10 @@ typedef struct s_redirect
 
 typedef struct s_cmds
 {
-	char			*cmd; //init to NULL
-	char			**args;	//init to NULL
+	char			*cmd;
+	char			**args;
 	t_redirect		*redirect;
-	int				out; //indicates if there is a redirection
+	int				out;
 	int				in;
 	int				redirect_count;
 	struct s_cmds	*next;
@@ -59,9 +59,9 @@ typedef struct s_mini
 {
 	t_cmds	*cmds;
 	int		cmds_count;
-	int		fdin; //init to NULL
-	int		fdout; //init to NULL
-	int		here_doc_flag; //init to 0
+	int		fdin;
+	int		fdout;
+	int		here_doc_flag;
 	char	**env;
 	char	**toks;
 	int		toks_count;
@@ -70,7 +70,7 @@ typedef struct s_mini
 /* functions */
 /* main.c */
 int			ft_error(int flag);
-int			envdump(char **envp, t_mini *mini); //store envp in a struct
+int			envdump(char **envp, t_mini *mini);
 
 /* free */
 
@@ -117,7 +117,7 @@ int			parser(t_mini *mini);
 
 /* executor */
 
-void		executor(t_mini	*mini, t_cmds *cmds); //execute the command
+void		executor(t_mini	*mini, t_cmds *cmds);
 char		*add_path(t_mini *mini, t_cmds *cmds, int i);
 int			check_bin(t_mini *mini, t_cmds *cmds);
 int			search_env(char **env, char *str);
@@ -134,8 +134,8 @@ void		update_fd(t_mini *mini, t_cmds *current_cmd);
 /* utils */
 
 int			ft_isdigitalpha(char *c);
-char		**unset_cmd(char **matrix, char *str); //unset the command
-char		**expand_matrix(char **matrix, char *str); //expand the matrix
+char		**unset_cmd(char **matrix, char *str);
+char		**expand_matrix(char **matrix, char *str);
 int			ft_strcmp(char *s1, char *s2);
 
 /* builtin */
