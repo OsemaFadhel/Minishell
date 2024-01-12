@@ -6,13 +6,13 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 17:38:14 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/11 12:14:26 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/12 17:43:47 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	ft_fork(t_mini *mini, t_cmds *current_cmd, int tmpin, int tmpout)
+int	ft_fork(t_mini *mini, t_cmds *current_cmd, int tmpin, int tmpout)
 {
 	pid_t	ret;
 
@@ -23,8 +23,10 @@ void	ft_fork(t_mini *mini, t_cmds *current_cmd, int tmpin, int tmpout)
 		close(tmpin);
 		close(tmpout);
 		executor(mini, current_cmd);
-		exit(0);
+		free_cmds(mini);
+		exit(127);
 	}
+	return (0);
 }
 
 void	restore_stds(int tmpin, int tmpout)
@@ -50,12 +52,14 @@ void	set_pipes(t_mini *mini, t_cmds *current_cmd, int cmd_count, int tmpout)
 	}
 }
 
-void	update_fd(t_mini *mini, t_cmds *current_cmd)
+int	update_fd(t_mini *mini, t_cmds *current_cmd, int cmd_count, int tmpout)
 {
+	set_pipes(mini, current_cmd, cmd_count, tmpout);
 	if (current_cmd->in == 1)
 	{
 		close(mini->fdin);
-		in_redirect(mini, current_cmd);
+		if (in_redirect(mini, current_cmd) == -1)
+			return (-1);
 		if (mini->fdin > 0)
 			dup2(mini->fdin, 0);
 		if (mini->fdin > 0)
@@ -68,6 +72,7 @@ void	update_fd(t_mini *mini, t_cmds *current_cmd)
 	}
 	dup2(mini->fdout, 1);
 	close(mini->fdout);
+	return (0);
 }
 
 void	execute(t_mini *mini)
@@ -76,6 +81,7 @@ void	execute(t_mini *mini)
 	int		tmpout;
 	int		cmd_count;
 	t_cmds	*current_cmd;
+	int		status;
 
 	tmpin = dup(0);
 	tmpout = dup(1);
@@ -86,15 +92,20 @@ void	execute(t_mini *mini)
 	{
 		dup2(mini->fdin, 0);
 		close(mini->fdin);
-		set_pipes(mini, current_cmd, cmd_count, tmpout);
-		update_fd(mini, current_cmd);
-		ft_fork(mini, current_cmd, tmpin, tmpout);
+		if (update_fd(mini, current_cmd, cmd_count, tmpout) == -1)
+			return ;
+		if (ft_fork(mini, current_cmd, tmpin, tmpout) == -1)
+		{
+			restore_stds(tmpin, tmpout);
+			return ;
+		}
 		current_cmd = current_cmd->next;
 		cmd_count++;
 		if (mini->here_doc_flag == 1)
 			unlink("tmp.txt");
 	}
 	restore_stds(tmpin, tmpout);
-	while (waitpid(-1, NULL, 0) > 0)
+	while (waitpid(-1, &status, 0) > 0)
 		;
+	g_exit_status = WEXITSTATUS(status);
 }

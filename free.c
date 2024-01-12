@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 00:42:27 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/11 16:07:53 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/12 17:25:37 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,12 @@ void	free_cmds_list(t_cmds *head)
 	{
 		tmp = head;
 		free(tmp->cmd);
-		if (tmp->args)
-		{
-			while (tmp->args[i])
-			{
-				free(tmp->args[i]);
-				i++;
-			}
-			free(tmp->args);
-		}
+		ft_free_array(tmp->args);
 		free_redirect(tmp->redirect);
 		head = head->next;
 		free(tmp);
 	}
+	free(head);
 }
 
 void	ft_free_array(char **array)
@@ -68,7 +61,7 @@ void	ft_free_array(char **array)
 	free(array);
 }
 
-void	free_cmds(t_mini *mini, char *input) // free cmds line
+void	free_cmds(t_mini *mini) // free cmds line
 {
 	ft_free_array(mini->toks);
 	free_cmds_list(mini->cmds);
