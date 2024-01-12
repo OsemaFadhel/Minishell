@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 10:43:05 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/11 12:37:59 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/12 01:52:00 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,11 @@ int	count_args(t_mini *mini, t_parser *parser)
 		if (ft_strncmp(mini->toks[parser->l], "|", 1) == 0)
 			break ;
 		else if (is_redirect(mini->toks[parser->l]))
+		{
 			parser->l = count_red_arg(mini, parser->l);
+			if (mini->toks[parser->l - 1] == NULL)
+				break ;
+		}
 		else
 		{
 			while (mini->toks[parser->l]
