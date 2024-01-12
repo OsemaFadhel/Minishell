@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 12:40:16 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/12 00:41:48 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/12 16:26:17 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int	add_str2(char *cmd, t_mini *mini, t_lexer *lexer)
 			return (0);
 	}
 	if (cmd[lexer->i] == '$')
-		lexer->i += add_env(mini, lexer, cmd) - 1;
+		lexer->i += add_env(mini, lexer, cmd);
 	if ((cmd[lexer->i] == '>' && cmd[lexer->i + 1] == '>')
 		|| (cmd[lexer->i] == '<' && cmd[lexer->i + 1] == '<'))
 		return (0);

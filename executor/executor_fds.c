@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 12:24:13 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/12 00:16:11 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/12 16:56:07 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	in_redirect2(t_mini *mini, t_cmds *current_cmd, int i)
 	}
 }
 
-void	in_redirect(t_mini *mini, t_cmds *current_cmd)
+int	in_redirect(t_mini *mini, t_cmds *current_cmd)
 {
 	int	i;
 
@@ -64,11 +64,17 @@ void	in_redirect(t_mini *mini, t_cmds *current_cmd)
 			if (mini->fdin != 0)
 				close(mini->fdin);
 			mini->fdin = open(current_cmd->redirect[i].infile, O_RDONLY);
+			if (mini->fdin == -1)
+			{
+				return (perror("BASH$:"), -1);
+				g_exit_status = 1;
+			}
 		}
 		else if (current_cmd->redirect[i].redirect_type == 4)
 			in_redirect2(mini, current_cmd, i);
 		i++;
 	}
+	return (0);
 }
 
 void	out_redirect2(t_mini *mini, t_cmds *current_cmd, int i)

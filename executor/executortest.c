@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 15:32:21 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/11 12:49:27 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/12 18:05:50 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ char	*add_path(t_mini *mini, t_cmds *cmds, int i)
 void	executor(t_mini	*mini, t_cmds *cmds)
 {
 	int	i;
+	struct stat	buf;
 
 	i = 0;
 	if (!cmds->cmd)
@@ -90,7 +91,9 @@ void	executor(t_mini	*mini, t_cmds *cmds)
 			i = check_bin(mini, cmds);
 			cmds->cmd = add_path(mini, cmds, i);
 		}
-		if (execve(cmds->cmd, cmds->args, mini->env))
-			perror("BASH$");
+		if (!lstat(cmds->cmd, &buf))
+			execve(cmds->cmd, cmds->args, mini->env);
+		else
+			perror("BASH$ ");
 	}
 }

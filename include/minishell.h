@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:21:15 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/12 01:56:59 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/12 17:12:06 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 # include "utils.h"
 
 /* global variables */
+
 extern int	g_exit_status;
 
 /* structs */
@@ -74,7 +75,7 @@ int			envdump(char **envp, t_mini *mini);
 
 /* free */
 
-void		free_cmds(t_mini *mini, char *input);
+void		free_cmds(t_mini *mini);
 void		ft_free_array(char **array);
 void		free_cmds_list(t_cmds *head);
 void		free_redirect(t_redirect *redirect);
@@ -125,11 +126,12 @@ void		execute(t_mini *mini);
 void		set_pipes(t_mini *mini, t_cmds *current_cmd,
 				int cmd_count, int tmpout);
 void		restore_stds(int tmpin, int tmpout);
-void		ft_fork(t_mini *mini, t_cmds *current_cmd, int tmpin, int tmpout);
+int			ft_fork(t_mini *mini, t_cmds *current_cmd, int tmpin, int tmpout);
 void		here_doc(t_mini *mini, char *delimeter);
-void		in_redirect(t_mini *mini, t_cmds *current_cmd);
+int			in_redirect(t_mini *mini, t_cmds *current_cmd);
 void		out_redirect(t_mini *mini, t_cmds *current_cmd);
-void		update_fd(t_mini *mini, t_cmds *current_cmd);
+int			update_fd(t_mini *mini, t_cmds *current_cmd, int cmd_count,
+				int tmpout);
 
 /* utils */
 
