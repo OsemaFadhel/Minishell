@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 22:23:08 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/12 19:27:52 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/12 22:04:49 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ char	*get_env_var(char *tmp, char **env)
 	{
 		if (ft_strncmp(env[i], tmp, j) == 0)
 		{
-			env_var = malloc(sizeof(char) * ft_strlen(env[i]) - j + 1);
+			env_var = ft_calloc(sizeof(char), ft_strlen(env[i]) - j + 1);
 			while (env[i][j] != '\0')
 			{
 				env_var[++k] = env[i][j];
@@ -94,10 +94,14 @@ char	*get_env_var(char *tmp, char **env)
 char	*get_env_name(char *cmd, int i)
 {
 	char	*env_var;
+	int		j;
 	int		l;
 
 	l = 0;
-	env_var = malloc(sizeof(char) * 1000);
+	j = i;
+	while (cmd[j] != ' ' && cmd[j] != '\0' && cmd[j] != '\"' && cmd[j] != '=')
+		j++;
+	env_var = ft_calloc(sizeof(char), j + 2);
 	while (cmd[i] != ' ' && cmd[i] != '\0' && cmd[i] != '\"' && cmd[i] != '=')
 	{
 		env_var[l] = cmd[i];

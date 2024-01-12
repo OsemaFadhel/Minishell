@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 13:53:30 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/12 19:53:17 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/12 21:20:57 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	ft_ctrld(char *line, t_mini *mini)
 	exit(g_exit_status);
 }
 
-void	sig_ignore(void) // ignore signals from keyboard
+void	sig_ignore(void)
 {
 	signal(SIGINT, ft_ctrlc);
 	signal(SIGQUIT, SIG_IGN);

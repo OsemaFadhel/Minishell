@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 18:18:50 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/12 18:17:46 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/12 22:14:34 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,10 @@ int	main(int argc, char **argv, char **envp)
 			{
 				if (parser(&mini))
 					execute(&mini);
-				free_cmds(&mini);
 			}
+			free_cmds(&mini);
 		}
+		free(input);
 	}
 	return (0);
 }

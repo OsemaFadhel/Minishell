@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:44:53 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/12 19:54:29 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/12 22:13:50 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,8 @@ int	lexersplit(char *cmd, t_mini *mini)
 	lexer.flag = 0;
 	if (lexersplit_1(cmd, mini, &lexer) == -1)
 	{
-		free(cmd);
 		return (-1);
 	}
-	free(cmd);
 	if (!mini->toks)
 		return (0);
 	return (1);

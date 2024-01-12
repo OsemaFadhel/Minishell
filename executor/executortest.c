@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 15:32:21 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/12 18:52:21 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/12 21:31:32 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,25 @@ int	ft_fork(t_mini *mini, t_cmds *current_cmd, int tmpin, int tmpout)
 {
 	pid_t	ret;
 
+	if (ft_strncmp(current_cmd->cmd, "exit", 5) == 0)
+	{
+		free_cmds(mini);
+		ft_free_array(mini->env);
+		exit(g_exit_status);
+	}
+	else if (ft_strncmp(current_cmd->cmd, "echo", 5) == 0)
+	{
+		int	i = 1;
+
+		while (current_cmd->args[i])
+		{
+			printf("%s ", current_cmd->args[i]);
+			i++;
+		}
+		printf("\n");
+		g_exit_status = 0;
+		return (0);
+	}
 	ret = fork();
 	if (ret == 0)
 	{

@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:55:37 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/12 17:20:49 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/12 22:08:03 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	sub_last_else(t_mini *mini, t_parser *parser, t_cmds *cmds)
 	if (cmds->cmd == NULL)
 	{
 		cmds->cmd = ft_strdup(mini->toks[parser->i]);
-		cmds->args[0] = ft_strdup(mini->toks[parser->i]);
+		cmds->args[0] = ft_strdup(cmds->cmd);
 		parser->i++;
 	}
 	else
@@ -67,7 +67,7 @@ int	parser(t_mini *mini)
 	t_cmds		*cmds;
 	t_cmds		*head;
 
-	cmds = malloc(sizeof(t_cmds));
+	cmds = ft_calloc(sizeof(t_cmds), 1);
 	head = cmds;
 	init_parser(&parser, mini, cmds);
 	while (mini->toks[parser.i])
@@ -75,7 +75,7 @@ int	parser(t_mini *mini)
 		if (ft_strncmp(mini->toks[parser.i], "|", 1) == 0)
 		{
 			mini->cmds_count++;
-			cmds->next = malloc(sizeof(t_cmds));
+			cmds->next = ft_calloc(sizeof(t_cmds), 1);
 			cmds = cmds->next;
 			parser.k++;
 			parser.l++;
