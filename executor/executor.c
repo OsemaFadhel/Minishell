@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 17:38:14 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/12 17:43:47 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/12 17:56:58 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ int	ft_fork(t_mini *mini, t_cmds *current_cmd, int tmpin, int tmpout)
 		close(tmpin);
 		close(tmpout);
 		executor(mini, current_cmd);
-		free_cmds(mini);
 		exit(127);
 	}
 	return (0);
