@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:44:53 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/12 00:31:03 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/12 16:20:41 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int	lexersplit_1(char *cmd, t_mini *mini, t_lexer *lexer)
 		ft_error(lexer->flag);
 		return (-1);
 	}
+	printf("words: %d\n", words);
 	mini->toks = ft_calloc(sizeof(char *), (words + 1));
 	if (!mini->toks)
 		return (-1);

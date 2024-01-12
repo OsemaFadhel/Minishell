@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 12:36:53 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/11 23:46:25 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/12 16:27:59 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ int	sub_count_words(char *cmd, int i, t_lexer *lexer)
 		i += 2;
 	else if (cmd[i] == '>' || cmd[i] == '<')
 		i++;
+	else if (cmd[i] == '|')
+		i++;
 	else
 		return (-1);
 	return (i);
@@ -76,6 +78,8 @@ int	sub_count_words2(char *cmd, t_lexer *lexer, int i)
 			|| (cmd[i] == '<' && cmd[i + 1] == '<'))
 			break ;
 		if (cmd[i] == '>' || cmd[i] == '<')
+			break ;
+		if (cmd[i] == '|')
 			break ;
 		i++;
 	}
