@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 22:23:08 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/12 22:04:49 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/13 16:31:53 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,10 +99,12 @@ char	*get_env_name(char *cmd, int i)
 
 	l = 0;
 	j = i;
-	while (cmd[j] != ' ' && cmd[j] != '\0' && cmd[j] != '\"' && cmd[j] != '=')
+	while (cmd[j] != ' ' && cmd[j] != '\0' && cmd[j] != '\"'
+		&& cmd[j] != '=' && cmd[j] != '$')
 		j++;
 	env_var = ft_calloc(sizeof(char), j + 2);
-	while (cmd[i] != ' ' && cmd[i] != '\0' && cmd[i] != '\"' && cmd[i] != '=')
+	while (cmd[i] != ' ' && cmd[i] != '\0' && cmd[i] != '\"'
+		&& cmd[i] != '=' && cmd[i] != '$')
 	{
 		env_var[l] = cmd[i];
 		i++;

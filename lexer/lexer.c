@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:44:53 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/12 22:13:50 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/13 16:19:19 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int	sub_ifs_lexersplit(char *cmd, t_mini *mini, t_lexer *lexer)
 {
-	if (cmd[lexer->i] == ' ')
+	while (cmd[lexer->i] == ' ' || cmd[lexer->i] == '\0')
 		lexer->i++;
-	else if (cmd[lexer->i] == '\"')
+	if (cmd[lexer->i] == '\"')
 	{
 		lexer->i = add_str_dquot(cmd, mini, lexer, mini->env);
 		lexer->j++;
