@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:44:53 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/13 16:19:19 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/13 17:17:27 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 
 int	sub_ifs_lexersplit(char *cmd, t_mini *mini, t_lexer *lexer)
 {
-	while (cmd[lexer->i] == ' ' || cmd[lexer->i] == '\0')
-		lexer->i++;
+	if (cmd[lexer->i] == ' ' || cmd[lexer->i] == '\0')
+		return (lexer->i++);
+	mini->toks[lexer->j] = ft_calloc(sizeof(char), 1000);
 	if (cmd[lexer->i] == '\"')
 	{
 		lexer->i = add_str_dquot(cmd, mini, lexer, mini->env);
@@ -34,7 +35,7 @@ int	sub_ifs_lexersplit(char *cmd, t_mini *mini, t_lexer *lexer)
 	else if (cmd[lexer->i] == '|')
 		add_pipe_char(cmd, mini, lexer);
 	else
-		return (0);
+		return (-1);
 	return (1);
 }
 
@@ -53,8 +54,7 @@ int	lexersplit_1(char *cmd, t_mini *mini, t_lexer *lexer)
 		return (-1);
 	while (cmd[lexer->i])
 	{
-		mini->toks[lexer->j] = ft_calloc(sizeof(char), 1000);
-		if (sub_ifs_lexersplit(cmd, mini, lexer) == 1)
+		if (sub_ifs_lexersplit(cmd, mini, lexer) >= 0)
 			;
 		else
 		{
