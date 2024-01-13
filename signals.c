@@ -6,19 +6,19 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 13:53:30 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/12 21:20:57 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/13 21:43:15 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/minishell.h"
 
+/*rl_replace_line("", 1); sotto write*/
 void	ft_ctrlc(int sign)
 {
 	if (sign == SIGINT)
 	{
 		g_exit_status = 130;
 		write(1, "\n", 1);
-		//rl_replace_line("", 1);
 		rl_on_new_line();
 		rl_redisplay();
 	}

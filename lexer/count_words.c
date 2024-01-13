@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 12:36:53 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/12 16:27:59 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/13 21:48:49 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ int	count_words_lex(char *cmd, t_lexer *lexer)
 	lexer->words = 0;
 	while (cmd[i])
 	{
+		check_error(cmd, lexer);
 		if (cmd[i] == ' ')
 			i++;
 		else if (sub_count_words(cmd, i, lexer) != -1)

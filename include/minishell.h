@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:21:15 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/12 18:55:08 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/13 21:42:12 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ typedef struct s_mini
 /* main.c */
 int			ft_error(int flag);
 int			envdump(char **envp, t_mini *mini);
+int			check_error(char *cmd, t_lexer *lexer);
 
 /* free */
 

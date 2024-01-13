@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:55:37 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/12 22:08:03 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/13 20:32:14 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,13 @@ int	sub_parser(t_mini *mini, t_parser *parser, t_cmds *cmds)
 	return (1);
 }
 
+void	ft_increment(t_parser *parser)
+{
+	parser->i++;
+	parser->k++;
+	parser->l++;
+}
+
 int	parser(t_mini *mini)
 {
 	t_parser	parser;
@@ -74,13 +81,13 @@ int	parser(t_mini *mini)
 	{
 		if (ft_strncmp(mini->toks[parser.i], "|", 1) == 0)
 		{
+			if (mini->toks[parser.i + 1] == NULL)
+				return (-1);
 			mini->cmds_count++;
 			cmds->next = ft_calloc(sizeof(t_cmds), 1);
 			cmds = cmds->next;
-			parser.k++;
-			parser.l++;
+			ft_increment(&parser);
 			init_cmds(cmds, mini, &parser);
-			parser.i++;
 			parser.j = 1;
 		}
 		else if (sub_parser(mini, &parser, cmds) == -1)

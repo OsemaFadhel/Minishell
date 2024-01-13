@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 12:40:16 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/13 16:31:20 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/13 21:40:16 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ int	add_str(char *cmd, t_mini *mini, t_lexer *lexer, char **env)
 		else if (cmd[lexer->i] == '|')
 			break ;
 		else if (cmd[lexer->i] != ' ' && cmd[lexer->i] != '\0'
-				&& cmd[lexer->i] != '$')
+			&& cmd[lexer->i] != '$')
 		{
 			mini->toks[lexer->j][lexer->k] = cmd[lexer->i];
 			lexer->i++;
