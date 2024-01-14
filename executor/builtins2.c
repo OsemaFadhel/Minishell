@@ -1,46 +1,25 @@
 #include "../include/minishell.h"
 
-int ft_echo(t_mini *mini, t_cmds *current_cmd)
+int ft_echo(t_mini *mini __attribute((unused)), t_cmds *current_cmd)
 {
     int i;
-    int j;
+    bool newline;
 
-    i = 0;
-    j = 0;
+    newline = false;
+    i = 1;
+    while (current_cmd->args[i] && !ft_strncmp(current_cmd->args[i], "-n", 3))
+        i++;
+    if (i == 1)
+        newline = true;
     while (current_cmd->args[i])
     {
-        if (current_cmd->args[i][0] == '$')
-        {
-            j = 1;
-            while (current_cmd->args[i][j])
-            {
-                if (current_cmd->args[i][j] == '?')
-                {
-                    ft_putstr_fd(ft_itoa(g_exit_status), 1);
-                    break;
-                }
-                else if (ft_isalpha(current_cmd->args[i][j]))
-                {
-                    char *env_value = getenv(current_cmd->args[i] + 1);
-                    if (env_value != NULL)
-                        ft_putstr_fd(env_value, 1);
-                    break;
-                }
-                else
-                {
-                    ft_putchar_fd(current_cmd->args[i][j], 1);
-                    break;
-                }
-                j++;
-            }
-        }
-        else
-            ft_putstr_fd(current_cmd->args[i], 1);
+        ft_putstr_fd(current_cmd->args[i], STDOUT_FILENO);
         if (current_cmd->args[i + 1])
-            ft_putchar_fd(' ', 1);
+            ft_putchar_fd(' ', STDOUT_FILENO);
         i++;
     }
-    ft_putchar_fd('\n', 1);
+    if (newline)
+        ft_putchar_fd('\n', STDOUT_FILENO);
     return (0);
 }
 
