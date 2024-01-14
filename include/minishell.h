@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:21:15 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/13 21:42:12 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/14 16:19:27 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ typedef struct s_mini
 	char	**env;
 	char	**toks;
 	int		toks_count;
+	int		exec_flag;
 }				t_mini;
 
 /* functions */

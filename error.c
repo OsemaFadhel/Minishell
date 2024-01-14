@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 23:53:18 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/14 14:42:09 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/14 16:11:09 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,23 @@ int	check_error2(char *cmd, t_lexer *lexer, int i)
 	return (1);
 }
 
+int	check_only_spaces(char *cmd, int i, t_lexer *lexer)
+{
+	if (cmd[i] == ' ')
+	{
+		while (cmd[i] == ' ' && cmd[i] != '\0' && cmd[i] != '|')
+		{
+			i++;
+			if (cmd[i] == '\0' || cmd[i] == '|')
+			{
+				lexer->flag = 5;
+				return (-1);
+			}
+		}
+	}
+	return (0);
+}
+
 int	check_error(char *cmd, t_lexer *lexer)
 {
 	int	i;
@@ -58,6 +75,7 @@ int	check_error(char *cmd, t_lexer *lexer)
 
 	i = 0;
 	flag = 0;
+	flag = check_only_spaces(cmd, i, lexer);
 	while (cmd[i])
 	{
 		flag = check_error2(cmd, lexer, i);
@@ -82,24 +100,15 @@ int	check_error(char *cmd, t_lexer *lexer)
 int	ft_error(int flag)
 {
 	if (flag == 1)
-	{
 		printf("Error: unclosed quotes\n");
-		g_exit_status = 2;
-	}
 	if (flag == 2)
-	{
 		printf("Error: No such file or directory\n");
-		g_exit_status = 2;
-	}
 	if (flag == 3)
-	{
 		printf("Error: expecting file name after redirection\n");
-		g_exit_status = 2;
-	}
 	if (flag == 4)
-	{
 		printf("Error: syntax error near unexpected token\n");
-		g_exit_status = 2;
-	}
+	if (flag == 5)
+		printf("Error: empty command line\n");
+	g_exit_status = 2;
 	return (0);
 }
