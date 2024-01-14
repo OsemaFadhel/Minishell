@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 12:36:53 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/13 22:12:46 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/14 22:42:09 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,17 +63,9 @@ int	sub_count_words2(char *cmd, t_lexer *lexer, int i)
 	while (cmd[i] != ' ' && cmd[i] != '\0')
 	{
 		if (cmd[i] == '\"' && check_closed_dquotes(cmd, i, lexer) == 0)
-		{
-			i++;
-			while (cmd[i] != '\"')
-				i++;
-		}
+			break ;
 		if (cmd[i] == '\'' && check_closed_quotes(cmd, i, lexer) == 0)
-		{
-			i++;
-			while (cmd[i] != '\'' && cmd[i] != '\0')
-				i++;
-		}
+			break ;
 		if ((cmd[i] == '>' && cmd[i + 1] == '>')
 			|| (cmd[i] == '<' && cmd[i + 1] == '<'))
 			break ;
