@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 23:53:18 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/14 16:11:09 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/14 16:53:36 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ int	check_error(char *cmd, t_lexer *lexer)
 		{
 			if (check_inside_words(cmd, i, lexer) == -1)
 			{
-				printf("Error: syntax er\n");
 				lexer->flag = 4;
 				return (-1);
 			}
