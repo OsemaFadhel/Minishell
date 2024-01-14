@@ -23,6 +23,84 @@ int ft_echo(t_mini *mini __attribute((unused)), t_cmds *current_cmd)
     return (0);
 }
 
+char *env_get_value(const char *name)
+{
+    int i;
+
+    if (name == NULL)
+        return (NULL);
+
+    i = 0;
+    while (g_env[i] != NULL)
+    {
+        if (ft_strncmp(g_env[i], name, ft_strlen(name)) == 0 && g_env[i][ft_strlen(name)] == '=')
+            return (ft_strdup(g_env[i] + ft_strlen(name) + 1));
+        i++;
+    }
+    return (NULL);
+}
+
+static int update_pwd(void)
+{
+    char buf[PATH_MAX];
+
+    if (env_get_value("PWD"))
+    {
+        if (env_set_env("OLDPWD", env_get_value("PWD")) == ERROR)
+            return (ERROR);
+    }
+    else
+        env_unset_var("OLDPWD");
+
+    if (getcwd(buf, sizeof(buf)) == NULL)
+    {
+        print_error_errno(SHELL_NAME, "cd", NULL);
+        return (ERROR);
+    }
+
+    if (env_set_env("PWD", buf) == ERROR)
+        return (ERROR);
+
+    return (0);
+}
+
+int ft_cd(t_mini *mini, t_cmds *current_cmd)
+{
+    char *path;
+
+    if (current_cmd->args[1] == NULL)
+        path = env_get_value("HOME");
+    else if (ft_strncmp(current_cmd->args[1], "-", 2) == 0)
+        path = env_get_value("OLDPWD");
+    else
+        path = current_cmd->args[1];
+
+    if (!path)
+    {
+        ft_putstr_fd("cd: HOME not set\n", STDERR_FILENO);
+        g_exit_status = 1;
+        return (0);
+    }
+
+    if (chdir(path) == -1)
+    {
+        ft_putstr_fd("cd: ", STDERR_FILENO);
+        ft_putstr_fd(path, STDERR_FILENO);
+        ft_putstr_fd(": ", STDERR_FILENO);
+        ft_putstr_fd(strerror(errno), STDERR_FILENO);
+        ft_putchar_fd('\n', STDERR_FILENO);
+        g_exit_status = 1;
+    }
+    else
+    {
+        g_exit_status = 0;
+        update_pwd();
+    }
+
+    return (0);
+}
+
+/*
 int ft_cd(t_mini *mini, t_cmds *current_cmd)
 {
     char *path;
@@ -43,7 +121,7 @@ int ft_cd(t_mini *mini, t_cmds *current_cmd)
     else
         g_exit_status = 0;
     return (0);
-}
+} */
 
 int    ft_pwd(t_mini *mini, t_cmds *current_cmd)
 {
