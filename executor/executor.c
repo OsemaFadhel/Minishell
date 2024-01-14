@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 17:38:14 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/14 16:19:47 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/14 17:16:49 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,24 @@ void	first_part(t_mini *mini, t_cmds	*current_cmd, int cmd_count, int tmpout)
 	set_pipes(mini, current_cmd, cmd_count, tmpout);
 }
 
+void	wait_child(t_mini *mini)
+{
+	int	status;
+
+	if (mini->exec_flag == 1)
+	{
+		while (waitpid(-1, &status, 0) > 0)
+			;
+		g_exit_status = WEXITSTATUS(status);
+	}
+}
+
 void	execute(t_mini *mini)
 {
 	int		tmpin;
 	int		tmpout;
 	int		cmd_count;
 	t_cmds	*current_cmd;
-	int		status;
 
 	store_std(&tmpin, &tmpout);
 	cmd_count = 0;
@@ -54,10 +65,5 @@ void	execute(t_mini *mini)
 			unlink("tmp.txt");
 	}
 	restore_stds(tmpin, tmpout);
-	if (mini->exec_flag == 1)
-	{
-		while (waitpid(-1, &status, 0) > 0)
-			;
-		g_exit_status = WEXITSTATUS(status);
-	}
+	wait_child(mini);
 }

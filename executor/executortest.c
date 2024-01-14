@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 15:32:21 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/14 16:19:04 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/14 17:18:36 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	check_bin(t_mini *mini, t_cmds *cmds)
 	{
 		bin = ft_strjoin(path[i], "/");
 		bin = ft_strjoin(bin, cmds->cmd);
-		if (!lstat(bin, &buf))
+		if (access(bin, F_OK) == 0)
 		{
 			ft_free_array(path);
 			free(bin);
@@ -91,10 +91,10 @@ void	executor(t_mini	*mini, t_cmds *cmds)
 			i = check_bin(mini, cmds);
 			cmds->cmd = add_path(mini, cmds, i);
 		}
-		if (!lstat(cmds->cmd, &buf))
+		if (access(cmds->cmd, F_OK) == 0)
 			execve(cmds->cmd, cmds->args, mini->env);
 		else
-			perror("BASH$ ");
+			perror("BASH$ :");
 	}
 }
 
@@ -102,25 +102,8 @@ int	ft_fork(t_mini *mini, t_cmds *current_cmd, int tmpin, int tmpout)
 {
 	pid_t	ret;
 
-	if (ft_strncmp(current_cmd->cmd, "exit", 5) == 0)
-	{
-		free_cmds(mini);
-		ft_free_array(mini->env);
-		exit(g_exit_status);
-	}
-	else if (ft_strncmp(current_cmd->cmd, "echo", 5) == 0)
-	{
-		int	i = 1;
-
-		while (current_cmd->args[i])
-		{
-			printf("%s ", current_cmd->args[i]);
-			i++;
-		}
-		printf("\n");
-		g_exit_status = 0;
+	if (is_builtin(mini, current_cmd) == 1)
 		return (0);
-	}
 	else
 	{
 		ret = fork();
