@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 23:53:18 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/13 22:11:46 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/14 14:42:09 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int	check_inside_words(char *cmd, int i, t_lexer *lexer)
 	int	j;
 
 	j = i + 1;
+	i++;
 	while (cmd[i] && cmd[i] != '|')
 		i++;
 	while (cmd[j] && cmd[j] != '|')
@@ -24,10 +25,7 @@ int	check_inside_words(char *cmd, int i, t_lexer *lexer)
 		if (j < i)
 		{
 			if (ft_isalnum(cmd[j]) != 0)
-			{
-				printf("cio\n");
 				return (0);
-			}
 		}
 		j++;
 	}
@@ -73,7 +71,7 @@ int	check_error(char *cmd, t_lexer *lexer)
 			{
 				printf("Error: syntax er\n");
 				lexer->flag = 4;
-				return (-1) ;
+				return (-1);
 			}
 		}
 		i++;
