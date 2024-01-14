@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:44:53 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/14 22:38:34 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/14 22:49:14 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ int	lexersplit_1(char *cmd, t_mini *mini, t_lexer *lexer)
 	int		words;
 
 	words = count_words_lex(cmd, lexer);
-	printf("words: %d\n", words);
 	if (lexer->flag != 0)
 	{
 		ft_error(lexer->flag);
