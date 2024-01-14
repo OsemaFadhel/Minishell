@@ -19,8 +19,8 @@ SRCS 	= 	main.c utils1.c signals.c error.c \
 			parser/parser_counts.c parser/parser_red.c \
 			executor/executortest.c executor/builtin.c \
 			executor/executor_fds.c executor/executor.c \
-			executor/executor_fds2.c \
-			free.c \
+			executor/executor_fds2.c executor/builtins.c\
+			free.c executor/builtins2.c executor/builtins3.c\
 
 #libft
 

@@ -16,6 +16,7 @@ int	process(t_mini *mini, t_cmds *current_cmd, int tmpin, int tmpout)
 {
 	if (update_fd(mini, current_cmd, tmpout) == -1)
 		return (-1);
+	is_builtin(mini, current_cmd, 0);
 	if (ft_fork(mini, current_cmd, tmpin, tmpout) == -1)
 	{
 		restore_stds(tmpin, tmpout);

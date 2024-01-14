@@ -16,6 +16,7 @@
 /* includes */
 
 # include <unistd.h>
+# include <limits.h>
 # include <stdlib.h>
 # include <errno.h>
 # include <signal.h>
@@ -23,6 +24,7 @@
 # include <dirent.h>
 # include <stdio.h>
 # include <termios.h>
+# include <stdbool.h>
 # include <sys/ioctl.h>
 # include <sys/types.h>
 # include <sys/wait.h>
@@ -143,10 +145,23 @@ int			ft_strcmp(char *s1, char *s2);
 
 /* builtin */
 
-int			is_builtin(t_mini *mini, t_cmds *cmds, int i);
+void 		is_builtin(t_mini *mini, t_cmds *current_cmd, int i);
 int			builtin(t_mini *mini, int i);
 int			builtin_2(t_mini *mini, int i);
 int			builtin_3(t_mini *mini, int i);
+int 		ft_echo(t_mini *mini __attribute((unused)), t_cmds *current_cmd);
+int			ft_cd(t_mini *mini, t_cmds *current_cmd);
+int         ft_pwd(t_mini *mini, t_cmds *current_cmd);
+int			ft_export(t_mini *mini, t_cmds *current_cmd);
+int 	   	ft_unset(t_mini *mini, t_cmds *current_cmd);
+int 		ft_env(t_mini *mini, t_cmds *current_cmd);
+int 		ft_exit(t_mini *mini, t_cmds *current_cmd);
+char		*env_get_value(const char *name);
+int			env_set_env(const char *name, const char *value);
+void		env_unset_var(const char *name);
+void		update_pwd(void);
+int			ft_fork(t_mini *mini, t_cmds *current_cmd, int tmpin, int tmpout);
+void		free_all(t_mini *mini);
 
 /* signals */
 

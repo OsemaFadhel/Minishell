@@ -12,22 +12,17 @@
 
 #include "../include/minishell.h"
 
-void is_builtin(t_mini *mini, t_cmds *current_cmd)
+void is_builtin(t_mini *mini, t_cmds *current_cmd, int i)
 {
+    i = 0;
     if (strncmp(current_cmd->cmd, "echo", strlen("echo")) == 0)
-        fd_echo(mini, current_cmd);
+            ft_echo(mini, current_cmd);
     else if (strncmp(current_cmd->cmd, "cd", strlen("cd")) == 0)
-        fd_cd(mini, current_cmd);
+        ft_cd(mini, current_cmd);
     else if (strncmp(current_cmd->cmd, "pwd", strlen("pwd")) == 0)
-        fd_pwd(mini, current_cmd);
-    else if (strncmp(current_cmd->cmd, "export", strlen("export")) == 0)
-        fd_export(mini, current_cmd);
-    else if (strncmp(current_cmd->cmd, "unset", strlen("unset")) == 0)
-        fd_unset(mini, current_cmd);
+        ft_pwd(mini, current_cmd);
     else if (strncmp(current_cmd->cmd, "env", strlen("env")) == 0)
-        fd_env(mini, current_cmd);
-    else if (strncmp(current_cmd->cmd, "exit", strlen("exit")) == 0)
-        fd_exit(mini, current_cmd);
+        ft_env(mini, current_cmd);
     else
         return;
 }

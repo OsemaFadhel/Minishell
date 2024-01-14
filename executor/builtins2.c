@@ -23,45 +23,18 @@ int ft_echo(t_mini *mini __attribute((unused)), t_cmds *current_cmd)
     return (0);
 }
 
-char *env_get_value(const char *name)
-{
-    int i;
-
-    if (name == NULL)
-        return (NULL);
-
-    i = 0;
-    while (g_env[i] != NULL)
-    {
-        if (ft_strncmp(g_env[i], name, ft_strlen(name)) == 0 && g_env[i][ft_strlen(name)] == '=')
-            return (ft_strdup(g_env[i] + ft_strlen(name) + 1));
-        i++;
-    }
-    return (NULL);
-}
-
-static int update_pwd(void)
+void update_pwd(void)
 {
     char buf[PATH_MAX];
 
-    if (env_get_value("PWD"))
-    {
-        if (env_set_env("OLDPWD", env_get_value("PWD")) == ERROR)
-            return (ERROR);
-    }
-    else
-        env_unset_var("OLDPWD");
-
     if (getcwd(buf, sizeof(buf)) == NULL)
     {
-        print_error_errno(SHELL_NAME, "cd", NULL);
-        return (ERROR);
+        ft_putstr_fd("cd: error getting current working directory\n", STDERR_FILENO);
+        g_exit_status = 1;
+        return;
     }
 
-    if (env_set_env("PWD", buf) == ERROR)
-        return (ERROR);
-
-    return (0);
+    setenv("PWD", buf, 1); // The third argument (1) indicates to replace the variable if it already exists.
 }
 
 int ft_cd(t_mini *mini, t_cmds *current_cmd)
@@ -69,9 +42,9 @@ int ft_cd(t_mini *mini, t_cmds *current_cmd)
     char *path;
 
     if (current_cmd->args[1] == NULL)
-        path = env_get_value("HOME");
+        path = getenv("HOME");
     else if (ft_strncmp(current_cmd->args[1], "-", 2) == 0)
-        path = env_get_value("OLDPWD");
+        path = getenv("OLDPWD");
     else
         path = current_cmd->args[1];
 
@@ -81,6 +54,8 @@ int ft_cd(t_mini *mini, t_cmds *current_cmd)
         g_exit_status = 1;
         return (0);
     }
+
+    char *oldpwd = getenv("PWD");
 
     if (chdir(path) == -1)
     {
@@ -95,6 +70,8 @@ int ft_cd(t_mini *mini, t_cmds *current_cmd)
     {
         g_exit_status = 0;
         update_pwd();
+        if (oldpwd)
+            setenv("OLDPWD", oldpwd, 1); // The third argument (1) indicates to replace the variable if it already exists.
     }
 
     return (0);
@@ -135,7 +112,7 @@ int    ft_pwd(t_mini *mini, t_cmds *current_cmd)
     return (0);
 }
 
-int fd_env(t_mini *mini, t_cmds *current_cmd)
+int ft_env(t_mini *mini, t_cmds *current_cmd)
 {
     int i;
 
@@ -170,8 +147,8 @@ static void handle_exit_args(t_mini *mini, t_cmds *current_cmd)
         g_exit_status = (int)exit_status;
     }
 }
-
-int fd_exit(t_mini *mini, t_cmds *current_cmd)
+/*
+int ft_exit(t_mini *mini, t_cmds *current_cmd)
 {
     // Ignore unused parameter warning
     (void)current_cmd;
@@ -191,8 +168,9 @@ int fd_exit(t_mini *mini, t_cmds *current_cmd)
     // This return statement is not reachable but added for completeness
     return (g_exit_status);
 }
-
-int fd_export(t_mini *mini, t_cmds *current_cmd)
+*/
+/*
+int ft_export(t_mini *mini, t_cmds *current_cmd)
 {
     int i;
     int j;
@@ -218,3 +196,4 @@ int fd_export(t_mini *mini, t_cmds *current_cmd)
     }
     return (0);
 }
+*/
