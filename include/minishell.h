@@ -162,6 +162,7 @@ void		env_unset_var(const char *name);
 void		update_pwd(void);
 int			ft_fork(t_mini *mini, t_cmds *current_cmd, int tmpin, int tmpout);
 void		free_all(t_mini *mini);
+static int 	str_to_int(const char *str);
 
 /* signals */
 

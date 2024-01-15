@@ -130,15 +130,53 @@ int ft_env(t_mini *mini, t_cmds *current_cmd)
     return (0);
 }
 
+static int str_to_int(const char *str)
+{
+    int result = 0;
+    int sign = 1;
+    int i = 0;
+
+    // Handle sign
+    if (str[i] == '-')
+    {
+        sign = -1;
+        i++;
+    }
+    else if (str[i] == '+')
+    {
+        i++;
+    }
+
+    // Convert to integer
+    while (isdigit(str[i]))
+    {
+        // Check for overflow
+        if (result > INT_MAX / 10 || (result == INT_MAX / 10 && (str[i] - '0') > INT_MAX % 10))
+        {
+            return -1; // Overflow
+        }
+
+        result = result * 10 + (str[i] - '0');
+        i++;
+    }
+
+    // Check for extra characters
+    if (str[i] != '\0')
+    {
+        return -1; // Extra characters after the numeric argument
+    }
+
+    return result * sign;
+}
+
 static void handle_exit_args(t_mini *mini, t_cmds *current_cmd)
 {
     // Check if there is an argument for exit status
     if (current_cmd->args[1] != NULL)
     {
-        char *endptr;
-        long exit_status = strtol(current_cmd->args[1], &endptr, 10);
+        int exit_status = str_to_int(current_cmd->args[1]);
 
-        if (*endptr != '\0' || errno == ERANGE)
+        if (exit_status == -1)
         {
             ft_putstr_fd("minishell: exit: ", 2);
             ft_putstr_fd(current_cmd->args[1], 2);
@@ -147,7 +185,7 @@ static void handle_exit_args(t_mini *mini, t_cmds *current_cmd)
             return;
         }
 
-        g_exit_status = (int)exit_status;
+        g_exit_status = exit_status;
     }
 }
 
@@ -159,18 +197,44 @@ int ft_exit(t_mini *mini, t_cmds *current_cmd)
     // Handle exit arguments
     handle_exit_args(mini, current_cmd);
 
-    // Free allocated memory
-    free_cmds(&*mini);
+    // Free allocated memory (replace with your actual function)
+     free_cmds(&*mini);
 
     // Perform cleanup or additional actions as needed
     // ...
 
     // Exit with the specified status
+    // Replace the following line with the appropriate cleanup/free function
     exit(g_exit_status);
 
-    // This return statement is not reachable but added for completeness
+    // For testing purposes, print the exit status instead of actually exiting
+    ft_putstr_fd("Exiting with status: ", 2);
+    ft_putnbr_fd(g_exit_status, 2);
+    ft_putchar_fd('\n', 2);
+
     return (g_exit_status);
 }
+
+// int ft_exit(t_mini *mini, t_cmds *current_cmd)
+// {
+//     // Ignore unused parameter warning
+//     (void)current_cmd;
+
+//     // Handle exit arguments
+//     handle_exit_args(mini, current_cmd);
+
+//     // Free allocated memory
+//     free_cmds(&*mini);
+
+//     // Perform cleanup or additional actions as needed
+//     // ...
+
+//     // Exit with the specified status
+//     exit(g_exit_status);
+
+//     // This return statement is not reachable but added for completeness
+//     return (g_exit_status);
+// }
 
 /*
 int ft_export(t_mini *mini, t_cmds *current_cmd)
