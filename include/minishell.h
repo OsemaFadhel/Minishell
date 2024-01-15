@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:21:15 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/15 20:22:46 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/15 20:54:08 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@
 # include "../libft/libft.h"
 # include <sys/stat.h>
 # include "utils.h"
+
+# define INT_MAX 2147483647
+# define INT_MIN -2147483648
 
 /* global variables */
 

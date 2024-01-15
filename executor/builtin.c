@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 14:51:47 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/15 20:29:30 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/15 20:53:12 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,17 +167,43 @@ int	ft_cd(t_mini *mini, t_cmds *current_cmd)
 	return (0);
 }
 
+static int str_to_int(const char *str)
+{
+    int result = 0;
+    int sign = 1;
+    int i = 0;
+    if (str[i] == '-')
+    {
+        sign = -1;
+        i++;
+    }
+    else if (str[i] == '+')
+        i++;
+    while (ft_isdigit(str[i]))
+    {
+        if (result > INT_MAX / 10 || (result == INT_MAX / 10 && (str[i] - '0') > INT_MAX % 10))
+            return -1;
+        result = result * 10 + (str[i] - '0');
+        i++;
+    }
+    if (str[i] != '\0')
+		return -1;
+    return result * sign;
+}
+
 int	handle_exit_args(t_mini *mini, t_cmds *current_cmd)
 {
+	char *endptr;
+	int exit_status;
+
+
 	if (current_cmd->args[1] != NULL)
 	{
-		char *endptr;
-		long exit_status = strtol(current_cmd->args[1], &endptr, 10);
-		if (*endptr != '\0' || errno == ERANGE)
+		exit_status = str_to_int(current_cmd->args[1]);
+		if (exit_status == -1)
 		{
-			ft_putstr_fd("BASH: exit: ", 2);
-			ft_putstr_fd(current_cmd->args[1], 2);
-			ft_putstr_fd(": numeric argument required\n", 2);
+			printf("exit: %s: numeric argument required\n",
+				current_cmd->args[1]);
 			g_exit_status = 255;
 			return 0;
 		}
@@ -187,7 +213,7 @@ int	handle_exit_args(t_mini *mini, t_cmds *current_cmd)
 			g_exit_status = 1;
 			return 1;
 		}
-		g_exit_status = (int)exit_status;
+		g_exit_status = exit_status;
 	}
 	return 0;
 }
