@@ -19,6 +19,8 @@ void is_builtin(t_mini *mini, t_cmds *current_cmd, int i)
             ft_echo(mini, current_cmd);
     else if (strncmp(current_cmd->cmd, "cd", strlen("cd")) == 0)
         ft_cd(mini, current_cmd);
+    else if (strncmp(current_cmd->cmd, "exit", strlen("exit")) == 0)
+        ft_exit(mini, current_cmd);
     else if (strncmp(current_cmd->cmd, "pwd", strlen("pwd")) == 0)
         ft_pwd(mini, current_cmd);
     else if (strncmp(current_cmd->cmd, "env", strlen("env")) == 0)

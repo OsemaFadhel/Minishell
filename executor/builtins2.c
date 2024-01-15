@@ -150,7 +150,7 @@ static void handle_exit_args(t_mini *mini, t_cmds *current_cmd)
         g_exit_status = (int)exit_status;
     }
 }
-/*
+
 int ft_exit(t_mini *mini, t_cmds *current_cmd)
 {
     // Ignore unused parameter warning
@@ -160,7 +160,7 @@ int ft_exit(t_mini *mini, t_cmds *current_cmd)
     handle_exit_args(mini, current_cmd);
 
     // Free allocated memory
-    free_all(mini);
+    free_cmds(&*mini);
 
     // Perform cleanup or additional actions as needed
     // ...
@@ -171,7 +171,7 @@ int ft_exit(t_mini *mini, t_cmds *current_cmd)
     // This return statement is not reachable but added for completeness
     return (g_exit_status);
 }
-*/
+
 /*
 int ft_export(t_mini *mini, t_cmds *current_cmd)
 {
