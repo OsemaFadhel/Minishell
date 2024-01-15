@@ -20,6 +20,7 @@ int ft_echo(t_mini *mini __attribute((unused)), t_cmds *current_cmd)
     }
     if (newline)
         ft_putchar_fd('\n', STDOUT_FILENO);
+    printf("echo done\n");
     return (0);
 }
 
@@ -73,7 +74,7 @@ int ft_cd(t_mini *mini, t_cmds *current_cmd)
         if (oldpwd)
             setenv("OLDPWD", oldpwd, 1); // The third argument (1) indicates to replace the variable if it already exists.
     }
-
+    printf("cd done\n");
     return (0);
 }
 
@@ -109,6 +110,7 @@ int    ft_pwd(t_mini *mini, t_cmds *current_cmd)
     ft_putstr_fd(path, 1);
     ft_putchar_fd('\n', 1);
     free(path);
+    printf("pwd done\n");
     return (0);
 }
 
@@ -124,6 +126,7 @@ int ft_env(t_mini *mini, t_cmds *current_cmd)
         i++;
     }
     (void)current_cmd;
+    printf("env done\n");
     return (0);
 }
 
