@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:21:15 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/15 20:54:08 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/15 22:46:23 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,16 @@ void		out_redirect(t_mini *mini, t_cmds *current_cmd);
 int			update_fd(t_mini *mini, t_cmds *current_cmd, int tmpout);
 int			process(t_mini *mini, t_cmds *current_cmd, int tmpin, int tmpout);
 void		store_std(int *tmpin, int *tmpout);
+
+/* builtin */
+
+int			ft_echo(t_mini *mini, t_cmds *current_cmd);
+int			ft_pwd(t_mini *mini, t_cmds *current_cmd);
+int			ft_env(t_mini *mini, t_cmds *current_cmd);
+int			ft_export(t_mini *mini, t_cmds *current_cmd);
+int			ft_unset(t_mini *mini, t_cmds *current_cmd);
+int			ft_cd(t_mini *mini, t_cmds *current_cmd);
+int			ft_exit(t_mini *mini, t_cmds *current_cmd);
 
 /* utils */
 
