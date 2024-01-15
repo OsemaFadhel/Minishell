@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:21:15 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/14 16:19:27 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/15 20:22:46 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ typedef struct s_mini
 int			ft_error(int flag);
 int			envdump(char **envp, t_mini *mini);
 int			check_error(char *cmd, t_lexer *lexer);
+void		rl_replace_line(const char *text, int clear_undo);
 
 /* free */
 
@@ -145,7 +146,7 @@ int			ft_strcmp(char *s1, char *s2);
 
 /* builtin */
 
-int			is_builtin(t_mini *mini, t_cmds *cmds, int i);
+int			is_builtin(t_mini *mini, t_cmds *cmds);
 int			builtin(t_mini *mini, int i);
 int			builtin_2(t_mini *mini, int i);
 int			builtin_3(t_mini *mini, int i);

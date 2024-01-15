@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 15:32:21 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/14 22:34:57 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/15 16:22:44 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,10 +102,10 @@ int	ft_fork(t_mini *mini, t_cmds *current_cmd, int tmpin, int tmpout)
 {
 	pid_t	ret;
 
-	/*if (is_builtin(mini, current_cmd) == 1)
+	if (is_builtin(mini, current_cmd) == 1)
 		return (0);
 	else
-	{*/
+	{
 		ret = fork();
 		mini->exec_flag = 1;
 		if (ret == 0)
@@ -116,6 +116,6 @@ int	ft_fork(t_mini *mini, t_cmds *current_cmd, int tmpin, int tmpout)
 			executor(mini, current_cmd);
 			exit(127);
 		}
-	//}
+	}
 	return (0);
 }

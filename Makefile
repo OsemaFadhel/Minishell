@@ -6,7 +6,7 @@
 #    By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/17 18:27:27 by ofadhel           #+#    #+#              #
-#    Updated: 2024/01/12 18:55:42 by ofadhel          ###   ########.fr        #
+#    Updated: 2024/01/15 18:46:35 by ofadhel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,9 @@ LIBFT 	= $(LIBFT_PATH)
 
 CC 		= gcc
 
-CFLAGS 	= -Wall -Wextra -Werror -lreadline
+READLINE 	= -L/usr/include -lreadline -L$(HOME)/.brew/opt/readline/lib -I$(HOME)/.brew/opt/readline/include
+
+CFLAGS 	= -Wall -Wextra -Werror
 
 OBJS 	= $(SRCS:.c=.o)
 
@@ -43,7 +45,7 @@ all: $(NAME)
 $(NAME): $(OBJS)
 		@echo "$(COLOUR_YELLOW)COMPILING...$(COLOUR_END)"
 		make -C $(LIBFT_PATH)
-		$(CC) $(OBJS) $(LIBFT)/libft.a -o $(NAME) $(CFLAGS)
+		$(CC) $(OBJS) $(LIBFT)/libft.a -o $(NAME) $(CFLAGS) $(READLINE)
 		@echo "$(COLOUR_GREEN)READY TO GO!$(COLOUR_END)"
 
 clean:
