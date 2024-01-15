@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 14:51:47 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/15 23:37:08 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/16 00:55:45 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void	update_pwd(t_mini *mini)
 
 	buf = getcwd(NULL, 0);
 	ft_setenv(mini, "PWD=", buf);
+	free(buf);
 }
 
 int	ft_cd(t_mini *mini, t_cmds *current_cmd)
@@ -77,7 +78,6 @@ int	ft_cd(t_mini *mini, t_cmds *current_cmd)
 	char	*path;
 	char	*oldpwd;
 
-	oldpwd = get_env_var("PWD=", mini->env);
 	if (current_cmd->args[1] == NULL)
 		path = getenv("HOME");
 	else if (ft_strncmp(current_cmd->args[1], "-", 2) == 0)
@@ -105,9 +105,11 @@ int	ft_cd(t_mini *mini, t_cmds *current_cmd)
 	}
 	else
 	{
+		oldpwd = get_env_var("PWD=", mini->env);
 		g_exit_status = 0;
 		update_pwd(mini);
 		ft_setenv(mini, "OLDPWD=", oldpwd);
+		free(oldpwd);
 	}
 	return (0);
 }
