@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 14:51:47 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/15 20:21:20 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/15 20:29:30 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,24 @@ int	ft_setenv(t_mini *mini, char *name, char *value) //completed
 		new_env[i] = ft_strdup(mini->env[i]);
 		i++;
 	}
+	if (pos == -1)
+	{
+		tmp = ft_strjoin(name, "=");
+		tmp = ft_strjoin(tmp, value);
+		new_env[i] = ft_strdup(tmp);
+		free(tmp);
+	}
+	new_env[i + 1] = NULL;
 	ft_free_array(mini->env);
-	mini->env = new_env;
+	mini->env = malloc(sizeof(char *) * (i + 2));
+	i = 0;
+	while (new_env[i])
+	{
+		mini->env[i] = ft_strdup(new_env[i]);
+		i++;
+	}
+	mini->env[i] = NULL;
+	ft_free_array(new_env);
 	return (0);
 }
 
