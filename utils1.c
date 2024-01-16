@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:51:23 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/11 16:07:12 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/16 17:14:15 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,4 +86,14 @@ int	ft_strcmp(char *s1, char *s2)
 	while ((s1[i] && s2[i]) && (s1[i] == s2[i]))
 		i++;
 	return (s1[i] - s2[i]);
+}
+
+int	ft_array_len(char **array)
+{
+	int	i;
+
+	i = 0;
+	while (array[i])
+		i++;
+	return (i);
 }

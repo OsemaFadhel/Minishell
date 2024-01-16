@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:43:57 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/15 22:44:28 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/16 15:44:20 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,23 @@ int	ft_pwd(t_mini *mini, t_cmds *current_cmd) //completed
 int	ft_env(t_mini *mini, t_cmds *current_cmd) //completed
 {
 	int	i;
+	int	j;
 
 	i = 0;
+	j = 0;
 	(void)current_cmd;
 	while (mini->env[i])
 	{
-		ft_putstr_fd(mini->env[i], 1);
-		ft_putchar_fd('\n', 1);
+		j = 0;
+		while (mini->env[i][j])
+		{
+			if (mini->env[i][j] == '=')
+			{
+				printf("%s\n", mini->env[i]);
+				break ;
+			}
+			j++;
+		}
 		i++;
 	}
 	g_exit_status = 0;

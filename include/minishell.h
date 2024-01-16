@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:21:15 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/15 22:46:23 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/16 17:14:29 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,9 +146,10 @@ int			ft_echo(t_mini *mini, t_cmds *current_cmd);
 int			ft_pwd(t_mini *mini, t_cmds *current_cmd);
 int			ft_env(t_mini *mini, t_cmds *current_cmd);
 int			ft_export(t_mini *mini, t_cmds *current_cmd);
-int			ft_unset(t_mini *mini, t_cmds *current_cmd);
+int			ft_unset(t_mini *mini __attribute((unused)), t_cmds *current_cmd);
 int			ft_cd(t_mini *mini, t_cmds *current_cmd);
 int			ft_exit(t_mini *mini, t_cmds *current_cmd);
+
 
 /* utils */
 
@@ -156,6 +157,8 @@ int			ft_isdigitalpha(char *c);
 char		**unset_cmd(char **matrix, char *str);
 char		**expand_matrix(char **matrix, char *str);
 int			ft_strcmp(char *s1, char *s2);
+int			ft_array_len(char **array);
+
 
 /* builtin */
 
