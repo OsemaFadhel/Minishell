@@ -215,6 +215,56 @@ int ft_exit(t_mini *mini, t_cmds *current_cmd)
     return (g_exit_status);
 }
 
+static int is_valid_identifier(const char *str)
+{
+    int i;
+
+    if (!str || !str[0])
+        return 0;
+
+    i = 0;
+    while (str[i])
+    {
+        if (!(ft_isalnum(str[i]) || str[i] == '_'))
+            return 0;
+        i++;
+    }
+
+    return 1;
+}
+
+
+int ft_unset(t_mini *mini __attribute((unused)), t_cmds *current_cmd)
+{
+    int i;
+    
+    i = 1;
+    while (current_cmd->args[i])
+    {
+        if (!is_valid_identifier(current_cmd->args[i]))
+        {
+            ft_putstr_fd("minishell: unset: `", STDERR_FILENO);
+            ft_putstr_fd(current_cmd->args[i], STDERR_FILENO);
+            ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
+            g_exit_status = 1;
+        }
+        else
+        {
+            if (unsetenv(current_cmd->args[i]) != 0)
+            {
+                ft_putstr_fd("minishell: unset: `", STDERR_FILENO);
+                ft_putstr_fd(current_cmd->args[i], STDERR_FILENO);
+                ft_putstr_fd("': not found\n", STDERR_FILENO);
+                g_exit_status = 1;
+            }
+        }
+
+        i++;
+    }
+
+    return (0);
+}
+
 // int ft_exit(t_mini *mini, t_cmds *current_cmd)
 // {
 //     // Ignore unused parameter warning

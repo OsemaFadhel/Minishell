@@ -163,6 +163,8 @@ void		update_pwd(void);
 int			ft_fork(t_mini *mini, t_cmds *current_cmd, int tmpin, int tmpout);
 void		free_all(t_mini *mini);
 static int 	str_to_int(const char *str);
+int 		ft_unset(t_mini *mini __attribute((unused)), t_cmds *current_cmd);
+static int is_valid_identifier(const char *str);
 
 /* signals */
 
