@@ -6,17 +6,17 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:44:48 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/16 19:37:17 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/16 20:13:01 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-static int	str_to_int(const char *str)
+static long	str_to_int(const char *str)
 {
-	int	result;
-	int	sign;
-	int	i;
+	long	result;
+	int		sign;
+	int		i;
 
 	result = 0;
 	sign = 1;
@@ -41,7 +41,7 @@ static int	str_to_int(const char *str)
 int	handle_exit_args(t_mini *mini, t_cmds *current_cmd)
 {
 	char	*endptr;
-	int		exit_status;
+	long	exit_status;
 
 	if (current_cmd->args[1] != NULL)
 	{
@@ -59,7 +59,7 @@ int	handle_exit_args(t_mini *mini, t_cmds *current_cmd)
 			g_exit_status = 1;
 			return (1);
 		}
-		g_exit_status = exit_status % 256;
+		g_exit_status = (exit_status % 256 + 256) % 256;
 	}
 	return (0);
 }
