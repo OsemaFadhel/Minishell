@@ -178,14 +178,14 @@ static void handle_exit_args(t_mini *mini, t_cmds *current_cmd)
 
         if (exit_status == -1)
         {
-            ft_putstr_fd("minishell: exit: ", 2);
-            ft_putstr_fd(current_cmd->args[1], 2);
-            ft_putstr_fd(": numeric argument required\n", 2);
+            ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
+            ft_putstr_fd(current_cmd->args[1], STDERR_FILENO);
+            ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
             g_exit_status = 2; // Default exit status
             return;
         }
 
-        g_exit_status = exit_status;
+        g_exit_status = exit_status % 256;
     }
 }
 
@@ -254,7 +254,6 @@ static void remove_env_var(t_mini *mini, const char *var)
     }
 }
 
-// Minishell 42 project unset builtin
 int ft_unset(t_mini *mini, t_cmds *current_cmd)
 {
     int i = 1;
