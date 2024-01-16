@@ -279,6 +279,148 @@ int ft_unset(t_mini *mini, t_cmds *current_cmd)
     return 0;
 }
 
+void env_set_env(t_mini *mini, const char *name, const char *value)
+{
+    char **env = mini->env;
+
+    // Iterate through the environment variables
+    for (int i = 0; env[i] != NULL; i++)
+    {
+        // Check if the variable matches the given name
+        if (ft_strncmp(env[i], name, ft_strlen(name)) == 0 && env[i][ft_strlen(name)] == '=')
+        {
+            // Update the existing variable
+            free(env[i]);
+            char *new_var = ft_strjoin(name, "=");
+            env[i] = ft_strjoin(new_var, value);
+            free(new_var);
+            return;
+        }
+    }
+
+    // If the variable doesn't exist, add a new one
+    char *new_var = ft_strjoin(name, "=");
+    char *new_entry = ft_strjoin(new_var, value);
+    free(new_var);
+
+    // Count the number of existing environment variables
+    int env_count = 0;
+    while (env[env_count] != NULL)
+        env_count++;
+
+    // Allocate memory for the new environment
+    char **new_env = (char **)malloc((env_count + 2) * sizeof(char *));
+
+    // Copy the existing environment variables
+    for (int i = 0; i < env_count; i++)
+        new_env[i] = ft_strdup(env[i]);
+
+    // Add the new variable
+    new_env[env_count] = ft_strdup(new_entry);
+    new_env[env_count + 1] = NULL;
+
+    // Free the old environment and update the global variable
+    ft_free_array(env);
+    mini->env = new_env;
+
+    free(new_entry);
+}
+
+// Function to get the value of an environment variable
+char *env_get_value(t_mini *mini, const char *name)
+{
+    char **env = mini->env;
+
+    // Iterate through the environment variables
+    for (int i = 0; env[i] != NULL; i++)
+    {
+        // Check if the variable matches the given name
+        if (ft_strncmp(env[i], name, ft_strlen(name)) == 0 && env[i][ft_strlen(name)] == '=')
+        {
+            // Return the value of the variable
+            return ft_strdup(env[i] + ft_strlen(name) + 1);
+        }
+    }
+
+    // Return NULL if the variable is not found
+    return NULL;
+}
+
+void print_vars(char **envp) {
+    int i;
+    char **tmp;
+
+    i = 0;
+    tmp = envp;
+    while (tmp[i] != NULL) {
+        if (i == 0)
+            ft_putstr_fd("declare -x ", 1);
+
+        // Print variable name
+        int j = 0;
+        while (tmp[i][j] != '\0' && tmp[i][j] != '=')
+            ft_putchar_fd(tmp[i][j++], 1);
+
+        if (tmp[i][j] == '=') {
+            // Print variable value between double quotes
+            ft_putstr_fd("=\"", 1);
+
+            // Skip the '=' character and print the value
+            j++;
+            while (tmp[i][j] != '\0')
+                ft_putchar_fd(tmp[i][j++], 1);
+
+            ft_putstr_fd("\"\n", 1);
+        } else {
+            // If no '=' is found, just print a newline
+            ft_putchar_fd('\n', 1);
+        }
+
+        i++;
+    }
+}
+
+
+int ft_export(t_mini *mini, t_cmds *current_cmd)
+{
+    int i = 1;
+
+        if (current_cmd->args[i] == NULL)
+    {
+        print_vars(mini->env);
+        return 0;
+    }
+    while (current_cmd->args[i])
+    {
+        if (!is_valid_identifier(current_cmd->args[i]))
+        {
+            ft_putstr_fd("minishell: export: `", STDERR_FILENO);
+            ft_putstr_fd(current_cmd->args[i], STDERR_FILENO);
+            ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
+            g_exit_status = 1;
+        }
+        else if (ft_strchr(current_cmd->args[i], '='))
+        {
+            char *var = ft_substr(current_cmd->args[i], 0, ft_strchr(current_cmd->args[i], '=') - current_cmd->args[i]);
+            char *value = ft_strchr(current_cmd->args[i], '=') + 1;
+            env_set_env(mini, var, value);
+            free(var);
+        }
+        else
+        {
+            char *value = env_get_value(mini, current_cmd->args[i]);
+            if (value)
+                env_set_env(mini, current_cmd->args[i], value);
+            else
+                env_set_env(mini, current_cmd->args[i], "");
+        }
+
+        i++;
+    }
+
+    return 0;
+}
+
 // int ft_exit(t_mini *mini, t_cmds *current_cmd)
 // {
 //     // Ignore unused parameter warning

@@ -156,8 +156,8 @@ int			ft_export(t_mini *mini, t_cmds *current_cmd);
 int 	   	ft_unset(t_mini *mini, t_cmds *current_cmd);
 int 		ft_env(t_mini *mini, t_cmds *current_cmd);
 int 		ft_exit(t_mini *mini, t_cmds *current_cmd);
-char		*env_get_value(const char *name);
-int			env_set_env(const char *name, const char *value);
+char 		*env_get_value(t_mini *mini, const char *name);
+void 		env_set_env(t_mini *mini, const char *name, const char *value);
 void		env_unset_var(const char *name);
 void		update_pwd(void);
 int			ft_fork(t_mini *mini, t_cmds *current_cmd, int tmpin, int tmpout);
@@ -166,6 +166,13 @@ static int 	str_to_int(const char *str);
 int 		ft_unset(t_mini *mini __attribute((unused)), t_cmds *current_cmd);
 static int 	is_valid_identifier(const char *str);
 static void remove_env_var(t_mini *mini, const char *var);
+int 		ft_export(t_mini *mini, t_cmds *current_cmd);
+void		print_vars(char **envp);
+
+
+
+
+
 /* signals */
 
 void		sig_ignore(void);

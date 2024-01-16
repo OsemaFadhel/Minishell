@@ -25,6 +25,8 @@ void is_builtin(t_mini *mini, t_cmds *current_cmd, int i)
         ft_pwd(mini, current_cmd);
     else if (strncmp(current_cmd->cmd, "unset", strlen("unset")) == 0)
         ft_unset(mini, current_cmd);
+    else if (strncmp(current_cmd->cmd, "export", strlen("export")) == 0)
+        ft_export(mini, current_cmd);
     else if (strncmp(current_cmd->cmd, "env", strlen("env")) == 0)
         ft_env(mini, current_cmd);
     else
