@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 17:14:52 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/16 17:29:25 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/16 18:34:00 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	get_env_pos(char *name, char **env)
 	return (i);
 }
 
-char **ft_realloc(char **env, int size)
+char	**ft_realloc(char **env, int size)
 {
 	char	**new_env;
 	int		i;

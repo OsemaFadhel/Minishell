@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 17:38:14 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/14 17:16:49 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/16 18:36:37 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,10 @@ void	wait_child(t_mini *mini)
 	if (mini->exec_flag == 1)
 	{
 		while (waitpid(-1, &status, 0) > 0)
-			;
-		g_exit_status = WEXITSTATUS(status);
+		{
+			if (WIFEXITED(status))
+				g_exit_status = WEXITSTATUS(status);
+		}
 	}
 }
 
