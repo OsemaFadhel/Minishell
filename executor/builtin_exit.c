@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:44:48 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/16 18:37:27 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/16 19:37:17 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,6 @@ static int	str_to_int(const char *str)
 		i++;
 	while (ft_isdigit(str[i]))
 	{
-		if (result > INT_MAX / 10 || (result == INT_MAX / 10
-				&& (str[i] - '0') > INT_MAX % 10))
-			return (-1);
 		result = result * 10 + (str[i] - '0');
 		i++;
 	}
@@ -62,7 +59,7 @@ int	handle_exit_args(t_mini *mini, t_cmds *current_cmd)
 			g_exit_status = 1;
 			return (1);
 		}
-		g_exit_status = exit_status;
+		g_exit_status = exit_status % 256;
 	}
 	return (0);
 }
