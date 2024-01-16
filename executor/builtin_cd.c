@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 17:14:52 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/16 18:34:00 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/16 19:26:01 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,23 +24,6 @@ int	get_env_pos(char *name, char **env)
 		i++;
 	}
 	return (i);
-}
-
-char	**ft_realloc(char **env, int size)
-{
-	char	**new_env;
-	int		i;
-
-	i = 0;
-	new_env = ft_calloc(sizeof(char *), (size + 1));
-	while (env[i])
-	{
-		new_env[i] = ft_strdup(env[i]);
-		free(env[i]);
-		i++;
-	}
-	free(env);
-	return (new_env);
 }
 
 int	ft_setenv(t_mini *mini, char *name, char *value)
@@ -75,12 +58,10 @@ void	update_pwd(t_mini *mini)
 	free(buf);
 }
 
-int	ft_cd(t_mini *mini, t_cmds *current_cmd)
+char	*ft_cd1(t_mini *mini, t_cmds *current_cmd)
 {
 	char	*path;
-	char	*oldpwd;
 
-	oldpwd = getcwd(NULL, 0);
 	if (current_cmd->args[1] == NULL)
 		path = getenv("HOME");
 	else if (ft_strncmp(current_cmd->args[1], "-", 2) == 0)
@@ -90,7 +71,7 @@ int	ft_cd(t_mini *mini, t_cmds *current_cmd)
 		{
 			ft_putstr_fd("cd: OLDPWD not set\n", STDERR_FILENO);
 			g_exit_status = 1;
-			return (0);
+			return (NULL);
 		}
 	}
 	else
@@ -99,8 +80,20 @@ int	ft_cd(t_mini *mini, t_cmds *current_cmd)
 	{
 		ft_putstr_fd("cd: HOME not set\n", STDERR_FILENO);
 		g_exit_status = 1;
-		return (0);
+		return (NULL);
 	}
+	return (path);
+}
+
+int	ft_cd(t_mini *mini, t_cmds *current_cmd)
+{
+	char	*path;
+	char	*oldpwd;
+
+	oldpwd = getcwd(NULL, 0);
+	path = ft_cd1(mini, current_cmd);
+	if (!path)
+		return (0);
 	if (chdir(path) == -1)
 	{
 		perror("cd");

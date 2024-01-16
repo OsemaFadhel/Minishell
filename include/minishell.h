@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:21:15 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/16 18:32:09 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/16 19:26:24 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,7 @@ int			ft_export(t_mini *mini, t_cmds *current_cmd);
 int			ft_unset(t_mini *mini, t_cmds *current_cmd);
 int			ft_cd(t_mini *mini, t_cmds *current_cmd);
 int			ft_exit(t_mini *mini, t_cmds *current_cmd);
+char		**ft_realloc(char **env, int size);
 
 /* utils */
 

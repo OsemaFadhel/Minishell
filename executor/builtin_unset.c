@@ -6,11 +6,28 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 15:38:14 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/16 18:33:34 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/16 19:26:10 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+char	**ft_realloc(char **env, int size)
+{
+	char	**new_env;
+	int		i;
+
+	i = 0;
+	new_env = ft_calloc(sizeof(char *), (size + 1));
+	while (env[i])
+	{
+		new_env[i] = ft_strdup(env[i]);
+		free(env[i]);
+		i++;
+	}
+	free(env);
+	return (new_env);
+}
 
 static int	is_valid_identifier(const char *str)
 {
