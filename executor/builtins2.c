@@ -185,7 +185,8 @@ static void handle_exit_args(t_mini *mini, t_cmds *current_cmd)
             return;
         }
 
-        g_exit_status = exit_status % 256;
+        // Correctly handle exit status overflow
+        g_exit_status = (exit_status % 256 + 256) % 256;
     }
 }
 
