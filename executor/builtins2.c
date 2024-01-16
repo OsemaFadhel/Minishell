@@ -217,12 +217,11 @@ int ft_exit(t_mini *mini, t_cmds *current_cmd)
 
 static int is_valid_identifier(const char *str)
 {
-    int i;
+    int i = 0;
 
     if (!str || !str[0])
         return 0;
 
-    i = 0;
     while (str[i])
     {
         if (!(ft_isalnum(str[i]) || str[i] == '_'))
@@ -233,12 +232,33 @@ static int is_valid_identifier(const char *str)
     return 1;
 }
 
-
-int ft_unset(t_mini *mini __attribute((unused)), t_cmds *current_cmd)
+// Helper function to remove an environment variable from mini->env
+static void remove_env_var(t_mini *mini, const char *var)
 {
-    int i;
-    
-    i = 1;
+    int i = 0;
+
+    while (mini->env[i])
+    {
+        if (ft_strncmp(mini->env[i], var, ft_strlen(var)) == 0 && mini->env[i][ft_strlen(var)] == '=')
+        {
+            // Remove the environment variable by shifting subsequent elements
+            free(mini->env[i]);
+            while (mini->env[i])
+            {
+                mini->env[i] = mini->env[i + 1];
+                i++;
+            }
+            break;
+        }
+        i++;
+    }
+}
+
+// Minishell 42 project unset builtin
+int ft_unset(t_mini *mini, t_cmds *current_cmd)
+{
+    int i = 1;
+
     while (current_cmd->args[i])
     {
         if (!is_valid_identifier(current_cmd->args[i]))
@@ -250,19 +270,13 @@ int ft_unset(t_mini *mini __attribute((unused)), t_cmds *current_cmd)
         }
         else
         {
-            if (unsetenv(current_cmd->args[i]) != 0)
-            {
-                ft_putstr_fd("minishell: unset: `", STDERR_FILENO);
-                ft_putstr_fd(current_cmd->args[i], STDERR_FILENO);
-                ft_putstr_fd("': not found\n", STDERR_FILENO);
-                g_exit_status = 1;
-            }
+            remove_env_var(mini, current_cmd->args[i]);
         }
 
         i++;
     }
 
-    return (0);
+    return 0;
 }
 
 // int ft_exit(t_mini *mini, t_cmds *current_cmd)
