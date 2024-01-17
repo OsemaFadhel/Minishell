@@ -167,11 +167,11 @@ int 		ft_unset(t_mini *mini __attribute((unused)), t_cmds *current_cmd);
 static int 	is_valid_identifier(const char *str);
 static void remove_env_var(t_mini *mini, const char *var);
 int 		ft_export(t_mini *mini, t_cmds *current_cmd);
-void		print_vars(char **envp);
-
-
-
-
+void		print_vars_sorted(char **envp);
+int 		is_valid_identifier2(const char *str);
+int 		is_valid_identifier_char(char c);
+static void add_env_var(t_mini *mini, const char *name, const char *value);
+char 		**ft_add_str_to_array(char **array, const char *str);
 
 /* signals */
 

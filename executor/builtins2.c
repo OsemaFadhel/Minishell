@@ -278,7 +278,7 @@ int ft_unset(t_mini *mini, t_cmds *current_cmd)
 
     return 0;
 }
-
+/*
 void env_set_env(t_mini *mini, const char *name, const char *value)
 {
     char **env = mini->env;
@@ -420,6 +420,8 @@ int ft_export(t_mini *mini, t_cmds *current_cmd)
 
     return 0;
 }
+
+*/
 
 // int ft_exit(t_mini *mini, t_cmds *current_cmd)
 // {
