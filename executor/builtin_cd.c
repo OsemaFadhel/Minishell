@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 17:14:52 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/16 19:26:01 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/17 17:54:56 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,19 @@ int	ft_setenv(t_mini *mini, char *name, char *value)
 	if (mini->env[pos])
 	{
 		free(mini->env[pos]);
-		mini->env[pos] = ft_strjoin(name, value);
+		if (value == NULL)
+			mini->env[pos] = ft_strdup(name);
+		else
+			mini->env[pos] = ft_strjoin(name, value);
 		mini->env[i] = NULL;
 	}
 	else
 	{
 		mini->env = ft_realloc(mini->env, pos + 1);
-		mini->env[pos] = ft_strjoin(name, value);
+		if (value == NULL)
+			mini->env[pos] = ft_strdup(name);
+		else
+			mini->env[pos] = ft_strjoin(name, value);
 		mini->env[pos + 1] = NULL;
 	}
 	return (0);
@@ -75,7 +81,7 @@ char	*ft_cd1(t_mini *mini, t_cmds *current_cmd)
 		}
 	}
 	else
-		path = current_cmd->args[1];
+		path = ft_strdup(current_cmd->args[1]);
 	if (!path)
 	{
 		ft_putstr_fd("cd: HOME not set\n", STDERR_FILENO);
@@ -93,11 +99,15 @@ int	ft_cd(t_mini *mini, t_cmds *current_cmd)
 	oldpwd = getcwd(NULL, 0);
 	path = ft_cd1(mini, current_cmd);
 	if (!path)
+	{
+		free(oldpwd);
 		return (0);
+	}
 	if (chdir(path) == -1)
 	{
 		perror("cd");
 		g_exit_status = 1;
+		free(oldpwd);
 	}
 	else
 	{
@@ -106,5 +116,6 @@ int	ft_cd(t_mini *mini, t_cmds *current_cmd)
 		ft_setenv(mini, "OLDPWD=", oldpwd);
 		free(oldpwd);
 	}
+	free(path);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 17:38:14 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/16 18:36:37 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/17 18:04:46 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	execute(t_mini *mini)
 		current_cmd = current_cmd->next;
 		cmd_count++;
 		if (mini->here_doc_flag == 1)
-			unlink("tmp.txt");
+			unlink(".tmp.txt");
 	}
 	restore_stds(tmpin, tmpout);
 	wait_child(mini);

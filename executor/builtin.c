@@ -6,16 +6,11 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 14:51:47 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/16 17:15:07 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/17 16:12:46 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-int	ft_export(t_mini *mini, t_cmds *current_cmd)
-{
-	return (0);
-}
 
 int	is_builtin(t_mini *mini, t_cmds *current_cmd)
 {

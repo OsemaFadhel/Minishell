@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 12:24:13 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/14 17:11:36 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/17 18:05:33 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	here_doc(t_mini *mini, char *delimeter)
 	char	*line;
 	int		fd;
 
-	fd = open("tmp.txt", O_WRONLY | O_TRUNC | O_CREAT, 0644);
+	fd = open(".tmp.txt", O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	while (1)
 	{
 		line = readline("> ");
@@ -31,7 +31,7 @@ void	here_doc(t_mini *mini, char *delimeter)
 		free(line);
 	}
 	close(fd);
-	mini->fdin = open("tmp.txt", O_RDONLY);
+	mini->fdin = open(".tmp.txt", O_RDONLY);
 }
 
 void	in_redirect2(t_mini *mini, t_cmds *current_cmd, int i)

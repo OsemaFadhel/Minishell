@@ -6,7 +6,7 @@
 #    By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/17 18:27:27 by ofadhel           #+#    #+#              #
-#    Updated: 2024/01/16 17:15:28 by ofadhel          ###   ########.fr        #
+#    Updated: 2024/01/17 15:57:44 by ofadhel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ SRCS 	= 	main.c utils1.c signals.c error.c \
 			executor/executor_fds.c executor/executor.c \
 			executor/executor_fds2.c executor/builtin2.c \
 			executor/builtin_exit.c executor/builtin_unset.c \
-			executor/builtin_cd.c \
+			executor/builtin_cd.c executor/builtin_export.c \
 			free.c \
 
 #libft

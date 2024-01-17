@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 18:18:50 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/14 16:19:12 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/17 16:26:16 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	g_exit_status = 0;
 
 int	envdump(char **envp, t_mini *mini) // get envp and put it in mini->envp
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	while (envp && envp[i])
