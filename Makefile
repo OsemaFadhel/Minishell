@@ -6,7 +6,7 @@
 #    By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/17 18:27:27 by ofadhel           #+#    #+#              #
-#    Updated: 2024/01/17 15:57:44 by ofadhel          ###   ########.fr        #
+#    Updated: 2024/01/17 19:37:08 by ofadhel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ SRCS 	= 	main.c utils1.c signals.c error.c \
 			executor/executor_fds2.c executor/builtin2.c \
 			executor/builtin_exit.c executor/builtin_unset.c \
 			executor/builtin_cd.c executor/builtin_export.c \
+			executor/builtin_export2.c executor/builtin_export3.c \
 			free.c \
 
 #libft
@@ -33,7 +34,7 @@ LIBFT 	= $(LIBFT_PATH)
 
 CC 		= gcc
 
-READLINE 	= -L/usr/include -lreadline -L$(HOME)/.brew/opt/readline/lib -I$(HOME)/.brew/opt/readline/include
+READLINE 	= -L/usr/include -lreadline
 
 CFLAGS 	= -Wall -Wextra -Werror
 

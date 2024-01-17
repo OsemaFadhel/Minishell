@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 18:21:15 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/17 17:11:13 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/17 19:36:45 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,14 @@ int			ft_cd(t_mini *mini, t_cmds *current_cmd);
 int			ft_exit(t_mini *mini, t_cmds *current_cmd);
 char		**ft_realloc(char **env, int size);
 int			ft_setenv(t_mini *mini, char *name, char *value);
+void		print_vars_sorted2(char **envp, int count);
+char		**env_dump(char **envp);
+void		print_vars_sorted(char **envp);
+int			check_valid_identifier(char *arg);
+void		else_plus_equal(t_mini *mini, t_cmds *current_cmd, int i);
+void		last_elseif(t_mini *mini, t_cmds *current_cmd, int i);
+void		last_else(t_mini *mini, t_cmds *current_cmd, int i);
+char		*get_name_plus(char *arg);
 
 /* utils */
 
