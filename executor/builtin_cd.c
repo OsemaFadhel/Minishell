@@ -6,7 +6,7 @@
 /*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 17:14:52 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/17 17:54:56 by ofadhel          ###   ########.fr       */
+/*   Updated: 2024/01/17 19:49:26 by ofadhel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ char	*ft_cd1(t_mini *mini, t_cmds *current_cmd)
 	char	*path;
 
 	if (current_cmd->args[1] == NULL)
-		path = getenv("HOME");
+		path = get_env_var("HOME=", mini->env);
 	else if (ft_strncmp(current_cmd->args[1], "-", 2) == 0)
 	{
 		path = get_env_var("OLDPWD=", mini->env);
