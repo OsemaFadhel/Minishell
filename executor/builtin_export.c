@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ofadhel <ofadhel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: dabi-rac <dabi-rac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/17 15:56:34 by ofadhel           #+#    #+#             */
-/*   Updated: 2024/01/17 19:35:56 by ofadhel          ###   ########.fr       */
+/*   Created: 2024/03/18 10:06:16 by dabi-rac          #+#    #+#             */
+/*   Updated: 2024/03/20 17:41:15 by dabi-rac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ int	ft_export(t_mini *mini, t_cmds *current_cmd)
 	int		i;
 
 	i = 1;
+	printf(current_cmd->args[1]);
+	printf("\n");
 	if (print_export(mini, current_cmd) == 0)
 		return (0);
 	while (current_cmd->args[i])
