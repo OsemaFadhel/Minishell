@@ -1,4 +1,4 @@
-# Minishell
+# Minishell <h2 align='right'>Final Grade 98/125 ✅ </h2>
 
 This project is about creating a simple shell.
 
